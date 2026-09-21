@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principios de Diseño - CampusBites / CampusMarket</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF7A59', // Dinamismo, alimento, energía
+                            navy: '#1E293B',   // Estructura escolar, profesionalismo
+                            mint: '#34D399',   // Disponibilidad, activo
+                            yellow: '#FBBF24', // Toque divertido / juvenil
+                            bg: '#F8FAFC'      // Fondo limpio
+                        }
+                    },
+                    borderRadius: {
+                        'xl-friendly': '1.25rem',
+                        '2xl-friendly': '1.75rem'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-bg text-slate-800 font-sans antialiased pb-20">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white border-b border-slate-100 sticky top-0 z-50 px-6 py-4 flex items-center justify-between shadow-sm">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-brand-orange text-white rounded-2xl flex items-center justify-center font-bold text-xl shadow-md shadow-orange-200">
+                <i class="fa-solid fa-graduation-cap text-lg"></i>
+            </div>
+            <div>
+                <h1 class="font-extrabold text-xl tracking-tight text-brand-navy leading-none">CampusBites</h1>
+                <span class="text-xs font-medium text-slate-400">Comercio Universitario Ambulante</span>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2 bg-slate-100 p-1 rounded-full">
+            <button onclick="switchTab('ubereats')" id="btn-ubereats" class="px-4 py-2 rounded-full text-xs font-bold transition-all bg-white text-brand-navy shadow-sm">
+                <i class="fa-solid fa-store mr-1"></i> Explorar
+            </button>
+            <button onclick="switchTab('tinder')" id="btn-tinder" class="px-4 py-2 rounded-full text-xs font-bold text-slate-500 hover:text-brand-navy transition-all">
+                <i class="fa-solid fa-fire mr-1 text-brand-orange"></i> Match (Tinder)
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 pt-6">
+
+        <!-- SECCIÓN: PRINCIPIOS DE DISEÑO & PALETA -->
+        <section class="mb-10 bg-white p-6 rounded-2xl-friendly border border-slate-100 shadow-sm">
+            <h2 class="text-sm font-bold tracking-wider uppercase text-brand-orange mb-3">Guía de Identidad & Paleta</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                <div class="p-3 rounded-xl-friendly bg-[#FF7A59] text-white">
+                    <p class="text-xs opacity-80">Naranja Vívido</p>
+                    <p class="font-bold text-sm">#FF7A59</p>
+                    <span class="text-[10px] opacity-90">Apetito & Energía</span>
+                </div>
+                <div class="p-3 rounded-xl-friendly bg-[#1E293B] text-white">
+                    <p class="text-xs opacity-80">Azul Escolar</p>
+                    <p class="font-bold text-sm">#1E293B</p>
+                    <span class="text-[10px] opacity-90">Confianza & Estructura</span>
+                </div>
+                <div class="p-3 rounded-xl-friendly bg-[#34D399] text-slate-900">
+                    <p class="text-xs opacity-80">Menta Activo</p>
+                    <p class="font-bold text-sm">#34D399</p>
+                    <span class="text-[10px] opacity-90">Disponible Ahora</span>
+                </div>
+                <div class="p-3 rounded-xl-friendly bg-[#FBBF24] text-slate-900">
+                    <p class="text-xs opacity-80">Amarillo Recreo</p>
+                    <p class="font-bold text-sm">#FBBF24</p>
+                    <span class="text-[10px] opacity-90">Toque Juvenil</span>
+                </div>
+            </div>
+            <p class="text-xs text-slate-500 leading-relaxed">
+                <strong>Principios clave:</strong> Iconos grandes y amigables, bordes redondeados (18px - 28px) para dar sensación accesible, tipografía limpia y etiquetas de disponibilidad en tiempo real.
+            </p>
+        </section>
+
+        <!-- DASHBOARD PRINCIPAL: TIPO UBER EATS (Default) -->
+        <div id="view-ubereats" class="space-y-6">
+            
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-brand-navy">Vendedores en el Campus</h2>
+                    <p class="text-xs text-slate-500">Encuentra alumnos vendiendo cerca de tus facultades</p>
+                </div>
+                <button class="bg-slate-100 p-3 rounded-xl-friendly text-brand-navy hover:bg-slate-200 transition">
+                    <i class="fa-solid fa-sliders text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Categorías Rápidas -->
+            <div class="flex space-x-3 overflow-x-auto pb-2 scrollbar-none">
+                <button class="flex items-center space-x-2 bg-brand-navy text-white px-4 py-2.5 rounded-2xl font-medium text-xs whitespace-nowrap shadow-sm">
+                    <i class="fa-solid fa-utensils text-sm"></i>
+                    <span>Todo</span>
+                </button>
+                <button class="flex items-center space-x-2 bg-white text-slate-600 border border-slate-200 px-4 py-2.5 rounded-2xl font-medium text-xs whitespace-nowrap">
+                    <i class="fa-solid fa-[#FF7A59] fa-cookie text-brand-orange text-sm"></i>
+                    <span>Postres y Snacks</span>
+                </button>
+                <button class="flex items-center space-x-2 bg-white text-slate-600 border border-slate-200 px-4 py-2.5 rounded-2xl font-medium text-xs whitespace-nowrap">
+                    <i class="fa-solid fa-sandwich text-brand-yellow text-sm"></i>
+                    <span>Comida Preparada</span>
+                </button>
+                <button class="flex items-center space-x-2 bg-white text-slate-600 border border-slate-200 px-4 py-2.5 rounded-2xl font-medium text-xs whitespace-nowrap">
+                    <i class="fa-solid fa-print text-blue-500 text-sm"></i>
+                    <span>Artículos / Servicios</span>
+                </button>
+            </div>
+
+            <!-- Lista de Vendedores estilo Uber Eats -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                
+                <!-- Tarjeta Vendedor 1 -->
+                <div class="bg-white rounded-2xl-friendly border border-slate-100 shadow-sm hover:shadow-md transition overflow-hidden">
+                    <div class="relative h-36 bg-slate-200">
+                        <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80" alt="Snacks" class="w-full h-full object-cover">
+                        <span class="absolute top-3 left-3 bg-brand-mint text-slate-900 font-bold text-[11px] px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-slate-900 animate-pulse"></span> Vendiendo Ahora
+                        </span>
+                        <span class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-brand-navy font-extrabold text-xs px-2.5 py-1 rounded-lg">
+                            <i class="fa-solid fa-location-dot text-brand-orange mr-1"></i> Fac. de Ingeniería
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="font-extrabold text-lg text-brand-navy leading-snug">Marcos - Brownies & Galletas</h3>
+                                <p class="text-xs text-slate-500 font-medium">Estudiante de Computación</p>
+                            </div>
+                            <span class="bg-amber-50 text-amber-700 text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1">
+                                <i class="fa-solid fa-star text-amber-400"></i> 4.9
+                            </span>
+                        </div>
+
+                        <!-- Sección Clave: Horarios de disponibilidad -->
+                        <div class="bg-slate-50 p-2.5 rounded-xl-friendly mb-3 border border-slate-100">
+                            <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">
+                                <i class="fa-regular fa-clock text-brand-orange mr-1"></i> Horario de Atención
+                            </p>
+                            <div class="flex items-center justify-between text-xs font-semibold text-brand-navy">
+                                <span>Hoy: 11:00 AM - 2:30 PM</span>
+                                <span class="text-brand-orange text-[11px]">En receso a las 1:00 PM</span>
+                            </div>
+                        </div>
+
+                        <!-- Productos que suele vender -->
+                        <div class="mb-4">
+                            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wide mb-1.5">Productos Habituales</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2.5 py-1 rounded-lg">Brownie Clásico ($25)</span>
+                                <span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2.5 py-1 rounded-lg">Galleta Red Velvet ($20)</span>
+                                <span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2.5 py-1 rounded-lg">Café Frío ($30)</span>
+                            </div>
+                        </div>
+
+                        <button class="w-full bg-brand-navy text-white font-bold text-xs py-3 rounded-xl-friendly hover:bg-slate-800 transition flex items-center justify-center gap-2">
+                            <i class="fa-regular fa-calendar-check text-sm"></i> Agendar Cita de Entrega
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tarjeta Vendedor 2 -->
+                <div class="bg-white rounded-2xl-friendly border border-slate-100 shadow-sm hover:shadow-md transition overflow-hidden">
+                    <div class="relative h-36 bg-slate-200">
+                        <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80" alt="Tacos" class="w-full h-full object-cover">
+                        <span class="absolute top-3 left-3 bg-amber-100 text-amber-800 font-bold text-[11px] px-3 py-1 rounded-full shadow-sm">
+                            <i class="fa-regular fa-clock mr-1"></i> Inicia en 30 min
+                        </span>
+                        <span class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-brand-navy font-extrabold text-xs px-2.5 py-1 rounded-lg">
+                            <i class="fa-solid fa-location-dot text-brand-orange mr-1"></i> Biblioteca Central
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="font-extrabold text-lg text-brand-navy leading-snug">Sofía - Tacos & Burritos</h3>
+                                <p class="text-xs text-slate-500 font-medium">Estudiante de Arquitectura</p>
+                            </div>
+                            <span class="bg-amber-50 text-amber-700 text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1">
+                                <i class="fa-solid fa-star text-amber-400"></i> 4.8
+                            </span>
+                        </div>
+
+                        <!-- Horarios -->
+                        <div class="bg-slate-50 p-2.5 rounded-xl-friendly mb-3 border border-slate-100">
+                            <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">
+                                <i class="fa-regular fa-clock text-brand-orange mr-1"></i> Horario de Atención
+                            </p>
+                            <div class="flex items-center justify-between text-xs font-semibold text-brand-navy">
+                                <span>Hoy: 12:30 PM - 4:00 PM</span>
+                                <span class="text-slate-400 text-[11px]">Próximo turno</span>
+                            </div>
+                        </div>
+
+                        <!-- Productos -->
+                        <div class="mb-4">
+                            <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wide mb-1.5">Productos Habituales</p>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2.5 py-1 rounded-lg">Burrito de Guisado ($45)</span>
+                                <span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2.5 py-1 rounded-lg">Agua del Día ($20)</span>
+                            </div>
+                        </div>
+
+                        <button class="w-full bg-brand-navy text-white font-bold text-xs py-3 rounded-xl-friendly hover:bg-slate-800 transition flex items-center justify-center gap-2">
+                            <i class="fa-regular fa-calendar-check text-sm"></i> Agendar Cita Previa
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- DASHBOARD SECUNDARIO: MÓDULO SWIPE TIPO TINDER -->
+        <div id="view-tinder" class="hidden max-w-sm mx-auto space-y-4">
+            <div class="text-center mb-2">
+                <h2 class="text-xl font-extrabold text-brand-navy">Descubre Productos</h2>
+                <p class="text-xs text-slate-500">Desliza a la derecha para guardarlo o pedir cita</p>
+            </div>
+
+            <!-- Tarjeta Swipe Principal -->
+            <div class="relative bg-white rounded-2xl-friendly border border-slate-200 shadow-xl overflow-hidden">
+                <div class="h-80 relative bg-slate-800">
+                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80" alt="Pastel" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                    <span class="absolute top-4 left-4 bg-brand-orange text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+                        ¡Disponible Ahora!
+                    </span>
+                    <div class="absolute bottom-4 left-4 right-4 text-white">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <h3 class="text-2xl font-extrabold leading-tight">Rebanada Pastel Chocolate</h3>
+                                <p class="text-xs text-slate-200">Vendido por <strong>Valeria (Derecho)</strong></p>
+                            </div>
+                            <span class="text-2xl font-black text-brand-yellow">$35</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 space-y-3">
+                    <div class="flex items-center justify-between text-xs text-slate-600 bg-slate-50 p-2.5 rounded-xl-friendly">
+                        <span><i class="fa-solid fa-clock text-brand-orange mr-1"></i> Disponible hasta las 3:00 PM</span>
+                        <span class="font-bold text-brand-navy"><i class="fa-solid fa-location-dot mr-1"></i> Canchas</span>
+                    </div>
+
+                    <!-- Botones de Acción Estilo Tinder -->
+                    <div class="flex items-center justify-around pt-2">
+                        <button class="w-14 h-14 bg-white border-2 border-slate-200 rounded-full flex items-center justify-center text-slate-400 hover:text-red-500 hover:border-red-200 transition shadow-sm">
+                            <i class="fa-solid fa-xmark text-xl"></i>
+                        </button>
+                        <button class="w-16 h-16 bg-brand-orange text-white rounded-full flex items-center justify-center hover:scale-105 transition shadow-lg shadow-orange-200">
+                            <i class="fa-solid fa-heart text-2xl"></i>
+                        </button>
+                        <button class="w-14 h-14 bg-brand-mint text-slate-900 rounded-full flex items-center justify-center hover:scale-105 transition shadow-md">
+                            <i class="fa-solid fa-calendar-plus text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function switchTab(tab) {
+            const ubereats = document.getElementById('view-ubereats');
+            const tinder = document.getElementById('view-tinder');
+            const btnUbereats = document.getElementById('btn-ubereats');
+            const btnTinder = document.getElementById('btn-tinder');
+
+            if(tab === 'ubereats') {
+                ubereats.classList.remove('hidden');
+                tinder.classList.add('hidden');
+                btnUbereats.className = "px-4 py-2 rounded-full text-xs font-bold transition-all bg-white text-brand-navy shadow-sm";
+                btnTinder.className = "px-4 py-2 rounded-full text-xs font-bold text-slate-500 hover:text-brand-navy transition-all";
+            } else {
+                ubereats.classList.add('hidden');
+                tinder.classList.remove('hidden');
+                btnTinder.className = "px-4 py-2 rounded-full text-xs font-bold transition-all bg-white text-brand-navy shadow-sm";
+                btnUbereats.className = "px-4 py-2 rounded-full text-xs font-bold text-slate-500 hover:text-brand-navy transition-all";
+            }
+        }
+    </script>
+</body>
+</html>
