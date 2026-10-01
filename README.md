@@ -1,14 +1,12 @@
-<i class="fa-solid fa-graduation-cap"></i>
-            
 <h1 data-importer="text" align="center">UDGMARKET</h1>
 
 ###
 
-<h3 data-importer="text" align="left">Acerca del proyecto</h3>
+<h3 data-importer="text" align="left">About the proyect</h3>
 
 ###
 
-<p data-importer="text" align="left">🎓 Campus Market<br><br>UDGMarket una plataforma web diseñada para estructurar, digitalizar y transparentar el comercio interno (microemprendimientos) entre la comunidad estudiantil del centro universitario. <br><br>🎯 El Problema<br>Actualmente, el comercio informal en el campus no ofrece certeza sobre los ingredientes de los alimentos y expone la privacidad de los alumnos al obligarlos a usar números personales (WhatsApp) para coordinar compras. Esta gestión manual mediante grupos de mensajería interrumpe los horarios de clase, genera mermas de inventario para los vendedores y no garantiza medidas sanitarias o logísticas eficientes.<br><br>💡 La Solución<br>Un marketplace centralizado de pre-órdenes que elimina la intermediación insegura. La plataforma permite a los estudiantes vendedores publicar catálogos con control estricto de stock, ingredientes y alérgenos. Los compradores pueden apartar sus productos y recogerlos en horarios preestablecidos mediante la validación de un código digital único, manteniendo sus datos personales privados.<br><br>* 🔥 *Descubrimiento Dinámico (Módulo Swipe / Tinder):* Explora individualmente alimentos, bebidas y productos disponibles deslizando tarjetas, haz match o guarda tus productos favoritos.<br><br>* ⏰ *Citas de Entrega Personalizadas:* Sistema de negociación de horario donde el vendedor recibe notificaciones inmediatas para aceptar la hora de entrega propuesta o sugerir una contraoferta de horario.<br><br>* 📍 *Geolocalización en Campus:* Los vendedores activan su modo de venta y comparten su ubicación o punto de encuentro habitual dentro de las instalaciones universitarias.<br><br>* 🎓 *Acceso Exclusivo para Estudiantes:* Autenticación de usuarios restringida mediante correo institucional (@universidad.edu).</p>
+<p data-importer="text" align="left">🎓 Campus Market<br><br>UDGMarket is a web platform designed to structure, digitize, and bring transparency to internal commerce (micro-entrepreneurship) among the student community of the university campus.<br><br>🎯 The Problem<br>Currently, informal commerce on campus offers no certainty regarding food ingredients and exposes students' privacy by forcing them to use personal phone numbers (WhatsApp) to coordinate purchases. This manual management through messaging groups interrupts class schedules, generates inventory waste (shrinkage) for sellers, and fails to guarantee sanitary or efficient logistical measures.<br><br>💡 The Solution<br>A centralized pre-order marketplace that eliminates insecure intermediation. The platform allows student sellers to publish catalogs with strict control over stock, ingredients, and allergens. Buyers can reserve products and pick them up at pre-established times through the validation of a unique digital code, keeping their personal data private.<br><br>🔥 Dynamic Discovery (Swipe / Tinder Module): Individually explore available food, drinks, and products by swiping cards, making a match, or saving your favorite items.<br><br>⏰ Custom Delivery Appointments: A schedule negotiation system where the seller receives immediate notifications to accept the proposed delivery time or suggest a time counteroffer.<br><br>📍 Campus Geolocation: Sellers activate their selling mode and share their live location or usual meeting point within the university facilities.<br><br>🎓 Exclusive Student Access: User authentication is strictly limited to institutional emails (@university.edu).</p>
 
 ###
 
@@ -34,30 +32,10 @@
 
 ###
 
-<h3 data-importer="text" align="left">🔥   My Stats :</h3>
+<h3 data-importer="text" align="left">Colaborators</h3>
 
 ###
 
-<div data-importer="stats" align="center">
-  <img src="https://streak-stats.demolab.com?user=christopherherrera7143&locale=en&mode=daily&theme=dark&hide_border=false&border_radius=5&order=3" height="220" alt="streak graph"  />
-</div>
-
-###
-
-<p data-importer="text" align="left">Hello World!!</p>
-
-###
-
-<div data-importer="techs" align="left">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" height="40" alt="javascript logo"  />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" height="40" alt="typescript logo"  />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" height="40" alt="react logo"  />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg" height="40" alt="jest logo"  />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/storybook/storybook-original.svg" height="40" alt="storybook logo"  />
-</div>
+<p data-importer="text" align="left">christopherherrera7143<br>ericreyes18224<br>jisraelberumen<br>benito<br>gustavo</p>
 
 ###
