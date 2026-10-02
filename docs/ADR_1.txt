@@ -1,0 +1,47 @@
+# ADR 0001: Selección del Stack Tecnológico (Flutter, Dart y Firebase)
+
+* **Estado:** Aceptado
+* **Fecha:** 2026-10-01
+* **Autores:** Equipo de Desarrollo de CampusBites
+* **Contexto:** Elección del marco de trabajo móvil y servicios de backend para CampusBites.
+
+---
+
+## Contexto y Declaración del Problema
+
+Se requiere desarrollar una aplicación móvil multiplataforma (Android e iOS) para estudiantes universitarios. La app necesita renderizado fluido para animaciones complejas (deslizamiento de tarjetas estilo Tinder), sincronización en tiempo real para ubicación y estados de citas, e integración de notificaciones push de alta fiabilidad.
+
+---
+
+## Alternativas Consideradas
+
+1. **React Native + Supabase:** Buena opción, pero requiere bibliotecas de terceros adicionales para la integración de notificaciones push nativas y mapas nativos.
+2. **Flutter + Firebase (Elegida):** Excelente integración nativa a través de `flutterfire`, rendimiento gráfico superior y ecosistema unificado respaldado por Google.
+
+---
+
+## Decisiones Tomadas
+
+### 1. Frontend: Flutter & Dart
+* **Decisión:** Utilizar Flutter como framework de desarrollo móvil UI y Dart como lenguaje único.
+* **Justificación:** Flutter compila a código máquina nativo, ofreciendo rendimiento de 60/120 fps crítico para animaciones de gestos (*swiping*). Dart ofrece tipado fuerte, facilitando la asistencia de generación de código con Claude.
+
+### 2. Backend & Base de Datos: Cloud Firestore
+* **Decisión:** Adoptar Cloud Firestore como base de datos NoSQL orientada a documentos en tiempo real.
+* **Justificación:** Su arquitectura de escuchadores (*listeners*) en tiempo real permite que los cambios de estado en las citas y la posición en el mapa del vendedor se reflejen instantáneamente en la app del comprador sin recargar.
+
+### 3. Autenticación y Notificaciones: Firebase Auth & FCM
+* **Decisión:** Usar Firebase Authentication para validación de correo institucional (`.edu`) y Firebase Cloud Messaging (FCM) para alertas push instantáneas.
+* **Justificación:** FCM ofrece la menor latencia posible en dispositivos móviles para notificaciones de "Solicitud de Cita" y "Contraoferta de Horario".
+
+---
+
+## Consecuencias
+
+### Positivas
+* **Desarrollo Unificado:** Un solo lenguaje (Dart) para toda la interfaz gráfica y la lógica de cliente.
+* **Infraestructura Serverless:** Sin necesidad de administrar servidores dedicados; Firebase escala automáticamente durante las horas pico de receso en la universidad.
+
+### Negativas / Desafíos
+* **Costos de Lectura/Escritura en Firestore:** Se deben optimizar las consultas de ubicación en tiempo real para no sobrepasar la cuota gratuita de operaciones de Firestore.
+*

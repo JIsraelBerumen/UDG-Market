@@ -1,0 +1,48 @@
+# ADR 0002: Principios de Diseño de Interfaz (UI/UX) y Experiencia de Usuario
+
+* **Estado:** Aceptado
+* **Fecha:** 2026-10-01
+* **Autores:** Equipo de Desarrollo de CampusBites
+* **Contexto:** Definición de la jerarquía de vistas, patrones de diseño y sistema visual de la app.
+
+---
+
+## Contexto y Declaración del Problema
+
+Los usuarios de la app tienen dos comportamientos distintos:
+1. **Compradores con prisa:** Necesitan ver de inmediato qué vendedores están activos en el campus, dónde están y a qué hora atienden.
+2. **Compradores casuales:** Buscan explorar la oferta de comida/productos mediante una interfaz entretenida durante sus tiempos libres.
+
+---
+
+## Decisiones de UI/UX Tomadas
+
+### 1. Arquitectura de Navegación: Dashboard Principal vs. Módulo Tinder
+* **Decisión:** Establecer el Dashboard **tipo Uber Eats como la vista principal por defecto** y colocar el módulo estilo **Tinder como una pestaña o modo secundario**.
+* **Justificación:** Prioriza la utilidad práctica y la velocidad para concretar compras de alimentos entre clases.
+
+### 2. Exposición de Horarios y Disponibilidad en Tarjetas
+* **Decisión:** Cada tarjeta de vendedor en el Dashboard debe incluir obligatoriamente:
+  * Bloque de horas disponible hoy (ej. `11:00 AM - 2:30 PM`).
+  * Indicador visual de estado en tiempo real (`Vendiendo Ahora` vs `Inicia en X min`).
+  * Lista resumida de productos que suele vender.
+
+### 3. Identidad Visual y Paleta de Colores
+* **Decisión:** Utilizar componentes de bordes suaves (radio de curvatura de `18` a `28` puntos en Flutter) e iconos grandes para una estética moderna y accesible.
+* **Paleta Seleccionada:**
+  * **Naranja Vívido (`#FF7A59`):** Color primario (alimentos, llamadas a la acción, energía).
+  * **Azul Escolar (`#1E293B`):** Estructura visual, barras de navegación y tipografía principal.
+  * **Menta Activo (`#34D399`):** Insignias de vendedores activos y disponibilidad.
+  * **Amarillo Recreo (`#FBBF24`):** Detalles festivos y calificaciones de reputación.
+
+---
+
+## Consecuencias
+
+### Positivas
+* **Reducción de Citas Fantasma (*Ghosting*):** Al hacer visibles los horarios del estudiante vendedor, los compradores no agendan citas fuera del tiempo de receso.
+* **Consistencia en Flutter:** La paleta se puede implementar globalmente mediante el `ThemeData` de Flutter para mantener la coherencia en todo el código.
+
+### Negativas / Desafíos
+* **Complejidad en la tarjeta del Vendedor:** Se debe cuidar el diseño visual para evitar saturar de información la pantalla del teléfono móvil.
+*
