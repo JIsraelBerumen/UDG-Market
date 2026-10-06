@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Universitaria - Dashboard & Modo TinderAquí tienes la maquetación de ambos escenarios diseñados con HTML estructurado y estilos modernos (CSS en variables), listos para integrar.
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú de Cita - Vendedor</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --whatsapp: #25d366;
+      --whatsapp-hover: #128c7e;
+      --bg-card: #ffffff;
+      --bg-page: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --accent-light: #eff6ff;
+      --status-bg: #f0fdf4;
+      --status-text: #166534;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      padding: 20px;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      justify-content: center;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 400px;
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .header-vendor {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      object-fit: cover;
+    }
+
+    .vendor-info h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .vendor-info p {
+      margin: 2px 0 0;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--status-bg);
+      color: var(--status-text);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 20px;
+    }
+
+    .location-box {
+      background: var(--accent-light);
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 0.9rem;
+    }
+
+    .location-box strong {
+      display: block;
+      color: #1e40af;
+      margin-bottom: 4px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    input[type="datetime-local"], textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-whatsapp {
+      background: var(--whatsapp);
+      color: white;
+    }
+
+    .btn-whatsapp:hover {
+      background: var(--whatsapp-hover);
+    }
+
+    .info-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- VISTA 1: Franja activa / Ubicación fija -->
+  <div class="card">
+    <div class="header-vendor">
+      <div class="avatar" style="background:#2563eb; color:white; display:flex; align-items:center; justify-content:center; font-weight:bold;">CR</div>
+      <div class="vendor-info">
+        <h3>Carlos Ramírez</h3>
+        <span class="badge-status">● Disponible en punto fijo</span>
+      </div>
+    </div>
+
+    <div class="location-box">
+      <strong>Venta presencial directa</strong>
+       Ubicación: Plaza Central, Stand 14<br>
+       Horario: 10:00 AM - 02:00 PM (Hoy)
+    </div>
+
+    <p class="info-note">No necesitas agendar cita previa. Puedes acudir directamente al punto dentro de la franja horaria.</p>
+
+    <div class="actions">
+      <a href="[https://maps.google.com](https://maps.google.com)" target="_blank" class="btn btn-primary">
+        Ver ubicación en mapa
+      </a>
+      <a href="[https://wa.me/123456789](https://wa.me/123456789)" class="btn btn-whatsapp">
+        Hablar por WhatsApp
+      </a>
+    </div>
+  </div>
+
+
+  <!-- VISTA 2: Solicitud de cita con confirmación/sugerencia -->
+  <div class="card">
+    <div class="header-vendor">
+      <div class="avatar" style="background:#7c3aed; color:white; display:flex; align-items:center; justify-content:center; font-weight:bold;">CR</div>
+      <div class="vendor-info">
+        <h3>Carlos Ramírez</h3>
+        <p>Atención previa solicitud</p>
+      </div>
+    </div>
+
+    <form class="actions" onsubmit="event.preventDefault();">
+      <div class="form-group">
+        <label for="fecha">Propón fecha y hora:</label>
+        <input type="datetime-local" id="fecha" required>
+      </div>
+
+      <div class="form-group">
+        <label for="nota">Mensaje o motivo (Opcional):</label>
+        <textarea id="nota" rows="2" placeholder="Ej. Quisiera ver las muestras de producto..."></textarea>
+      </div>
+
+      <p class="info-note">El vendedor confirmará la hora o te propondrá una alternativa.</p>
+
+      <button type="submit" class="btn btn-primary">
+        Solicitar Cita
+      </button>
+      
+      <a href="[https://wa.me/123456789](https://wa.me/123456789)" class="btn btn-whatsapp">
+        Hablar por WhatsApp
+      </a>
+    </form>
+  </div>
+
+</body>
+</html>
