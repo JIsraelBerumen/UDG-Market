@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#FF7A59" />
+  <title>UDG Market</title>
+
+  <!-- 1. Tailwind + FontAwesome + fuente -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- 2. Configuración de Tailwind (antes: tailwind-config.js) -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'] },
+          colors: {
+            'brand-bg':     '#F8FAFC',
+            'brand-orange': '#FF7A59',
+            'brand-navy':   '#1E293B',
+            'brand-mint':   '#34D399',
+            'brand-yellow': '#FBBF24',
+            'brand-red':    '#C8431F'
+          },
+          borderRadius: {
+            'xl-friendly':  '18px',
+            '2xl-friendly': '28px'
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- 3. Estilos personalizados (antes: style.css) -->
+  <style>
+    /* Tema del Catálogo: fondo oscuro. Para modo claro usa:
+       --cat-bg:#ffffff; --cat-fg:#1E293B; --cat-muted:#64748B; */
+    :root { --cat-bg:#0E1426; --cat-fg:#ffffff; --cat-muted:#9AA3B8; }
+    .scrollbar-none::-webkit-scrollbar { display: none; }
+    .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+    .card-in { animation: cardIn .35s cubic-bezier(.2,.8,.2,1); }
+    @keyframes cardIn { from { opacity:0; transform: translateY(12px) scale(.97); } to { opacity:1; transform:none; } }
+    .fav-on svg { fill: #FF7A59; stroke: #FF7A59; }
+    @media (prefers-reduced-motion: reduce) { .card-in { animation: none; } }
+  </style>
+</head>
+
+<body class="bg-brand-bg text-slate-800 font-sans antialiased pb-24 md:pb-0 transition-colors duration-300">
+
+  <!-- Sprite de íconos SVG -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-9.3-9.4C1.5 7.7 3.4 4.5 6.6 4.5c2 0 3.7 1.1 5.4 3 1.7-1.9 3.4-3 5.4-3 3.2 0 5.1 3.2 3.9 6.6-1.8 4.8-9.3 9.4-9.3 9.4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+      <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M10 4l1.7 4.6L16.3 10.3l-4.6 1.7L10 16.6 8.3 12 3.7 10.3 8.3 8.6 10 4zM18 14l.9 2.1 2.1.9-2.1.9L18 20l-.9-2.1-2.1-.9 2.1-.9L18 14zM18.5 3l.6 1.4 1.4.6-1.4.6-.6 1.4-.6-1.4-1.4-.6 1.4-.6.6-1.4z" fill="currentColor"/></symbol>
+      <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5M4 9h10.5a5.5 5.5 0 010 11H11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8 6.8 19.6l1-5.8L3.5 9.7l5.9-.8L12 3.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0113 0c0 5-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    </defs>
+  </svg>
+
+  <!-- ===================== HEADER / NAVBAR ===================== -->
+  <header class="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm pt-[env(safe-area-inset-top)]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-10 h-10 shrink-0 bg-brand-orange text-white rounded-2xl flex items-center justify-center shadow-md shadow-orange-200">
+          <i class="fa-solid fa-graduation-cap text-lg"></i>
+        </div>
+        <div class="min-w-0">
+          <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-brand-navy leading-none truncate">UDG Market</h1>
+          <span class="hidden sm:block text-xs font-medium text-slate-400">Comercio Universitario Ambulante</span>
+        </div>
+      </div>
+
+      <!-- Tabs escritorio / tablet -->
+      <nav class="hidden md:flex items-center gap-1 bg-slate-100 p-1 rounded-full" aria-label="Secciones">
+        <button data-tab="ubereats" class="tab-desktop px-4 py-2 rounded-full text-xs font-bold transition-all"><i class="fa-solid fa-store mr-1"></i> Explorar</button>
+        <button data-tab="catalog"  class="tab-desktop px-4 py-2 rounded-full text-xs font-bold transition-all"><i class="fa-solid fa-bag-shopping mr-1"></i> Catálogo</button>
+        <button data-tab="swipe"    class="tab-desktop px-4 py-2 rounded-full text-xs font-bold transition-all"><i class="fa-solid fa-fire mr-1"></i> Match</button>
+      </nav>
+
+      <!-- Acceso rápido móvil -->
+      <button data-tab="swipe" class="md:hidden shrink-0 inline-flex items-center gap-1.5 bg-brand-orange text-white text-xs font-bold px-3.5 py-2 rounded-full shadow-sm shadow-orange-200">
+        <i class="fa-solid fa-fire"></i> Match
+      </button>
+    </div>
+  </header>
+
+  <!-- ===================== VISTA EXPLORAR (vendedores) ===================== -->
+  <div id="view-ubereats">
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-10 space-y-8">
+
+      <!-- Guía de identidad (plegable para no ocupar espacio) -->
+      <details class="bg-white rounded-2xl-friendly border border-slate-100 shadow-sm group">
+        <summary class="cursor-pointer list-none flex items-center justify-between px-5 sm:px-6 py-4">
+          <span class="text-sm font-bold tracking-wider uppercase text-brand-orange">Guía de Identidad &amp; Paleta</span>
+          <i class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform group-open:rotate-180"></i>
+        </summary>
+        <div class="px-5 sm:px-6 pb-5">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+            <div class="p-3 rounded-xl-friendly bg-brand-orange text-white">
+              <p class="text-xs opacity-80">Naranja Vívido</p><p class="font-bold text-sm">#FF7A59</p><span class="text-[10px] opacity-90">Apetito &amp; Energía</span>
+            </div>
+            <div class="p-3 rounded-xl-friendly bg-brand-navy text-white">
+              <p class="text-xs opacity-80">Azul Escolar</p><p class="font-bold text-sm">#1E293B</p><span class="text-[10px] opacity-90">Confianza &amp; Estructura</span>
+            </div>
+            <div class="p-3 rounded-xl-friendly bg-brand-mint text-slate-900">
+              <p class="text-xs opacity-80">Menta Activo</p><p class="font-bold text-sm">#34D399</p><span class="text-[10px] opacity-90">Disponible Ahora</span>
+            </div>
+            <div class="p-3 rounded-xl-friendly bg-brand-yellow text-slate-900">
+              <p class="text-xs opacity-80">Amarillo Recreo</p><p class="font-bold text-sm">#FBBF24</p><span class="text-[10px] opacity-90">Toque Juvenil</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            <strong>Principios clave:</strong> Iconos grandes y amigables, bordes redondeados (18px - 28px) para dar sensación accesible, tipografía limpia y etiquetas de disponibilidad en tiempo real.
+          </p>
+        </div>
+      </details>
+
+      <div class="space-y-6">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-navy">Vendedores en el Campus</h2>
+            <p class="text-xs sm:text-sm text-slate-500">Encuentra alumnos vendiendo cerca de tus facultades</p>
+          </div>
+          <button class="shrink-0 bg-slate-100 p-3 rounded-xl-friendly text-brand-navy hover:bg-slate-200 transition" aria-label="Filtros">
+            <i class="fa-solid fa-sliders text-lg"></i>
+          </button>
+        </div>
+
+        <!-- Categorías rápidas -->
+        <div class="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-none">
+          <button class="flex items-center gap-2 bg-brand-navy text-white px-4 py-2.5 rounded-2xl font-medium text-xs whitespace-nowrap shadow-sm"><i class="fa-solid fa-utensils text-sm"></i><span>Todo</span></button>
+          <button class="flex items-center gap-2 bg-white text-slate-600 border border-slate-200 px-4 py-2.5 rounded-2xl font-medium text-xs whitespace-nowrap"><i class="fa-solid fa-cookie text-brand-orange text-sm"></i><span>Postres y Snacks</span></button>
+          <button class="flex items-center gap-2 bg-white text-slate-600 border border-slate-200 px-4 py-2.5 rounded-2xl font-medium text-xs whitespace-nowrap"><i class="fa-solid fa-burger text-brand-yellow text-sm"></i><span>Comida Preparada</span></button>
+          <button class="flex items-center gap-2 bg-white text-slate-600 border border-slate-200 px-4 py-2.5 rounded-2xl font-medium text-xs whitespace-nowrap"><i class="fa-solid fa-print text-blue-500 text-sm"></i><span>Artículos / Servicios</span></button>
+        </div>
+
+        <!-- Lista de vendedores -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+          <!-- Vendedor 1 -->
+          <div class="bg-white rounded-2xl-friendly border border-slate-100 shadow-sm hover:shadow-md transition overflow-hidden">
+            <div class="relative h-36 sm:h-44 bg-slate-200">
+              <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=800&q=80" alt="Snacks" loading="lazy" class="w-full h-full object-cover">
+              <span class="absolute top-3 left-3 bg-brand-mint text-slate-900 font-bold text-[11px] px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-slate-900 animate-pulse"></span> Vendiendo Ahora
+              </span>
+              <span class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-brand-navy font-extrabold text-xs px-2.5 py-1 rounded-lg">
+                <i class="fa-solid fa-location-dot text-brand-orange mr-1"></i> Fac. de Ingeniería
+              </span>
+            </div>
+            <div class="p-4 sm:p-5">
+              <div class="flex justify-between items-start gap-2 mb-2">
+                <div>
+                  <h3 class="font-extrabold text-lg text-brand-navy leading-snug">Marcos - Brownies &amp; Galletas</h3>
+                  <p class="text-xs text-slate-500 font-medium">Estudiante de Computación</p>
+                </div>
+                <span class="shrink-0 bg-amber-50 text-amber-700 text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1"><i class="fa-solid fa-star text-amber-400"></i> 4.9</span>
+              </div>
+              <div class="bg-slate-50 p-2.5 rounded-xl-friendly mb-3 border border-slate-100">
+                <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1"><i class="fa-regular fa-clock text-brand-orange mr-1"></i> Horario de Atención</p>
+                <div class="flex flex-wrap items-center justify-between gap-x-3 text-xs font-semibold text-brand-navy">
+                  <span>Hoy: 11:00 AM - 2:30 PM</span>
+                  <span class="text-brand-orange text-[11px]">En receso a las 1:00 PM</span>
+                </div>
+              </div>
+              <div class="mb-4">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wide mb-1.5">Productos Habituales</p>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2.5 py-1 rounded-lg">Brownie Clásico ($25)</span>
+                  <span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2.5 py-1 rounded-lg">Galleta Red Velvet ($20)</span>
+                  <span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2.5 py-1 rounded-lg">Café Frío ($30)</span>
+                </div>
+              </div>
+              <button class="w-full bg-brand-navy text-white font-bold text-xs py-3 rounded-xl-friendly hover:bg-slate-800 transition flex items-center justify-center gap-2"><i class="fa-regular fa-calendar-check text-sm"></i> Agendar Cita de Entrega</button>
+            </div>
+          </div>
+
+          <!-- Vendedor 2 -->
+          <div class="bg-white rounded-2xl-friendly border border-slate-100 shadow-sm hover:shadow-md transition overflow-hidden">
+            <div class="relative h-36 sm:h-44 bg-slate-200">
+              <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80" alt="Tacos" loading="lazy" class="w-full h-full object-cover">
+              <span class="absolute top-3 left-3 bg-amber-100 text-amber-800 font-bold text-[11px] px-3 py-1 rounded-full shadow-sm"><i class="fa-regular fa-clock mr-1"></i> Inicia en 30 min</span>
+              <span class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-brand-navy font-extrabold text-xs px-2.5 py-1 rounded-lg">
+                <i class="fa-solid fa-location-dot text-brand-orange mr-1"></i> Biblioteca Central
+              </span>
+            </div>
+            <div class="p-4 sm:p-5">
+              <div class="flex justify-between items-start gap-2 mb-2">
+                <div>
+                  <h3 class="font-extrabold text-lg text-brand-navy leading-snug">Sofía - Tacos &amp; Burritos</h3>
+                  <p class="text-xs text-slate-500 font-medium">Estudiante de Arquitectura</p>
+                </div>
+                <span class="shrink-0 bg-amber-50 text-amber-700 text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1"><i class="fa-solid fa-star text-amber-400"></i> 4.8</span>
+              </div>
+              <div class="bg-slate-50 p-2.5 rounded-xl-friendly mb-3 border border-slate-100">
+                <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1"><i class="fa-regular fa-clock text-brand-orange mr-1"></i> Horario de Atención</p>
+                <div class="flex flex-wrap items-center justify-between gap-x-3 text-xs font-semibold text-brand-navy">
+                  <span>Hoy: 12:30 PM - 4:00 PM</span>
+                  <span class="text-slate-400 text-[11px]">Próximo turno</span>
+                </div>
+              </div>
+              <div class="mb-4">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wide mb-1.5">Productos Habituales</p>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2.5 py-1 rounded-lg">Burrito de Guisado ($45)</span>
+                  <span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2.5 py-1 rounded-lg">Agua del Día ($20)</span>
+                </div>
+              </div>
+              <button class="w-full bg-brand-navy text-white font-bold text-xs py-3 rounded-xl-friendly hover:bg-slate-800 transition flex items-center justify-center gap-2"><i class="fa-regular fa-calendar-check text-sm"></i> Agendar Cita Previa</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===================== VISTA CATÁLOGO ===================== -->
+  <div id="view-catalog" class="hidden bg-[var(--cat-bg)] min-h-[calc(100vh-72px)]">
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 pt-5 pb-10">
+
+      <!-- Banner + buscador (lado a lado en pantallas grandes) -->
+      <div class="lg:grid lg:grid-cols-5 lg:gap-6 lg:items-stretch">
+        <section class="lg:col-span-3 rounded-2xl-friendly bg-[#FFE3DB] px-5 py-5 sm:px-8 sm:py-8 flex flex-col justify-center">
+          <p class="text-[11px] font-bold tracking-[0.08em] text-brand-red uppercase flex items-center gap-1.5"><svg class="w-3.5 h-3.5"><use href="#i-sparkles"/></svg>De estudiante a estudiante</p>
+          <h2 class="mt-2 text-[28px] sm:text-4xl lg:text-5xl leading-[1.1] font-extrabold tracking-tight text-brand-navy">Tu próximo hallazgo está en el campus.</h2>
+          <p class="mt-2 sm:mt-3 text-[13px] sm:text-base leading-relaxed text-[#5B5560] max-w-xl">Antojos, apuntes y cosas con otra vida. Compra local y conecta con tu comunidad.</p>
+        </section>
+
+        <div class="lg:col-span-2 mt-5 lg:mt-0 flex flex-col justify-center gap-3">
+          <label class="flex items-center gap-3 h-[52px] px-5 rounded-full bg-white border border-slate-200">
+            <svg class="w-5 h-5 text-slate-500 shrink-0"><use href="#i-search"/></svg>
+            <input type="text" placeholder="¿Qué necesitas para hoy?" class="flex-1 min-w-0 bg-transparent outline-none text-[14px] text-brand-navy placeholder:text-slate-500" />
+          </label>
+          <button class="w-full flex items-center gap-3 h-[48px] px-5 rounded-full bg-white border border-slate-200 text-left">
+            <svg class="w-5 h-5 text-brand-orange shrink-0"><use href="#i-pin"/></svg>
+            <span class="flex-1 text-[14px] font-medium text-brand-navy">Cerca de CUCEA</span>
+            <svg class="w-5 h-5 text-brand-navy"><use href="#i-chevron"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Categorías -->
+      <div class="scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0 mt-5 flex gap-4 overflow-x-auto">
+        <button class="shrink-0 flex flex-col items-center gap-2">
+          <span class="w-[68px] h-[68px] sm:w-20 sm:h-20 rounded-[22px] bg-brand-orange grid place-items-center text-brand-navy shadow-lg shadow-orange-500/20"><svg class="w-7 h-7"><use href="#i-grid"/></svg></span>
+          <span class="text-[12px] font-bold text-brand-orange">Todo</span>
+        </button>
+        <button class="shrink-0 flex flex-col items-center gap-2">
+          <span class="w-[68px] h-[68px] sm:w-20 sm:h-20 rounded-full overflow-hidden bg-slate-300 ring-2 ring-white/80"><img data-src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=200&q=70" alt="Comida" class="w-full h-full object-cover" /></span>
+          <span class="text-[12px] font-semibold text-[var(--cat-fg)]">Comida</span>
+        </button>
+        <button class="shrink-0 flex flex-col items-center gap-2">
+          <span class="w-[68px] h-[68px] sm:w-20 sm:h-20 rounded-full overflow-hidden bg-slate-300 ring-2 ring-white/80"><img data-src="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=200&q=70" alt="Apuntes" class="w-full h-full object-cover" /></span>
+          <span class="text-[12px] font-semibold text-[var(--cat-fg)]">Apuntes</span>
+        </button>
+        <button class="shrink-0 flex flex-col items-center gap-2">
+          <span class="w-[68px] h-[68px] sm:w-20 sm:h-20 rounded-full overflow-hidden bg-slate-300 ring-2 ring-white/80"><img data-src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=200&q=70" alt="Ropa" class="w-full h-full object-cover" /></span>
+          <span class="text-[12px] font-semibold text-[var(--cat-fg)]">Ropa</span>
+        </button>
+      </div>
+
+      <!-- Chips -->
+      <div class="scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0 mt-4 flex gap-2.5 overflow-x-auto">
+        <button class="shrink-0 inline-flex items-center gap-2 h-[40px] px-4 rounded-full text-[13px] font-bold bg-brand-navy text-white border border-white/20"><svg class="w-4 h-4"><use href="#i-sparkles"/></svg>Para ti</button>
+        <button class="shrink-0 h-[40px] px-4 rounded-full text-[13px] font-semibold bg-white text-brand-navy border border-slate-200">Disponible hoy</button>
+        <button class="shrink-0 h-[40px] px-4 rounded-full text-[13px] font-semibold bg-white text-brand-navy border border-slate-200">Hasta $200</button>
+      </div>
+
+      <!-- Hecho en tu campus: scroll en móvil, grid en escritorio -->
+      <section class="mt-8">
+        <h2 class="text-[22px] sm:text-2xl font-extrabold tracking-tight text-[var(--cat-fg)]">Hecho en tu campus</h2>
+        <p class="mt-0.5 text-[13px] text-[var(--cat-muted)]">Conoce quién está detrás de tu próximo hallazgo.</p>
+
+        <div class="scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0 mt-4 flex gap-4 overflow-x-auto snap-x lg:grid lg:grid-cols-3 lg:overflow-visible">
+          <article class="snap-start shrink-0 w-[290px] sm:w-[320px] lg:w-auto rounded-[24px] bg-white overflow-hidden shadow-xl shadow-black/20">
+            <div class="relative h-[190px] bg-slate-200">
+              <img data-src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=700&q=70" alt="Brownies" class="w-full h-full object-cover" />
+              <span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white rounded-full px-2.5 py-1 text-[11px] font-bold text-brand-navy"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Disponible hoy</span>
+              <button class="fav absolute bottom-3 right-3 w-10 h-10 rounded-full bg-white grid place-items-center text-brand-navy shadow-md active:scale-90 transition" aria-label="Guardar"><svg class="w-5 h-5"><use href="#i-heart"/></svg></button>
+            </div>
+            <div class="p-4">
+              <div class="flex items-start justify-between gap-2"><h3 class="text-[17px] font-extrabold text-brand-navy">Brownies de Sofi</h3><span class="inline-flex items-center gap-1 text-[12px] font-bold text-brand-navy"><svg class="w-4 h-4 text-amber-400"><use href="#i-star"/></svg>4.9</span></div>
+              <p class="mt-0.5 text-[12px] text-slate-500">Brownie de chocolate · por pieza</p>
+              <div class="mt-3 flex items-end justify-between"><span class="text-[11px] text-slate-500">Sofía M. · CUCEA</span><span class="text-[20px] leading-none font-extrabold text-brand-navy">$35</span></div>
+            </div>
+          </article>
+
+          <article class="snap-start shrink-0 w-[290px] sm:w-[320px] lg:w-auto rounded-[24px] bg-white overflow-hidden shadow-xl shadow-black/20">
+            <div class="relative h-[190px] bg-slate-200">
+              <img data-src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=700&q=70" alt="Pan artesanal" class="w-full h-full object-cover" />
+              <span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white rounded-full px-2.5 py-1 text-[11px] font-bold text-brand-navy"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Disponible hoy</span>
+              <button class="fav absolute bottom-3 right-3 w-10 h-10 rounded-full bg-white grid place-items-center text-brand-navy shadow-md active:scale-90 transition" aria-label="Guardar"><svg class="w-5 h-5"><use href="#i-heart"/></svg></button>
+            </div>
+            <div class="p-4">
+              <div class="flex items-start justify-between gap-2"><h3 class="text-[17px] font-extrabold text-brand-navy">Entre panes</h3><span class="inline-flex items-center gap-1 text-[12px] font-bold text-brand-navy"><svg class="w-4 h-4 text-amber-400"><use href="#i-star"/></svg>4.8</span></div>
+              <p class="mt-0.5 text-[12px] text-slate-500">Ciabatta de pollo · por pieza</p>
+              <div class="mt-3 flex items-end justify-between"><span class="text-[11px] text-slate-500">Diego R. · CUCEI</span><span class="text-[20px] leading-none font-extrabold text-brand-navy">$55</span></div>
+            </div>
+          </article>
+
+          <article class="snap-start shrink-0 w-[290px] sm:w-[320px] lg:w-auto rounded-[24px] bg-white overflow-hidden shadow-xl shadow-black/20">
+            <div class="relative h-[190px] bg-slate-200">
+              <img data-src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=700&q=70" alt="Galletas" class="w-full h-full object-cover" />
+              <span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white rounded-full px-2.5 py-1 text-[11px] font-bold text-brand-navy"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Disponible hoy</span>
+              <button class="fav absolute bottom-3 right-3 w-10 h-10 rounded-full bg-white grid place-items-center text-brand-navy shadow-md active:scale-90 transition" aria-label="Guardar"><svg class="w-5 h-5"><use href="#i-heart"/></svg></button>
+            </div>
+            <div class="p-4">
+              <div class="flex items-start justify-between gap-2"><h3 class="text-[17px] font-extrabold text-brand-navy">Galletas de Marcos</h3><span class="inline-flex items-center gap-1 text-[12px] font-bold text-brand-navy"><svg class="w-4 h-4 text-amber-400"><use href="#i-star"/></svg>4.9</span></div>
+              <p class="mt-0.5 text-[12px] text-slate-500">Red Velvet · por pieza</p>
+              <div class="mt-3 flex items-end justify-between"><span class="text-[11px] text-slate-500">Marcos T. · CUCEI</span><span class="text-[20px] leading-none font-extrabold text-brand-navy">$20</span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Recién llegados -->
+      <section class="mt-8">
+        <h2 class="text-[22px] sm:text-2xl font-extrabold tracking-tight text-[var(--cat-fg)]">Recién llegados</h2>
+        <p class="mt-0.5 text-[13px] text-[var(--cat-muted)]">Algo rico, algo útil, algo muy tú.</p>
+
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5">
+          <article class="rounded-[22px] bg-white overflow-hidden shadow-xl shadow-black/20">
+            <div class="relative aspect-[4/3.6] bg-slate-200">
+              <img data-src="https://images.unsplash.com/photo-1587145820266-a5951ee6f620?auto=format&fit=crop&w=500&q=70" alt="Calculadora" class="w-full h-full object-cover" />
+              <button class="fav absolute top-2.5 right-2.5 w-9 h-9 rounded-full bg-white grid place-items-center text-brand-navy shadow-md active:scale-90 transition" aria-label="Guardar"><svg class="w-[18px] h-[18px]"><use href="#i-heart"/></svg></button>
+            </div>
+            <div class="p-3.5">
+              <p class="text-[10px] font-bold text-emerald-600">Como nueva</p>
+              <h3 class="mt-0.5 text-[14px] leading-snug font-extrabold text-brand-navy">Calculadora científica</h3>
+              <p class="text-[11px] text-slate-500">Andrés L. · CUCEI</p>
+              <p class="mt-2 text-[17px] font-extrabold text-brand-navy">$180 <span class="text-[10px] font-semibold text-slate-500">MXN</span></p>
+            </div>
+          </article>
+
+          <article class="rounded-[22px] bg-white overflow-hidden shadow-xl shadow-black/20">
+            <div class="relative aspect-[4/3.6] bg-slate-200">
+              <img data-src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=500&q=70" alt="Sudadera lavanda" class="w-full h-full object-cover" />
+              <button class="fav absolute top-2.5 right-2.5 w-9 h-9 rounded-full bg-white grid place-items-center text-brand-navy shadow-md active:scale-90 transition" aria-label="Guardar"><svg class="w-[18px] h-[18px]"><use href="#i-heart"/></svg></button>
+            </div>
+            <div class="p-3.5">
+              <p class="text-[10px] font-bold text-emerald-600">Segunda vida</p>
+              <h3 class="mt-0.5 text-[14px] leading-snug font-extrabold text-brand-navy">Sudadera lavanda</h3>
+              <p class="text-[11px] text-slate-500">Mariana C. · CUAAD</p>
+              <p class="mt-2 text-[17px] font-extrabold text-brand-navy">$150 <span class="text-[10px] font-semibold text-slate-500">MXN</span></p>
+            </div>
+          </article>
+
+          <article class="rounded-[22px] bg-white overflow-hidden shadow-xl shadow-black/20">
+            <div class="relative aspect-[4/3.6] bg-slate-200">
+              <img data-src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=500&q=70" alt="Libros" class="w-full h-full object-cover" />
+              <button class="fav absolute top-2.5 right-2.5 w-9 h-9 rounded-full bg-white grid place-items-center text-brand-navy shadow-md active:scale-90 transition" aria-label="Guardar"><svg class="w-[18px] h-[18px]"><use href="#i-heart"/></svg></button>
+            </div>
+            <div class="p-3.5">
+              <p class="text-[10px] font-bold text-emerald-600">Segunda vida</p>
+              <h3 class="mt-0.5 text-[14px] leading-snug font-extrabold text-brand-navy">Libros de economía</h3>
+              <p class="text-[11px] text-slate-500">Emilio T. · CUCEA</p>
+              <p class="mt-2 text-[17px] font-extrabold text-brand-navy">$90 <span class="text-[10px] font-semibold text-slate-500">MXN</span></p>
+            </div>
+          </article>
+
+          <article class="rounded-[22px] bg-white overflow-hidden shadow-xl shadow-black/20">
+            <div class="relative aspect-[4/3.6] bg-slate-200">
+              <img data-src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=500&q=70" alt="Latte para llevar" class="w-full h-full object-cover" />
+              <button class="fav absolute top-2.5 right-2.5 w-9 h-9 rounded-full bg-white grid place-items-center text-brand-navy shadow-md active:scale-90 transition" aria-label="Guardar"><svg class="w-[18px] h-[18px]"><use href="#i-heart"/></svg></button>
+            </div>
+            <div class="p-3.5">
+              <p class="text-[10px] font-bold text-emerald-600">Disponible hoy</p>
+              <h3 class="mt-0.5 text-[14px] leading-snug font-extrabold text-brand-navy">Latte para llevar</h3>
+              <p class="text-[11px] text-slate-500">Alex V. · CUCEA</p>
+              <p class="mt-2 text-[17px] font-extrabold text-brand-navy">$40 <span class="text-[10px] font-semibold text-slate-500">MXN</span></p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- CTA inferior -->
+      <section class="mt-8 rounded-2xl-friendly bg-[#FFF4CC] px-5 py-6 sm:px-8 sm:py-8 md:flex md:items-center md:justify-between md:gap-8">
+        <div class="md:max-w-xl">
+          <h2 class="text-[20px] sm:text-2xl font-extrabold tracking-tight text-brand-navy">¿Tienes algo para compartir?</h2>
+          <p class="mt-1.5 text-[13px] sm:text-sm leading-relaxed text-[#5B5560]">Tus brownies, tus apuntes o eso que ya no usas. Dale un lugar en el campus.</p>
+        </div>
+        <button class="mt-4 md:mt-0 w-full md:w-auto md:px-8 md:shrink-0 h-[52px] rounded-full bg-brand-orange text-brand-navy text-[15px] font-bold inline-flex items-center justify-center gap-2 shadow-[0_10px_20px_-8px_rgba(255,122,89,0.7)] active:scale-[0.98] transition">
+          <svg class="w-5 h-5"><use href="#i-plus"/></svg>Publicar mi primer anuncio
+        </button>
+      </section>
+
+      <p class="mt-6 text-[11px] text-[var(--cat-muted)]">Todos los precios en MXN · Trato entre estudiantes</p>
+    </main>
+  </div>
+
+  <!-- ===================== VISTA MATCH / SWIPE ===================== -->
+  <div id="view-swipe" class="hidden">
+    <main class="max-w-6xl mx-auto px-5 sm:px-6 pt-5 pb-10 lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center lg:min-h-[calc(100vh-90px)]">
+
+      <!-- Texto + chips -->
+      <div class="max-w-[430px] mx-auto lg:max-w-none lg:mx-0">
+        <p class="text-[11px] font-bold tracking-[0.08em] text-brand-red uppercase">Un hallazgo a la vez</p>
+        <h2 class="mt-1.5 text-[32px] sm:text-4xl lg:text-6xl leading-[1.1] font-extrabold tracking-tight text-brand-navy">Menos buscar. Más descubrir.</h2>
+        <p class="mt-2.5 text-[14px] sm:text-base text-slate-500">Pasa o guarda lo que te guste. Tú eliges.</p>
+
+        <div id="swipe-chips" class="scrollbar-none -mx-5 px-5 sm:mx-0 sm:px-0 mt-5 flex gap-2.5 overflow-x-auto lg:flex-wrap lg:overflow-visible">
+          <button class="chip shrink-0 inline-flex items-center gap-2 h-[46px] px-5 rounded-full text-[14px] font-bold bg-brand-navy text-white border border-brand-navy"><svg class="w-[18px] h-[18px]"><use href="#i-sparkles"/></svg>Para ti</button>
+          <button class="chip shrink-0 h-[46px] px-5 rounded-full text-[14px] font-semibold bg-white text-brand-navy border border-slate-200">Mi campus</button>
+          <button class="chip shrink-0 h-[46px] px-5 rounded-full text-[14px] font-semibold bg-white text-brand-navy border border-slate-200">Hasta $200</button>
+          <button class="chip shrink-0 h-[46px] px-5 rounded-full text-[14px] font-semibold bg-white text-brand-navy border border-slate-200">Comida</button>
+          <button class="chip shrink-0 h-[46px] px-5 rounded-full text-[14px] font-semibold bg-white text-brand-navy border border-slate-200">Apuntes</button>
+        </div>
+      </div>
+
+      <!-- Tarjeta + acciones -->
+      <div class="max-w-[430px] w-full mx-auto lg:mx-0 lg:justify-self-center mt-7 lg:mt-0">
+        <section class="relative">
+          <div class="absolute inset-0 rounded-2xl-friendly bg-[#FFE6DD] scale-[0.88] -translate-y-5 shadow-sm"></div>
+          <div class="absolute inset-0 rounded-2xl-friendly bg-[#FFF1EB] scale-[0.94] -translate-y-2.5 shadow-md shadow-black/5"></div>
+
+          <article id="swipe-card" class="relative rounded-2xl-friendly bg-white shadow-[0_18px_40px_-12px_rgba(30,41,59,0.22)]">
+            <div class="relative">
+              <div class="relative h-[260px] sm:h-[300px] rounded-t-2xl-friendly overflow-hidden bg-slate-200">
+                <img id="sw-img" src="" alt="" class="w-full h-full object-cover" />
+                <span class="absolute top-4 left-4 inline-flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 text-[12px] font-bold text-brand-navy shadow-sm"><span class="w-2 h-2 rounded-full bg-brand-mint"></span>Disponible hoy</span>
+                <span id="sw-count" class="absolute top-4 right-4 bg-white rounded-full px-3 py-1.5 text-[12px] font-bold text-brand-navy shadow-sm">1 de 12</span>
+              </div>
+              <div class="absolute right-4 bottom-0 translate-y-1/2 z-10 flex items-baseline gap-1.5 bg-white rounded-[18px] px-4 py-2.5 shadow-[0_8px_20px_-6px_rgba(30,41,59,0.25)]">
+                <span id="sw-price" class="text-[26px] leading-none font-extrabold text-brand-navy">$35</span>
+                <span id="sw-unit" class="text-[12px] font-semibold text-slate-500">MXN / pieza</span>
+              </div>
+            </div>
+
+            <div class="px-5 pt-6 pb-5">
+              <div class="flex items-start justify-between gap-3">
+                <h3 id="sw-title" class="text-[24px] leading-tight font-extrabold tracking-tight text-brand-navy">Brownies de Sofi</h3>
+                <span class="shrink-0 inline-flex items-center gap-1 mt-1.5 text-[15px] font-bold text-brand-navy"><svg class="w-[18px] h-[18px] text-amber-400"><use href="#i-star"/></svg><span id="sw-rating">4.9</span></span>
+              </div>
+              <p id="sw-desc" class="mt-2 text-[14px] leading-relaxed text-slate-500">Chocolate intenso, centro suave y hechos en casa. El antojo perfecto entre clases.</p>
+              <div class="mt-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-2.5 min-w-0">
+                  <span id="sw-avatar" class="w-10 h-10 shrink-0 rounded-full bg-[#FFE9E1] text-[#E8552F] text-[13px] font-extrabold grid place-items-center">SM</span>
+                  <span id="sw-seller" class="text-[13px] font-bold text-brand-navy truncate">Sofía M. · CUCEA</span>
+                </div>
+                <span class="shrink-0 inline-flex items-center gap-1 text-[12px] text-slate-500"><svg class="w-4 h-4"><use href="#i-pin"/></svg>En campus</span>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <!-- Acciones -->
+        <div class="mt-8 flex items-end justify-center gap-6">
+          <div class="flex flex-col items-center gap-2">
+            <button id="btn-back" aria-label="Volver" class="w-[52px] h-[52px] rounded-full bg-white border border-slate-200 grid place-items-center text-slate-500 shadow-sm hover:bg-slate-50 active:scale-90 transition"><svg class="w-5 h-5"><use href="#i-undo"/></svg></button>
+            <span class="text-[12px] font-medium text-slate-500">Volver</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <button id="btn-pass" aria-label="Pasar" class="w-[68px] h-[68px] rounded-full bg-white border border-slate-200 grid place-items-center text-brand-navy shadow-sm hover:bg-slate-50 active:scale-90 transition"><svg class="w-7 h-7"><use href="#i-x"/></svg></button>
+            <span class="text-[12px] font-medium text-slate-500">Pasar</span>
+          </div>
+          <div class="flex flex-col items-center gap-2">
+            <button id="btn-save" aria-label="Guardar" class="w-[78px] h-[78px] rounded-full bg-brand-orange grid place-items-center text-brand-navy shadow-[0_12px_24px_-8px_rgba(255,122,89,0.7)] hover:scale-105 active:scale-90 transition"><svg class="w-9 h-9"><use href="#i-heart"/></svg></button>
+            <span class="text-[12px] font-bold text-brand-red">Guardar</span>
+          </div>
+        </div>
+
+        <!-- Toast -->
+        <div class="mt-7 flex items-center gap-2.5 rounded-2xl bg-[#E4F7EE] px-4 py-3.5 text-[13px] font-medium text-emerald-800">
+          <svg class="w-6 h-6 shrink-0 text-emerald-700"><use href="#i-heart"/></svg>
+          <span id="toast-text">Tus favoritos te esperan en Guardados.</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Navegación inferior (solo móvil) -->
+  <nav class="md:hidden fixed bottom-0 inset-x-0 z-50 bg-white/95 backdrop-blur border-t border-slate-200 pb-[env(safe-area-inset-bottom)]" aria-label="Secciones">
+    <div class="grid grid-cols-3 max-w-md mx-auto">
+      <button data-tab="ubereats" class="tab-mobile flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold transition"><i class="fa-solid fa-store text-lg"></i>Explorar</button>
+      <button data-tab="catalog"  class="tab-mobile flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold transition"><i class="fa-solid fa-bag-shopping text-lg"></i>Catálogo</button>
+      <button data-tab="swipe"    class="tab-mobile flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold transition"><i class="fa-solid fa-fire text-lg"></i>Match</button>
+    </div>
+  </nav>
+
+<script>
+  /* ---------- Cambio de vista (antes: app.js) ---------- */
+  const catBg = getComputedStyle(document.documentElement).getPropertyValue('--cat-bg').trim();
+  const VIEWS = {
+    ubereats: { el: document.getElementById('view-ubereats'), bg: '#F8FAFC' },
+    catalog:  { el: document.getElementById('view-catalog'),  bg: catBg },
+    swipe:    { el: document.getElementById('view-swipe'),    bg: '#F8FAFC' }
+  };
+
+  function switchTab(name) {
+    for (const [key, v] of Object.entries(VIEWS)) v.el.classList.toggle('hidden', key !== name);
+
+    document.querySelectorAll('.tab-desktop').forEach(b => {
+      const on = b.dataset.tab === name;
+      b.classList.toggle('bg-white', on); b.classList.toggle('text-brand-navy', on); b.classList.toggle('shadow-sm', on);
+      b.classList.toggle('text-slate-500', !on);
+    });
+    document.querySelectorAll('.tab-mobile').forEach(b => {
+      const on = b.dataset.tab === name;
+      b.classList.toggle('text-brand-orange', on); b.classList.toggle('text-slate-400', !on);
+    });
+
+    document.body.style.backgroundColor = VIEWS[name].bg;
+    if (name === 'catalog') loadLazyImages();
+    window.scrollTo({ top: 0 });
+  }
+  document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+
+  /* ---------- Imágenes diferidas con fallback ---------- */
+  function loadLazyImages() {
+    document.querySelectorAll('img[data-src]').forEach(img => {
+      img.src = img.dataset.src; img.removeAttribute('data-src');
+      img.onerror = () => { img.style.visibility = 'hidden'; };
+    });
+  }
+
+  /* ---------- Swipe deck ---------- */
+  const deck = [
+    { title:'Brownies de Sofi',       price:'$35',  unit:'MXN / pieza', rating:'4.9', desc:'Chocolate intenso, centro suave y hechos en casa. El antojo perfecto entre clases.', seller:'Sofía M. · CUCEA', initials:'SM', img:'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=900&q=75' },
+    { title:'Calculadora científica', price:'$180', unit:'MXN',         rating:'4.7', desc:'Casi nueva, perfecta para cálculo y física. Incluye tapa y pilas nuevas.', seller:'Andrés L. · CUCEI', initials:'AL', img:'https://images.unsplash.com/photo-1587145820266-a5951ee6f620?auto=format&fit=crop&w=900&q=75' },
+    { title:'Latte para llevar',      price:'$40',  unit:'MXN / vaso',  rating:'4.8', desc:'Café de especialidad preparado al momento. Pásalo a recoger antes de tu clase.', seller:'Alex V. · CUCEA', initials:'AV', img:'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=900&q=75' },
+    { title:'Sudadera lavanda',       price:'$150', unit:'MXN',         rating:'4.6', desc:'Talla M, súper suave y en excelente estado. Segunda vida para tu clóset.', seller:'Mariana C. · CUAAD', initials:'MC', img:'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=900&q=75' }
+  ];
+  let idx = 0, saved = 0; const history = [];
+  const $ = id => document.getElementById(id);
+
+  function renderCard(animate = true) {
+    const c = deck[idx];
+    $('sw-img').src = c.img; $('sw-img').alt = c.title;
+    $('sw-title').textContent = c.title; $('sw-price').textContent = c.price; $('sw-unit').textContent = c.unit;
+    $('sw-rating').textContent = c.rating; $('sw-desc').textContent = c.desc;
+    $('sw-seller').textContent = c.seller; $('sw-avatar').textContent = c.initials;
+    $('sw-count').textContent = `${idx + 1} de ${deck.length}`;
+    if (animate) { const card = $('swipe-card'); card.classList.remove('card-in'); void card.offsetWidth; card.classList.add('card-in'); }
+  }
+  function next(action) {
+    history.push({ idx, action });
+    if (action === 'save') { saved++; $('toast-text').textContent = `Guardaste "${deck[idx].title}". Míralo en Guardados.`; }
+    idx = (idx + 1) % deck.length; renderCard();
+  }
+  $('btn-pass').addEventListener('click', () => next('pass'));
+  $('btn-save').addEventListener('click', () => next('save'));
+  $('btn-back').addEventListener('click', () => {
+    const last = history.pop(); if (!last) return;
+    idx = last.idx; if (last.action === 'save') saved--;
+    $('toast-text').textContent = saved ? `${saved} favorito${saved > 1 ? 's' : ''} te espera${saved > 1 ? 'n' : ''} en Guardados.` : 'Tus favoritos te esperan en Guardados.';
+    renderCard();
+  });
+  /* Teclado en escritorio: ← pasar, → guardar, ↑ volver (solo en la vista Match) */
+  document.addEventListener('keydown', e => {
+    if (VIEWS.swipe.el.classList.contains('hidden') || e.target.matches('input')) return;
+    if (e.key === 'ArrowLeft') next('pass');
+    else if (e.key === 'ArrowRight') next('save');
+    else if (e.key === 'ArrowUp') $('btn-back').click();
+  });
+
+  /* ---------- Chips y favoritos ---------- */
+  const ON = ['bg-brand-navy','text-white','border-brand-navy'], OFF = ['bg-white','text-brand-navy','border-slate-200'];
+  $('swipe-chips').addEventListener('click', e => {
+    const chip = e.target.closest('.chip'); if (!chip) return;
+    document.querySelectorAll('#swipe-chips .chip').forEach(c => { c.classList.remove(...ON); c.classList.add(...OFF); });
+    chip.classList.remove(...OFF); chip.classList.add(...ON);
+  });
+  document.querySelectorAll('.fav').forEach(b => b.addEventListener('click', () => b.classList.toggle('fav-on')));
+
+  /* ---------- Init ---------- */
+  renderCard(false);
+  switchTab('ubereats');
+</script>
+</body>
+</html>

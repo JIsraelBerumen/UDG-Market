@@ -1,0 +1,9 @@
+/* Tema del Catálogo: fondo oscuro. Para modo claro usa:
+   --cat-bg:#ffffff; --cat-fg:#1E293B; --cat-muted:#64748B; */
+:root { --cat-bg:#0E1426; --cat-fg:#ffffff; --cat-muted:#9AA3B8; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+.card-in { animation: cardIn .35s cubic-bezier(.2,.8,.2,1); }
+@keyframes cardIn { from { opacity:0; transform: translateY(12px) scale(.97); } to { opacity:1; transform:none; } }
+.fav-on svg { fill: #FF7A59; stroke: #FF7A59; }
+@media (prefers-reduced-motion: reduce) { .card-in { animation: none; } }
