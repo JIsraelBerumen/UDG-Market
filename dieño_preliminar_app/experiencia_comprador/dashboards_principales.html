@@ -1,245 +1,494 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App Universitaria - Dashboard & Modo TinderAquí tienes la maquetación de ambos escenarios diseñados con HTML estructurado y estilos modernos (CSS en variables), listos para integrar.
-
-```html
-<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menú de Cita - Vendedor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>UDG Market - P5 & P6 (Arena & Teja)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              terracotta: '#D04836',
+              arenaBg: '#E8DFD8',
+              cardBg: '#F8F4F0',
+              textNavy: '#212930',
+              mint: '#228276',
+              yellow: '#E9C46A'
+            }
+          },
+          borderRadius: {
+            'xl-friendly': '1.25rem',
+            '2xl-friendly': '1.75rem',
+            'app': '2.5rem'
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    :root {
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --whatsapp: #25d366;
-      --whatsapp-hover: #128c7e;
-      --bg-card: #ffffff;
-      --bg-page: #f8fafc;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --accent-light: #eff6ff;
-      --status-bg: #f0fdf4;
-      --status-text: #166534;
-      --radius: 12px;
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    .card-swipe {
+      transition: transform 0.3s ease-out, opacity 0.3s ease-out;
     }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background-color: var(--bg-page);
-      color: var(--text-main);
-      padding: 20px;
-      margin: 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 24px;
-      justify-content: center;
+    .swipe-left {
+      transform: translateX(-120%) rotate(-15deg) !important;
+      opacity: 0 !important;
     }
-
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      width: 100%;
-      max-width: 400px;
-      padding: 24px;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .header-vendor {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 16px;
-    }
-
-    .avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: #cbd5e1;
-      object-fit: cover;
-    }
-
-    .vendor-info h3 {
-      margin: 0;
-      font-size: 1.1rem;
-    }
-
-    .vendor-info p {
-      margin: 2px 0 0;
-      font-size: 0.875rem;
-      color: var(--text-muted);
-    }
-
-    .badge-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--status-bg);
-      color: var(--status-text);
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 4px 8px;
-      border-radius: 20px;
-    }
-
-    .location-box {
-      background: var(--accent-light);
-      border: 1px solid #bfdbfe;
-      border-radius: 8px;
-      padding: 12px;
-      font-size: 0.9rem;
-    }
-
-    .location-box strong {
-      display: block;
-      color: #1e40af;
-      margin-bottom: 4px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    label {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
-
-    input[type="datetime-local"], textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      box-sizing: border-box;
-      font-family: inherit;
-    }
-
-    .actions {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    .btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.2s;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: var(--primary-hover);
-    }
-
-    .btn-whatsapp {
-      background: var(--whatsapp);
-      color: white;
-    }
-
-    .btn-whatsapp:hover {
-      background: var(--whatsapp-hover);
-    }
-
-    .info-note {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      text-align: center;
-      margin: 0;
+    .swipe-right {
+      transform: translateX(120%) rotate(15deg) !important;
+      opacity: 0 !important;
     }
   </style>
 </head>
-<body>
+<body id="body-root" class="bg-slate-900 font-sans antialiased min-h-screen flex items-center justify-center p-0 sm:p-4 select-none">
 
-  <!-- VISTA 1: Franja activa / Ubicación fija -->
-  <div class="card">
-    <div class="header-vendor">
-      <div class="avatar" style="background:#2563eb; color:white; display:flex; align-items:center; justify-content:center; font-weight:bold;">CR</div>
-      <div class="vendor-info">
-        <h3>Carlos Ramírez</h3>
-        <span class="badge-status">● Disponible en punto fijo</span>
-      </div>
-    </div>
+  <!-- FRAME DISPOSITIVO MÓVIL -->
+  <div class="w-full max-w-md h-screen sm:h-[844px] bg-brand-arenaBg dark:bg-slate-950 sm:rounded-app shadow-2xl overflow-hidden flex flex-col relative border-0 sm:border-[8px] sm:border-slate-800 transition-colors duration-300">
 
-    <div class="location-box">
-      <strong>Venta presencial directa</strong>
-       Ubicación: Plaza Central, Stand 14<br>
-       Horario: 10:00 AM - 02:00 PM (Hoy)
-    </div>
-
-    <p class="info-note">No necesitas agendar cita previa. Puedes acudir directamente al punto dentro de la franja horaria.</p>
-
-    <div class="actions">
-      <a href="[https://maps.google.com](https://maps.google.com)" target="_blank" class="btn btn-primary">
-        Ver ubicación en mapa
-      </a>
-      <a href="[https://wa.me/123456789](https://wa.me/123456789)" class="btn btn-whatsapp">
-        Hablar por WhatsApp
-      </a>
-    </div>
-  </div>
-
-
-  <!-- VISTA 2: Solicitud de cita con confirmación/sugerencia -->
-  <div class="card">
-    <div class="header-vendor">
-      <div class="avatar" style="background:#7c3aed; color:white; display:flex; align-items:center; justify-content:center; font-weight:bold;">CR</div>
-      <div class="vendor-info">
-        <h3>Carlos Ramírez</h3>
-        <p>Atención previa solicitud</p>
-      </div>
-    </div>
-
-    <form class="actions" onsubmit="event.preventDefault();">
-      <div class="form-group">
-        <label for="fecha">Propón fecha y hora:</label>
-        <input type="datetime-local" id="fecha" required>
+    <!-- HEADER OFICIAL DE LA APP: UDG MARKET -->
+    <header class="bg-brand-cardBg dark:bg-slate-900 border-b border-[#D3C7BC] dark:border-slate-800 px-4 py-3 shrink-0 flex items-center justify-between z-30 transition-colors duration-300">
+      <div class="flex items-center space-x-2.5">
+        <div class="w-8 h-8 bg-brand-terracotta text-white rounded-xl flex items-center justify-center font-bold text-sm shadow-md">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div>
+          <h1 class="font-black text-base tracking-tight text-brand-textNavy dark:text-white leading-tight">UDG Market</h1>
+          <p id="header-subtitle" class="text-[10px] font-semibold text-slate-600 dark:text-slate-400">Comercio Ambulante Universitario</p>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="nota">Mensaje o motivo (Opcional):</label>
-        <textarea id="nota" rows="2" placeholder="Ej. Quisiera ver las muestras de producto..."></textarea>
-      </div>
+      <span class="bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-400 text-[10px] font-extrabold px-2.5 py-1 rounded-full border border-emerald-300 dark:border-emerald-800 flex items-center">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>Activo
+      </span>
+    </header>
 
-      <p class="info-note">El vendedor confirmará la hora o te propondrá una alternativa.</p>
+    <!-- ÁREA PRINCIPAL SCROLLABLE -->
+    <main class="flex-1 overflow-y-auto no-scrollbar p-4 relative">
 
-      <button type="submit" class="btn btn-primary">
-        Solicitar Cita
+      <!-- ========================================== -->
+      <!-- P5: DASHBOARD PRINCIPAL (EXPLORAR) -->
+      <!-- ========================================== -->
+      <section id="view-dashboard" class="space-y-4">
+        
+        <div class="bg-slate-900 rounded-2xl-friendly p-4 text-white shadow-md relative overflow-hidden">
+          <div class="relative z-10">
+            <span class="bg-brand-terracotta text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">CUCEI UDG</span>
+            <h2 class="text-lg font-extrabold mt-1.5">¿Qué vas a comer hoy?</h2>
+            <p class="text-[11px] text-slate-300 mt-0.5">Toca la imagen para agendar o el nombre para ver al vendedor.</p>
+          </div>
+          <i class="fa-solid fa-cookie-bite absolute -right-3 -bottom-3 text-7xl text-white/10 transform -rotate-12"></i>
+        </div>
+
+        <div class="space-y-3">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-600">Catálogo General</h3>
+            <span class="text-[11px] text-slate-600 font-bold">3 vendedores cerca</span>
+          </div>
+
+          <!-- Tarjeta 1 P5 -->
+          <div class="bg-brand-cardBg rounded-2xl-friendly border border-[#D3C7BC] shadow-md overflow-hidden flex flex-col">
+            <!-- CLIC EN LA IMAGEN ABRE EL MODAL -->
+            <div onclick="openAppointmentModal('Valeria Gómez (Derecho)', 'Rebanada Pastel Chocolate', '$35', 'Canchas CUCEI', true, '11:00 AM - 3:00 PM')" class="relative h-40 bg-slate-300 cursor-pointer group">
+              <img src="https://images.unsplash.com/photo-1578985545062-69928b1b9587?auto=format&fit=crop&w=600&q=80" alt="Pastel Chocolate" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              
+              <div class="absolute top-2.5 left-2.5">
+                <span class="bg-rose-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase shadow-sm">
+                  <i class="fa-solid fa-tag mr-0.5"></i>Oferta
+                </span>
+              </div>
+
+              <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span class="bg-white/90 text-slate-900 text-[11px] font-black px-3 py-1.5 rounded-full shadow-md">
+                  <i class="fa-solid fa-hand-pointer mr-1 text-brand-terracotta"></i>Toca para comprar
+                </span>
+              </div>
+
+              <span class="absolute bottom-2.5 right-2.5 bg-slate-900/85 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center">
+                <i class="fa-solid fa-location-dot text-brand-terracotta mr-1"></i>Canchas CUCEI
+              </span>
+            </div>
+
+            <div class="p-3.5">
+              <div class="flex justify-between items-start">
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Postres y Snacks</span>
+                <span class="text-[11px] font-bold text-amber-800 flex items-center bg-amber-100 border border-amber-300 px-1.5 py-0.5 rounded">
+                  <i class="fa-solid fa-star mr-1 text-[10px]"></i>4.9
+                </span>
+              </div>
+
+              <h4 class="font-extrabold text-brand-textNavy text-sm mt-0.5 leading-snug">Rebanada Pastel Chocolate</h4>
+              
+              <!-- CLIC EN EL NOMBRE DEL VENDEDOR -->
+              <div onclick="alert('Ir a P7: Perfil de Valeria')" class="mt-1.5 inline-flex items-center space-x-1.5 text-xs text-brand-terracotta font-bold hover:underline cursor-pointer bg-black/5 px-2.5 py-1 rounded-lg border border-black/5">
+                <i class="fa-solid fa-user-graduate"></i>
+                <span>Vendido por Valeria Gómez (Derecho)</span>
+                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+              </div>
+
+              <div class="mt-3 flex items-center justify-between border-t border-black/10 pt-2">
+                <span class="text-base font-black text-brand-textNavy">$35 <span class="text-[10px] font-normal text-slate-600">MXN</span></span>
+                <span class="text-[10px] font-bold text-emerald-800 bg-emerald-100 border border-emerald-300 px-2 py-0.5 rounded">
+                  <i class="fa-solid fa-circle text-[7px] mr-1"></i>Punto Fijo Activo
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta 2 P5 -->
+          <div class="bg-brand-cardBg rounded-2xl-friendly border border-[#D3C7BC] shadow-md overflow-hidden flex flex-col">
+            <div onclick="openAppointmentModal('Carlos (Ingeniería)', 'Orden Tacos Guisado (3x)', '$40', 'Módulo O', false, '')" class="relative h-40 bg-slate-300 cursor-pointer group">
+              <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80" alt="Tacos" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              
+              <div class="absolute top-2.5 left-2.5">
+                <span class="bg-amber-600 text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase shadow-sm">
+                  <i class="fa-solid fa-fire mr-0.5"></i>Quedan pocos
+                </span>
+              </div>
+
+              <span class="absolute bottom-2.5 right-2.5 bg-slate-900/85 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center">
+                <i class="fa-solid fa-location-dot text-brand-terracotta mr-1"></i>Módulo O
+              </span>
+            </div>
+
+            <div class="p-3.5">
+              <div class="flex justify-between items-start">
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">Comida Preparada</span>
+                <span class="text-[11px] font-bold text-amber-800 flex items-center bg-amber-100 border border-amber-300 px-1.5 py-0.5 rounded">
+                  <i class="fa-solid fa-star mr-1 text-[10px]"></i>4.7
+                </span>
+              </div>
+
+              <h4 class="font-extrabold text-brand-textNavy text-sm mt-0.5 leading-snug">Orden Tacos de Guisado (3x)</h4>
+              
+              <div onclick="alert('Ir a P7: Perfil de Carlos')" class="mt-1.5 inline-flex items-center space-x-1.5 text-xs text-brand-terracotta font-bold hover:underline cursor-pointer bg-black/5 px-2.5 py-1 rounded-lg border border-black/5">
+                <i class="fa-solid fa-user-graduate"></i>
+                <span>Vendido por Carlos (Ingeniería)</span>
+                <i class="fa-solid fa-chevron-right text-[10px]"></i>
+              </div>
+
+              <div class="mt-3 flex items-center justify-between border-t border-black/10 pt-2">
+                <span class="text-base font-black text-brand-textNavy">$40 <span class="text-[10px] font-normal text-slate-600">MXN</span></span>
+                <span class="text-[10px] font-bold text-amber-800 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded">
+                  <i class="fa-solid fa-clock text-[9px] mr-1"></i>Requiere Cita
+                </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- P6: MÓDULO DESCUBRIMIENTO / MATCH (TINDER) -->
+      <!-- ========================================== -->
+      <section id="view-tinder" class="hidden h-full flex flex-col justify-between space-y-3">
+        
+        <div class="text-center">
+          <h2 class="text-base font-black text-white flex items-center justify-center gap-1">
+            Descubre en UDG Market <i class="fa-solid fa-fire text-rose-500 text-sm"></i>
+          </h2>
+          <p class="text-[10px] text-slate-400">Da Like o toca la imagen para ver el punto de venta</p>
+        </div>
+
+        <!-- TARJETA TINDER -->
+        <div id="tinder-card-element" class="card-swipe relative bg-slate-900 rounded-2xl-friendly border border-slate-800 shadow-2xl overflow-hidden flex-1 flex flex-col justify-between touch-none">
+          
+          <div onclick="triggerTinderAppointment()" class="relative flex-1 min-h-[260px] bg-slate-800 cursor-pointer">
+            <img id="tinder-img" src="https://images.unsplash.com/photo-1578985545062-69928b1b9587?auto=format&fit=crop&w=800&q=80" alt="Pastel" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+
+            <span class="absolute top-3 left-3 bg-brand-terracotta text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shadow-md">
+              ¡Disponible Ahora!
+            </span>
+
+            <div class="absolute bottom-3 left-3 right-3 text-white">
+              <div class="flex justify-between items-end">
+                <div>
+                  <h3 id="tinder-title" class="text-xl font-black leading-tight">Rebanada Pastel Chocolate</h3>
+                  <p id="tinder-seller" class="text-xs text-slate-300 mt-0.5">Vendido por <strong class="text-white">Valeria Gómez (Derecho)</strong></p>
+                </div>
+                <span id="tinder-price" class="text-xl font-black text-brand-yellow">$35</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-3.5 bg-slate-900 border-t border-slate-800/80 space-y-3 shrink-0">
+            <div class="flex items-center justify-between text-xs text-slate-300 bg-slate-800/60 p-2.5 rounded-xl border border-slate-700/50">
+              <span class="flex items-center text-[11px] font-medium">
+                <i class="fa-solid fa-clock text-brand-terracotta mr-1.5"></i>
+                <span id="tinder-time">Disponible hasta las 3:00 PM</span>
+              </span>
+              <span class="flex items-center text-[11px] font-bold text-white">
+                <i class="fa-solid fa-location-dot text-brand-terracotta mr-1"></i>
+                <span id="tinder-location">Canchas</span>
+              </span>
+            </div>
+
+            <!-- BOTONERA TINDER DE 2 BOTONES -->
+            <div class="flex items-center justify-center space-x-8 pt-1">
+              <button onclick="swipeCard('left')" class="w-13 h-13 p-3.5 bg-slate-800 border border-slate-700 text-slate-300 rounded-full flex items-center justify-center text-xl active:scale-90 transition-all shadow-md">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+
+              <button onclick="likeAndTriggerAppointment()" class="w-16 h-16 bg-brand-terracotta text-white rounded-full flex items-center justify-center text-2xl shadow-lg shadow-red-900/40 active:scale-90 transition-all">
+                <i class="fa-solid fa-heart"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- NAVEGACIÓN INFERIOR DE PANTALLA -->
+    <nav class="bg-brand-cardBg dark:bg-slate-900 border-t border-[#D3C7BC] dark:border-slate-800 px-6 py-2 shrink-0 flex items-center justify-around z-30 transition-colors duration-300">
+      <button onclick="switchView('dashboard')" id="nav-dashboard" class="flex flex-col items-center text-brand-terracotta">
+        <i class="fa-solid fa-store text-lg"></i>
+        <span class="text-[10px] font-bold mt-0.5">Explorar</span>
       </button>
-      
-      <a href="[https://wa.me/123456789](https://wa.me/123456789)" class="btn btn-whatsapp">
-        Hablar por WhatsApp
-      </a>
-    </form>
+
+      <button onclick="switchView('tinder')" id="nav-tinder" class="flex flex-col items-center text-slate-500 hover:text-slate-800">
+        <i class="fa-solid fa-fire text-lg"></i>
+        <span class="text-[10px] font-bold mt-0.5">Match</span>
+      </button>
+
+      <button onclick="alert('Ir a Mis Citas')" class="flex flex-col items-center text-slate-500">
+        <i class="fa-solid fa-clock-rotate-left text-lg"></i>
+        <span class="text-[10px] font-bold mt-0.5">Citas</span>
+      </button>
+
+      <button onclick="alert('Ir al Perfil del Usuario propio')" class="flex flex-col items-center text-slate-500">
+        <i class="fa-solid fa-user text-lg"></i>
+        <span class="text-[10px] font-bold mt-0.5">Mi Perfil</span>
+      </button>
+    </nav>
+
+    <!-- MODAL CITA / PUNTO DE VENTA -->
+    <div id="appointment-modal" class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-end justify-center hidden">
+      <div class="bg-brand-cardBg dark:bg-slate-900 w-full rounded-t-2xl-friendly p-4 border-t border-[#D3C7BC] dark:border-slate-800 shadow-2xl max-h-[85%] overflow-y-auto no-scrollbar">
+        
+        <div class="w-12 h-1 bg-slate-400 dark:bg-slate-700 rounded-full mx-auto mb-3"></div>
+
+        <div class="flex justify-between items-start mb-3 pb-2 border-b border-[#D3C7BC] dark:border-slate-800">
+          <div>
+            <span class="text-[9px] font-black uppercase tracking-wider text-brand-terracotta">Información del Producto</span>
+            <h3 id="modal-product-title" class="text-base font-black text-brand-textNavy dark:text-white leading-tight">Rebanada Pastel Chocolate</h3>
+            <p id="modal-seller-name" class="text-xs text-slate-600 dark:text-slate-400">Vendedor: Valeria Gómez (Derecho)</p>
+          </div>
+          <button onclick="closeAppointmentModal()" class="text-slate-500 p-1">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <div id="case-active-range" class="space-y-3">
+          <div class="bg-emerald-100 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-800/80 p-3 rounded-xl">
+            <div class="flex items-start space-x-2">
+              <i class="fa-solid fa-circle-check text-emerald-800 dark:text-emerald-400 text-base mt-0.5"></i>
+              <div>
+                <h4 class="text-xs font-extrabold text-emerald-950 dark:text-emerald-200">¡Vendedor en Punto Fijo!</h4>
+                <p class="text-[10px] text-emerald-800 dark:text-emerald-300 mt-0.5 leading-relaxed">
+                  No requiere agendar cita previa. Pasa directamente por tu producto al punto de venta.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-black/5 dark:bg-slate-800/50 p-2.5 rounded-xl border border-black/10 dark:border-slate-700/50 space-y-1.5 text-xs">
+            <div class="flex justify-between">
+              <span class="text-slate-600 dark:text-slate-400 text-[11px]">Ubicación UDG:</span>
+              <strong id="modal-location" class="text-brand-textNavy dark:text-white font-bold text-[11px]">Canchas CUCEI</strong>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-600 dark:text-slate-400 text-[11px]">Horario Activo:</span>
+              <strong id="modal-range" class="text-brand-terracotta font-bold text-[11px]">11:00 AM - 3:00 PM</strong>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-600 dark:text-slate-400 text-[11px]">Precio:</span>
+              <strong id="modal-price" class="text-brand-textNavy dark:text-white font-black text-xs">$35 MXN</strong>
+            </div>
+          </div>
+
+          <div class="space-y-2 pt-1">
+            <button onclick="confirmDirectPurchase()" class="w-full bg-brand-terracotta text-white text-xs font-bold py-2.5 rounded-xl shadow-md active:bg-red-800 transition-colors flex items-center justify-center space-x-2">
+              <i class="fa-solid fa-person-walking-arrow-right"></i>
+              <span>Ir a Comprar al Punto</span>
+            </button>
+
+            <a id="modal-whatsapp-link" href="#" target="_blank" class="w-full bg-emerald-700 text-white text-xs font-bold py-2.5 rounded-xl active:bg-emerald-800 transition-colors flex items-center justify-center space-x-2">
+              <i class="fa-brands fa-whatsapp text-sm"></i>
+              <span>Enviar WhatsApp</span>
+            </a>
+          </div>
+        </div>
+
+        <div id="case-request-appointment" class="hidden space-y-3">
+          <div class="bg-amber-100 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-800/80 p-3 rounded-xl">
+            <div class="flex items-start space-x-2">
+              <i class="fa-solid fa-clock text-amber-800 dark:text-amber-400 text-base mt-0.5"></i>
+              <div>
+                <h4 class="text-xs font-extrabold text-amber-950 dark:text-amber-200">Coordinar Cita</h4>
+                <p class="text-[10px] text-amber-800 dark:text-amber-300 mt-0.5 leading-relaxed">
+                  Propón una hora para el intercambio. El vendedor confirmará o te sugerirá un cambio.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <form onsubmit="submitAppointmentRequest(event)" class="space-y-2.5">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-700 dark:text-slate-300 mb-1 uppercase">Hora propuesta</label>
+              <input type="time" required class="w-full bg-black/5 dark:bg-slate-800 border border-black/10 dark:border-slate-700 text-brand-textNavy dark:text-white rounded-xl px-3 py-2 text-xs font-bold focus:outline-none focus:border-brand-terracotta">
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-bold text-slate-700 dark:text-slate-300 mb-1 uppercase">Punto de encuentro UDG</label>
+              <select class="w-full bg-black/5 dark:bg-slate-800 border border-black/10 dark:border-slate-700 text-brand-textNavy dark:text-white rounded-xl px-3 py-2 text-xs font-bold focus:outline-none focus:border-brand-terracotta">
+                <option>Entrada Módulo O</option>
+                <option>Bancas de Rectoría / CUCEI</option>
+                <option>Canchas Deporte</option>
+                <option>Biblioteca Central</option>
+              </select>
+            </div>
+
+            <div class="pt-1">
+              <button type="submit" class="w-full bg-brand-textNavy dark:bg-brand-terracotta text-white text-xs font-bold py-2.5 rounded-xl flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span>Enviar Solicitud</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
+  <script>
+    const tinderCards = [
+      {
+        title: "Rebanada Pastel Chocolate",
+        seller: "Valeria Gómez (Derecho)",
+        price: "$35",
+        time: "Disponible hasta las 3:00 PM",
+        location: "Canchas CUCEI",
+        img: "https://images.unsplash.com/photo-1578985545062-69928b1b9587?auto=format&fit=crop&w=800&q=80",
+        hasActiveRange: true,
+        range: "11:00 AM - 3:00 PM"
+      },
+      {
+        title: "Orden Tacos Guisado (3x)",
+        seller: "Carlos (Ingeniería)",
+        price: "$40",
+        time: "Rato libre: 1:00 PM - 2:00 PM",
+        location: "Módulo O",
+        img: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80",
+        hasActiveRange: false,
+        range: ""
+      }
+    ];
+
+    let currentTinderIndex = 0;
+
+    function switchView(view) {
+      const dashboard = document.getElementById('view-dashboard');
+      const tinder = document.getElementById('view-tinder');
+      const navDashboard = document.getElementById('nav-dashboard');
+      const navTinder = document.getElementById('nav-tinder');
+      const root = document.getElementById('body-root');
+
+      if (view === 'dashboard') {
+        dashboard.classList.remove('hidden');
+        tinder.classList.add('hidden');
+        root.classList.remove('dark');
+
+        navDashboard.className = "flex flex-col items-center text-brand-terracotta";
+        navTinder.className = "flex flex-col items-center text-slate-500 hover:text-slate-800";
+      } else {
+        dashboard.classList.add('hidden');
+        tinder.classList.remove('hidden');
+        root.classList.add('dark');
+
+        navTinder.className = "flex flex-col items-center text-rose-500";
+        navDashboard.className = "flex flex-col items-center text-slate-500 hover:text-white";
+      }
+    }
+
+    function swipeCard(direction) {
+      const cardEl = document.getElementById('tinder-card-element');
+      cardEl.classList.add(direction === 'left' ? 'swipe-left' : 'swipe-right');
+
+      setTimeout(() => {
+        currentTinderIndex = (currentTinderIndex + 1) % tinderCards.length;
+        const card = tinderCards[currentTinderIndex];
+
+        document.getElementById('tinder-img').src = card.img;
+        document.getElementById('tinder-title').innerText = card.title;
+        document.getElementById('tinder-seller').innerHTML = `Vendido por <strong class="text-white">${card.seller}</strong>`;
+        document.getElementById('tinder-price').innerText = card.price;
+        document.getElementById('tinder-time').innerText = card.time;
+        document.getElementById('tinder-location').innerText = card.location;
+
+        cardEl.classList.remove('swipe-left', 'swipe-right');
+      }, 300);
+    }
+
+    function likeAndTriggerAppointment() {
+      const card = tinderCards[currentTinderIndex];
+      openAppointmentModal(card.seller, card.title, card.price, card.location, card.hasActiveRange, card.range);
+    }
+
+    function triggerTinderAppointment() {
+      likeAndTriggerAppointment();
+    }
+
+    function openAppointmentModal(seller, title, price, location, hasActiveRange, range) {
+      document.getElementById('modal-product-title').innerText = title;
+      document.getElementById('modal-seller-name').innerText = `Vendedor: ${seller}`;
+      document.getElementById('modal-location').innerText = location;
+      document.getElementById('modal-price').innerText = `${price} MXN`;
+      document.getElementById('modal-range').innerText = range || 'N/A';
+
+      const caseActive = document.getElementById('case-active-range');
+      const caseRequest = document.getElementById('case-request-appointment');
+
+      const waMessage = encodeURIComponent(`¡Hola ${seller}! Te contacto por UDG Market para comprar ${title}.`);
+      document.getElementById('modal-whatsapp-link').href = `https://wa.me/523300000000?text=${waMessage}`;
+
+      if (hasActiveRange) {
+        caseActive.classList.remove('hidden');
+        caseRequest.classList.add('hidden');
+      } else {
+        caseActive.classList.add('hidden');
+        caseRequest.classList.remove('hidden');
+      }
+
+      document.getElementById('appointment-modal').classList.remove('hidden');
+    }
+
+    function closeAppointmentModal() {
+      document.getElementById('appointment-modal').classList.add('hidden');
+    }
+
+    function confirmDirectPurchase() {
+      alert("¡Dirígete al punto de entrega! El vendedor está activo.");
+      closeAppointmentModal();
+    }
+
+    function submitAppointmentRequest(e) {
+      e.preventDefault();
+      alert("Solicitud de cita enviada.");
+      closeAppointmentModal();
+    }
+  </script>
 </body>
 </html>
