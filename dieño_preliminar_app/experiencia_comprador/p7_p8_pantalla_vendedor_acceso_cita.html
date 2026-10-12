@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>UDG Market - P7 Perfil & P8 Cita (Arena & Teja)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              terracotta: '#D04836',
+              arenaBg: '#E8DFD8',
+              cardBg: '#F8F4F0',
+              textNavy: '#212930',
+              mint: '#228276',
+              yellow: '#E9C46A'
+            }
+          },
+          borderRadius: {
+            'xl-friendly': '1.25rem',
+            '2xl-friendly': '1.75rem',
+            'app': '2.5rem'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body id="body-root" class="bg-slate-900 font-sans antialiased min-h-screen flex items-center justify-center p-0 sm:p-4 select-none">
+
+  <!-- FRAME DISPOSITIVO MÓVIL -->
+  <div class="w-full max-w-md h-screen sm:h-[844px] bg-brand-arenaBg dark:bg-slate-950 sm:rounded-app shadow-2xl overflow-hidden flex flex-col relative border-0 sm:border-[8px] sm:border-slate-800 transition-colors duration-300">
+
+    <!-- HEADER OFICIAL DE LA APP -->
+    <header class="bg-brand-cardBg dark:bg-slate-900 border-b border-[#D3C7BC] dark:border-slate-800 px-4 py-3 shrink-0 flex items-center justify-between z-30">
+      <div class="flex items-center space-x-2.5">
+        <button onclick="history.back()" class="w-8 h-8 rounded-full bg-black/5 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center text-xs active:scale-95">
+          <img src="Gemini_Generated_Image_74l34374l34374l3.jpeg" alt="UDG Market Logo" class="w-full h-full object-cover">
+        </button>
+        <div>
+          <h1 class="font-black text-base tracking-tight text-brand-textNavy dark:text-white leading-tight">UDG Market</h1>
+          <p class="text-[10px] font-semibold text-brand-terracotta">Perfil del Vendedor</p>
+        </div>
+      </div>
+
+      <span class="bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-400 text-[10px] font-extrabold px-2.5 py-1 rounded-full border border-amber-300 dark:border-amber-800 flex items-center">
+        <i class="fa-solid fa-star text-amber-600 mr-1 text-[10px]"></i>4.9 (28 reseñas)
+      </span>
+    </header>
+
+    <!-- ÁREA PRINCIPAL SCROLLABLE (P7: PERFIL DETALLADO) -->
+    <main class="flex-1 overflow-y-auto no-scrollbar p-4 space-y-4">
+
+      <!-- Tarjeta Cabecera del Vendedor con Botón de WhatsApp Directo -->
+      <div class="bg-brand-cardBg dark:bg-slate-900 rounded-2xl-friendly p-4 border border-[#D3C7BC] dark:border-slate-800 shadow-md relative overflow-hidden">
+        <div class="flex items-center space-x-3.5">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Valeria" class="w-16 h-16 rounded-2xl object-cover border-2 border-brand-terracotta">
+            <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full"></span>
+          </div>
+
+          <div class="flex-1 min-w-0">
+            <h2 class="text-base font-black text-brand-textNavy dark:text-white truncate">Valeria Gómez</h2>
+            <p class="text-xs font-semibold text-slate-600 dark:text-slate-400">Derecho • 6to Semestre</p>
+            
+            <a href="https://wa.me/523300000000?text=Hola%20Valeria,%20te%20contacto%20desde%20UDG%20Market" target="_blank" class="mt-2 inline-flex items-center space-x-1.5 bg-emerald-700 text-white text-[11px] font-bold px-3 py-1 rounded-lg active:bg-emerald-800 transition-colors shadow-sm">
+              <i class="fa-brands fa-whatsapp text-sm"></i>
+              <span>Mensaje directo</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-black/10 dark:border-slate-800 text-center">
+          <div class="bg-black/5 dark:bg-slate-800/50 p-2 rounded-xl">
+            <p class="text-[9px] text-slate-500 uppercase font-bold">Reputación</p>
+            <p class="text-xs font-black text-amber-700 dark:text-amber-400 mt-0.5"><i class="fa-solid fa-star mr-0.5"></i>4.9</p>
+          </div>
+          <div class="bg-black/5 dark:bg-slate-800/50 p-2 rounded-xl">
+            <p class="text-[9px] text-slate-500 uppercase font-bold">Entregas</p>
+            <p class="text-xs font-black text-brand-textNavy dark:text-white mt-0.5">Puntual</p>
+          </div>
+          <div class="bg-black/5 dark:bg-slate-800/50 p-2 rounded-xl">
+            <p class="text-[9px] text-slate-500 uppercase font-bold">Respuesta</p>
+            <p class="text-xs font-black text-brand-textNavy dark:text-white mt-0.5">&lt; 5 min</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Horario y Punto Fijo -->
+      <div class="bg-slate-900 text-white rounded-2xl-friendly p-4 shadow-md border border-slate-700 space-y-2">
+        <div class="flex justify-between items-center">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-brand-terracotta">Punto Fijo Activo Hoy</span>
+          <span class="bg-emerald-500/20 text-emerald-400 text-[9px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">Vendiendo Ahora</span>
+        </div>
+
+        <div class="space-y-1 text-xs">
+          <div class="flex items-center text-slate-200">
+            <i class="fa-solid fa-clock text-brand-terracotta w-5"></i>
+            <span>Hoy: <strong>11:00 AM – 3:00 PM</strong></span>
+          </div>
+          <div class="flex items-center text-slate-200">
+            <i class="fa-solid fa-location-dot text-brand-terracotta w-5"></i>
+            <span>Lugar: <strong>Canchas de Basquetbol / CUCEI</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Catálogo de Productos -->
+      <div class="space-y-3">
+        <h3 class="text-xs font-black uppercase tracking-wider text-slate-600">Catálogo de Valeria</h3>
+
+        <div class="bg-brand-cardBg dark:bg-slate-900 rounded-2xl-friendly p-3 border border-[#D3C7BC] dark:border-slate-800 shadow-md flex space-x-3 items-center">
+          <img src="https://images.unsplash.com/photo-1578985545062-69928b1b9587?auto=format&fit=crop&w=300&q=80" alt="Pastel" class="w-16 h-16 rounded-xl object-cover shrink-0">
+          <div class="flex-1 min-w-0">
+            <h4 class="font-extrabold text-xs text-brand-textNavy dark:text-white truncate">Rebanada Pastel Chocolate</h4>
+            <p class="text-[10px] text-slate-500 truncate">Betún artesanal casero.</p>
+            <div class="flex items-center justify-between mt-1">
+              <span class="text-xs font-black text-brand-textNavy dark:text-white">$35 MXN</span>
+              <button onclick="toggleSelectProduct('Pastel Chocolate', 35, this)" class="btn-product-select bg-black/5 dark:bg-slate-800 text-brand-textNavy dark:text-white text-[10px] font-bold px-2.5 py-1 rounded-lg active:scale-95">
+                <i class="fa-solid fa-plus mr-1"></i>Agregar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-brand-cardBg dark:bg-slate-900 rounded-2xl-friendly p-3 border border-[#D3C7BC] dark:border-slate-800 shadow-md flex space-x-3 items-center">
+          <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=300&q=80" alt="Galleta" class="w-16 h-16 rounded-xl object-cover shrink-0">
+          <div class="flex-1 min-w-0">
+            <h4 class="font-extrabold text-xs text-brand-textNavy dark:text-white truncate">Galleta Red Velvet</h4>
+            <p class="text-[10px] text-slate-500 truncate">Rellena de queso crema.</p>
+            <div class="flex items-center justify-between mt-1">
+              <span class="text-xs font-black text-brand-textNavy dark:text-white">$25 MXN</span>
+              <button onclick="toggleSelectProduct('Galleta Red Velvet', 25, this)" class="btn-product-select bg-black/5 dark:bg-slate-800 text-brand-textNavy dark:text-white text-[10px] font-bold px-2.5 py-1 rounded-lg active:scale-95">
+                <i class="fa-solid fa-plus mr-1"></i>Agregar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resumen Flotante para Agendar Cita (P8) -->
+      <div class="bg-brand-cardBg dark:bg-slate-900 border-t border-[#D3C7BC] dark:border-slate-800 p-3 rounded-2xl-friendly mt-4 space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-slate-600 font-medium"><strong id="cart-count">0 ítems</strong> seleccionados</span>
+          <span class="text-brand-textNavy dark:text-white font-black">Total: <span id="cart-total" class="text-brand-terracotta">$0 MXN</span></span>
+        </div>
+
+        <button onclick="openP8AppointmentModal()" id="btn-main-appointment" disabled class="w-full bg-slate-300 dark:bg-slate-800 text-slate-500 font-extrabold text-xs py-2.5 rounded-xl transition-all flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-calendar-check"></i>
+          <span>Agendar Cita en Punto Fijo (P8)</span>
+        </button>
+      </div>
+    </main>
+
+    <!-- NAVEGACIÓN INFERIOR (EXPLORAR ACTIVO) -->
+    <nav class="bg-brand-cardBg dark:bg-slate-900 border-t border-[#D3C7BC] dark:border-slate-800 px-6 py-2 shrink-0 flex items-center justify-around z-30">
+      <button class="flex flex-col items-center text-brand-terracotta">
+        <i class="fa-solid fa-store text-lg"></i>
+        <span class="text-[10px] font-bold mt-0.5">Explorar</span>
+      </button>
+
+      <button onclick="alert('Ir a vista Match')" class="flex flex-col items-center text-slate-500">
+        <i class="fa-solid fa-fire text-lg"></i>
+        <span class="text-[10px] font-bold mt-0.5">Match</span>
+      </button>
+
+      <button onclick="alert('Ir a Mis Citas')" class="flex flex-col items-center text-slate-500">
+        <i class="fa-solid fa-clock-rotate-left text-lg"></i>
+        <span class="text-[10px] font-bold mt-0.5">Citas</span>
+      </button>
+
+      <button onclick="alert('Ir al Perfil del Usuario propio')" class="flex flex-col items-center text-slate-500">
+        <i class="fa-solid fa-user text-lg"></i>
+        <span class="text-[10px] font-bold mt-0.5">Mi Perfil</span>
+      </button>
+    </nav>
+
+    <!-- MODAL P8: CONFIRMACIÓN DE CITA (PUNTO BLOQUEADO) -->
+    <div id="p8-appointment-modal" class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-end justify-center hidden">
+      <div class="bg-brand-cardBg dark:bg-slate-900 w-full rounded-t-2xl-friendly p-4 border-t border-[#D3C7BC] dark:border-slate-800 shadow-2xl max-h-[85%] overflow-y-auto no-scrollbar">
+        
+        <div class="w-12 h-1 bg-slate-400 dark:bg-slate-700 rounded-full mx-auto mb-3"></div>
+
+        <div class="flex justify-between items-start mb-3 pb-2 border-b border-[#D3C7BC] dark:border-slate-800">
+          <div>
+            <span class="text-[9px] font-black uppercase tracking-wider text-brand-terracotta">Confirmación de Cita (P8)</span>
+            <h3 class="text-base font-black text-brand-textNavy dark:text-white">Resumen y Hora de Encuentro</h3>
+          </div>
+          <button onclick="closeP8AppointmentModal()" class="text-slate-500 p-1">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <div class="space-y-3">
+          <div class="bg-black/5 dark:bg-slate-800/50 p-3 rounded-xl border border-black/10 dark:border-slate-700/50">
+            <div id="p8-summary-list" class="space-y-1 text-xs font-bold text-brand-textNavy dark:text-white"></div>
+            <div class="mt-2 pt-2 border-t border-black/10 dark:border-slate-700 flex justify-between text-xs">
+              <span class="text-slate-600">Monto total:</span>
+              <strong id="p8-summary-total" class="text-brand-terracotta font-black">$0 MXN</strong>
+            </div>
+          </div>
+
+          <form onsubmit="submitP8Appointment(event)" class="space-y-2.5">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-700 dark:text-slate-300 mb-1 uppercase">Hora estimada de llegada</label>
+              <input type="time" required value="12:30" class="w-full bg-black/5 dark:bg-slate-800 border border-black/10 dark:border-slate-700 text-brand-textNavy dark:text-white rounded-xl px-3 py-2 text-xs font-bold focus:outline-none focus:border-brand-terracotta">
+            </div>
+
+            <!-- PUNTO DE ENTREGA BLOQUEADO SI HAY PUNTO FIJO -->
+            <div>
+              <label class="block text-[10px] font-bold text-slate-700 dark:text-slate-300 mb-1 uppercase">Punto de Entrega (Punto Fijo)</label>
+              <div class="w-full bg-slate-300/70 dark:bg-slate-800 border border-slate-400 dark:border-slate-700 text-slate-800 dark:text-slate-300 rounded-xl px-3 py-2 text-xs font-bold flex items-center justify-between cursor-not-allowed">
+                <span><i class="fa-solid fa-lock text-slate-500 mr-2"></i>Canchas de Basquetbol / CUCEI</span>
+                <span class="text-[9px] bg-slate-400 dark:bg-slate-700 text-slate-900 dark:text-slate-200 font-black px-2 py-0.5 rounded">Fijo</span>
+              </div>
+              <p class="text-[9px] text-slate-500 mt-1">El vendedor ya se encuentra vendiendo en esta ubicación.</p>
+            </div>
+
+            <div>
+              <label class="block text-[10px] font-bold text-slate-700 dark:text-slate-300 mb-1 uppercase">Nota rápida (Opcional)</label>
+              <input type="text" placeholder="Ej: Llevo billete de $100" class="w-full bg-black/5 dark:bg-slate-800 border border-black/10 dark:border-slate-700 text-brand-textNavy dark:text-white rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-brand-terracotta">
+            </div>
+
+            <div class="pt-2">
+              <button type="submit" class="w-full bg-brand-terracotta text-white text-xs font-bold py-3 rounded-xl shadow-md active:bg-red-800 transition-colors flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span>Confirmar y Enviar Solicitud</span>
+              </button>
+            </div>
+          </form>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let selectedProducts = [];
+
+    function toggleSelectProduct(name, price, btn) {
+      const index = selectedProducts.findIndex(p => p.name === name);
+
+      if (index > -1) {
+        selectedProducts.splice(index, 1);
+        btn.className = "btn-product-select bg-black/5 dark:bg-slate-800 text-brand-textNavy dark:text-white text-[10px] font-bold px-2.5 py-1 rounded-lg active:scale-95";
+        btn.innerHTML = `<i class="fa-solid fa-plus mr-1"></i>Agregar`;
+      } else {
+        selectedProducts.push({ name, price });
+        btn.className = "btn-product-select bg-brand-terracotta text-white text-[10px] font-bold px-2.5 py-1 rounded-lg active:scale-95";
+        btn.innerHTML = `<i class="fa-solid fa-check mr-1"></i>Añadido`;
+      }
+
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const countEl = document.getElementById('cart-count');
+      const totalEl = document.getElementById('cart-total');
+      const btnMain = document.getElementById('btn-main-appointment');
+
+      const total = selectedProducts.reduce((sum, item) => sum + item.price, 0);
+
+      countEl.innerText = `${selectedProducts.length} ítems`;
+      totalEl.innerText = `$${total} MXN`;
+
+      if (selectedProducts.length > 0) {
+        btnMain.disabled = false;
+        btnMain.className = "w-full bg-brand-textNavy text-white font-extrabold text-xs py-2.5 rounded-xl shadow-md active:bg-slate-800 transition-all flex items-center justify-center space-x-2 cursor-pointer";
+      } else {
+        btnMain.disabled = true;
+        btnMain.className = "w-full bg-slate-300 dark:bg-slate-800 text-slate-500 font-extrabold text-xs py-2.5 rounded-xl transition-all flex items-center justify-center space-x-2";
+      }
+    }
+
+    function openP8AppointmentModal() {
+      const listEl = document.getElementById('p8-summary-list');
+      const totalEl = document.getElementById('p8-summary-total');
+
+      listEl.innerHTML = selectedProducts.map(p => `<div class="flex justify-between"><span>• ${p.name}</span><span>$${p.price} MXN</span></div>`).join('');
+      
+      const total = selectedProducts.reduce((sum, item) => sum + item.price, 0);
+      totalEl.innerText = `$${total} MXN`;
+
+      document.getElementById('p8-appointment-modal').classList.remove('hidden');
+    }
+
+    function closeP8AppointmentModal() {
+      document.getElementById('p8-appointment-modal').classList.add('hidden');
+    }
+
+    function submitP8Appointment(e) {
+      e.preventDefault();
+      alert("¡Solicitud enviada! Podrás consultar el estado en la pestaña 'Citas'.");
+      closeP8AppointmentModal();
+    }
+  </script>
+</body>
+</html>

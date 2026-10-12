@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>UDG Market - P14 Perfil (Corregido)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              terracotta: '#D04836',
+              arenaBg: '#E8DFD8',
+              cardBg: '#F8F4F0',
+              textNavy: '#212930',
+              mint: '#228276',
+              yellow: '#E9C46A'
+            }
+          },
+          borderRadius: {
+            'xl-friendly': '1.25rem',
+            '2xl-friendly': '1.75rem',
+            'app': '2.5rem'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body id="body-root" class="bg-slate-900 font-sans antialiased min-h-screen flex items-center justify-center p-0 sm:p-4 select-none">
+
+  <!-- FRAME DISPOSITIVO MÓVIL -->
+  <div class="w-full max-w-md h-screen sm:h-[844px] bg-brand-arenaBg dark:bg-slate-950 sm:rounded-app shadow-2xl overflow-hidden flex flex-col relative border-0 sm:border-[8px] sm:border-slate-800 transition-colors duration-300">
+
+    <!-- HEADER OFICIAL DE LA APP -->
+    <header class="bg-brand-cardBg dark:bg-slate-900 border-b border-[#D3C7BC] dark:border-slate-800 px-4 py-3 shrink-0 flex items-center justify-between z-30">
+      <div class="flex items-center space-x-2.5">
+        <div class="w-8 h-8 rounded-xl overflow-hidden shadow-md flex items-center justify-center bg-brand-cardBg">
+  <img src="Gemini_Generated_Image_74l34374l34374l3.jpeg" alt="UDG Market Logo" class="w-full h-full object-cover">
+</div>
+        <div>
+          <h1 class="font-black text-base tracking-tight text-brand-textNavy dark:text-white leading-tight">UDG Market</h1>
+          <p class="text-[10px] font-semibold text-brand-terracotta">Mi Perfil</p>
+        </div>
+      </div>
+
+      <span class="bg-blue-100 dark:bg-blue-950/80 text-blue-900 dark:text-blue-300 text-[9px] font-extrabold px-2.5 py-1 rounded-full border border-blue-300 dark:border-blue-800 flex items-center">
+        <i class="fa-solid fa-shield-halved text-blue-600 mr-1 text-[10px]"></i>SIIAU Verificado
+      </span>
+    </header>
+
+    <!-- ÁREA PRINCIPAL SCROLLABLE (CORREGIDO: PB-12 PARA QUE EL SCROLL NO SE CORTE) -->
+    <main class="flex-1 overflow-y-auto no-scrollbar p-4 pb-12 space-y-4">
+
+      <!-- 1. TARJETA DE IDENTIDAD Y ESTADO DE ROL -->
+      <div class="bg-brand-cardBg dark:bg-slate-900 rounded-2xl-friendly p-4 border border-[#D3C7BC] dark:border-slate-800 shadow-md relative overflow-hidden space-y-3">
+        
+        <div class="flex justify-between items-center border-b border-black/10 dark:border-slate-800 pb-2.5">
+          <span id="role-badge" class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-black px-2.5 py-1 rounded-full border border-slate-300 dark:border-slate-700 flex items-center">
+            <i class="fa-solid fa-bag-shopping mr-1.5 text-brand-terracotta"></i>Modo Comprador
+          </span>
+          
+          <span class="bg-amber-100 text-amber-900 text-[10px] font-black px-2 py-0.5 rounded-md border border-amber-300 flex items-center">
+            <i class="fa-solid fa-star text-amber-600 mr-1 text-[9px]"></i>4.9 Comprador
+          </span>
+        </div>
+
+        <div class="flex items-center space-x-3.5">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80" alt="Usuario" class="w-16 h-16 rounded-2xl object-cover border-2 border-brand-terracotta">
+            <span class="absolute -bottom-1 -right-1 bg-blue-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-[10px] border-2 border-white">
+              <i class="fa-solid fa-check"></i>
+            </span>
+          </div>
+
+          <div class="flex-1 min-w-0">
+            <h2 class="text-base font-black text-brand-textNavy dark:text-white truncate">Mateo Hernández</h2>
+            <p class="text-xs font-semibold text-slate-600 dark:text-slate-400">Ing. Computación • CUCEI</p>
+            <p class="text-[10px] text-slate-500 font-mono mt-0.5">Código: 2187*****</p>
+          </div>
+        </div>
+
+        <!-- MÉRITOS DE VENDEDOR -->
+        <div id="vendor-stats-section" class="hidden grid-cols-2 gap-2 pt-2 border-t border-black/10 dark:border-slate-800 text-center">
+          <div class="bg-black/5 dark:bg-slate-800/50 p-2 rounded-xl">
+            <p class="text-[9px] text-slate-500 uppercase font-bold">Ventas Realizadas</p>
+            <p class="text-xs font-black text-brand-textNavy dark:text-white mt-0.5">34 entregas</p>
+          </div>
+          <div class="bg-black/5 dark:bg-slate-800/50 p-2 rounded-xl">
+            <p class="text-[9px] text-slate-500 uppercase font-bold">Medallas Vendedor</p>
+            <p class="text-xs font-black text-amber-700 dark:text-amber-400 mt-0.5">Puntual y Confiable</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. SWITCH PARA ACTIVAR MODO VENDEDOR -->
+      <div class="bg-brand-cardBg dark:bg-slate-900 rounded-2xl-friendly p-4 border border-[#D3C7BC] dark:border-slate-800 shadow-md space-y-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-xs font-black text-brand-textNavy dark:text-white uppercase tracking-wider">Activar Modo Vendedor</h3>
+            <p class="text-[10px] text-slate-500">Habilita tu catálogo y vende en el campus</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="toggle-vendor-mode" onchange="toggleVendorMode(this)" class="sr-only peer">
+            <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-terracotta"></div>
+          </label>
+        </div>
+
+        <!-- REGISTRO DE TELÉFONO (CORREGIDO: OCULTO POR DEFECTO HASTA QUE SE INTENTE ACTIVAR) -->
+        <div id="phone-registration-block" class="hidden space-y-2 pt-1 border-t border-black/10 dark:border-slate-800">
+          <div class="bg-amber-100 border border-amber-300 p-2.5 rounded-xl flex items-start space-x-2 text-xs text-amber-900">
+            <i class="fa-solid fa-asterisk text-brand-terracotta mt-0.5 shrink-0 text-[10px]"></i>
+            <p class="text-[10px] leading-relaxed">
+              <strong>Requisito Obligatorio:</strong> Ingresa tu número de WhatsApp de 10 dígitos para que los compradores te contacten.
+            </p>
+          </div>
+
+          <div class="flex space-x-2">
+            <input type="tel" id="user-phone-input" value="" placeholder="Ej: 33 0000 0000" class="flex-1 bg-black/5 dark:bg-slate-800 border border-black/10 dark:border-slate-700 text-brand-textNavy dark:text-white rounded-xl px-3 py-2 text-xs font-bold focus:outline-none focus:border-brand-terracotta">
+            <button onclick="savePhoneNumber()" class="bg-brand-textNavy text-white text-xs font-bold px-3 py-2 rounded-xl active:scale-95">
+              Guardar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. SECCIÓN MI CATÁLOGO DE PRODUCTOS -->
+      <div id="vendor-catalog-menu" class="hidden bg-brand-cardBg dark:bg-slate-900 rounded-2xl-friendly p-4 border border-[#D3C7BC] dark:border-slate-800 shadow-md space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xs font-black text-brand-textNavy dark:text-white uppercase tracking-wider">Mi Catálogo de Productos</h3>
+          <span class="text-[10px] text-slate-500 font-bold">2 activos</span>
+        </div>
+
+        <button onclick="alert('Ir a P12: Pantalla para Agregar Producto')" class="w-full bg-brand-terracotta text-white font-extrabold text-xs py-3 rounded-xl shadow-md active:bg-red-800 transition-colors flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-circle-plus text-sm"></i>
+          <span>Agregar Nuevo Producto (P12)</span>
+        </button>
+
+        <div class="space-y-2 pt-1">
+          <div class="bg-black/5 dark:bg-slate-800/50 p-2.5 rounded-xl flex items-center justify-between">
+            <div class="flex items-center space-x-2.5">
+              <img src="https://images.unsplash.com/photo-1551024709-8f23be0ed295?auto=format&fit=crop&w=150&q=80" class="w-10 h-10 rounded-lg object-cover">
+              <div>
+                <h4 class="text-xs font-bold text-brand-textNavy dark:text-white">Donas Glaseadas (Par)</h4>
+                <p class="text-[10px] text-slate-500">$25 MXN • Stock: 5 disp.</p>
+              </div>
+            </div>
+            <button class="text-slate-400 hover:text-brand-terracotta p-1"><i class="fa-solid fa-pen-to-square text-xs"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. SECCIÓN PREFERENCIA DE CITAS Y HORARIOS -->
+      <div id="vendor-appointment-menu" class="hidden bg-brand-cardBg dark:bg-slate-900 rounded-2xl-friendly p-4 border border-[#D3C7BC] dark:border-slate-800 shadow-md space-y-3">
+        <h3 class="text-xs font-black text-brand-textNavy dark:text-white uppercase tracking-wider">Preferencia de Citas y Venta</h3>
+
+        <div class="flex items-center justify-between border-b border-black/10 dark:border-slate-800 pb-2.5">
+          <div>
+            <p class="text-xs font-bold text-brand-textNavy dark:text-white">Activo para Vender Ahora</p>
+            <p class="text-[10px] text-slate-500">Muestra tu perfil como disponible en el campus</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" checked class="sr-only peer">
+            <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+          </label>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase">Modalidad de Venta Hoy</label>
+          
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="setSalesMode('appointment')" id="btn-mode-appointment" class="p-2.5 rounded-xl border border-brand-terracotta bg-black/5 text-left text-xs font-bold text-brand-textNavy dark:text-white flex flex-col justify-between">
+              <div class="flex items-center justify-between w-full mb-1">
+                <i class="fa-solid fa-calendar-check text-brand-terracotta"></i>
+                <i id="check-appointment" class="fa-solid fa-circle-check text-brand-terracotta text-xs"></i>
+              </div>
+              <span class="text-[11px] font-black">Solo Cita</span>
+              <span class="text-[9px] text-slate-500 font-normal">Acuerda horario previa solicitud</span>
+            </button>
+
+            <button onclick="setSalesMode('fixed')" id="btn-mode-fixed" class="p-2.5 rounded-xl border border-black/10 text-left text-xs font-bold text-slate-500 flex flex-col justify-between">
+              <div class="flex items-center justify-between w-full mb-1">
+                <i class="fa-solid fa-location-dot"></i>
+                <i id="check-fixed" class="fa-solid fa-circle-check text-xs hidden"></i>
+              </div>
+              <span class="text-[11px] font-black">Punto Fijo</span>
+              <span class="text-[9px] font-normal">Vende en una ubicación fija hoy</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="fixed-point-settings" class="hidden space-y-2 pt-1 border-t border-black/10 dark:border-slate-800">
+          <div>
+            <label class="block text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Ubicación Fija en UDG</label>
+            <select class="w-full bg-black/5 dark:bg-slate-800 border border-black/10 dark:border-slate-700 text-brand-textNavy dark:text-white rounded-xl px-3 py-2 text-xs font-bold focus:outline-none focus:border-brand-terracotta">
+              <option>Canchas de Basquetbol / CUCEI</option>
+              <option>Entrada Módulo O</option>
+              <option>Bancas de Rectoría CUCEI</option>
+              <option>Biblioteca Central</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Hora Inicio</label>
+              <input type="time" value="11:00" class="w-full bg-black/5 dark:bg-slate-800 border border-black/10 dark:border-slate-700 text-brand-textNavy dark:text-white rounded-xl px-2.5 py-1.5 text-xs font-bold">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase mb-1">Hora Fin</label>
+              <input type="time" value="15:00" class="w-full bg-black/5 dark:bg-slate-800 border border-black/10 dark:border-slate-700 text-brand-textNavy dark:text-white rounded-xl px-2.5 py-1.5 text-xs font-bold">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. OPCIÓN DE CERRAR SESIÓN -->
+      <div class="pt-2">
+        <button onclick="alert('Sesión cerrada correctamente')" class="w-full bg-black/5 dark:bg-slate-800 text-rose-600 font-extrabold text-xs py-2.5 rounded-xl border border-black/10 dark:border-slate-700 hover:bg-rose-50 transition-colors flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span>Cerrar Sesión (SIIAU UDG)</span>
+        </button>
+      </div>
+
+    </main>
+
+    <!-- NAVEGACIÓN INFERIOR -->
+    <nav class="bg-brand-cardBg dark:bg-slate-900 border-t border-[#D3C7BC] dark:border-slate-800 px-6 py-2 shrink-0 flex items-center justify-around z-30">
+      <button onclick="alert('Ir a Explorar')" class="flex flex-col items-center text-slate-500">
+        <i class="fa-solid fa-store text-lg"></i>
+        <span class="text-[10px] font-bold mt-0.5">Explorar</span>
+      </button>
+
+      <button onclick="alert('Ir a Match')" class="flex flex-col items-center text-slate-500">
+        <i class="fa-solid fa-fire text-lg"></i>
+        <span class="text-[10px] font-bold mt-0.5">Match</span>
+      </button>
+
+      <button onclick="alert('Ir a Mis Citas')" class="flex flex-col items-center text-slate-500">
+        <i class="fa-solid fa-clock-rotate-left text-lg"></i>
+        <span class="text-[10px] font-bold mt-0.5">Citas</span>
+      </button>
+
+      <button class="flex flex-col items-center text-brand-terracotta">
+        <i class="fa-solid fa-user text-lg"></i>
+        <span class="text-[10px] font-bold mt-0.5">Mi Perfil</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- SCRIPT CON LÓGICA CORREGIDA -->
+  <script>
+    let isVendorMode = false;
+    let savedPhoneNumber = ""; // Simula el teléfono guardado en BD
+
+    function toggleVendorMode(checkbox) {
+      const phoneBlock = document.getElementById('phone-registration-block');
+      const vendorStats = document.getElementById('vendor-stats-section');
+      const vendorCatalog = document.getElementById('vendor-catalog-menu');
+      const vendorAppointment = document.getElementById('vendor-appointment-menu');
+      const roleBadge = document.getElementById('role-badge');
+
+      if (checkbox.checked) {
+        // CORRECCIÓN: Si no hay teléfono registrado, no deja encender el switch
+        if (!savedPhoneNumber.trim()) {
+          alert("Debes registrar y guardar tu teléfono de WhatsApp primero.");
+          checkbox.checked = false; // Mantiene el switch apagado
+          phoneBlock.classList.remove('hidden'); // Muestra el campo para que lo registre
+          return;
+        }
+
+        // Si ya hay teléfono guardado, activa correctamente el Modo Vendedor
+        isVendorMode = true;
+        phoneBlock.classList.add('hidden');
+        vendorStats.classList.remove('hidden');
+        vendorStats.classList.add('grid');
+        vendorCatalog.classList.remove('hidden');
+        vendorAppointment.classList.remove('hidden');
+
+        roleBadge.className = "bg-brand-terracotta text-white text-[10px] font-black px-2.5 py-1 rounded-full flex items-center shadow-sm";
+        roleBadge.innerHTML = `<i class="fa-solid fa-store mr-1.5"></i>Modo Vendedor Activo`;
+      } else {
+        // Regresa a Modo Comprador
+        isVendorMode = false;
+        phoneBlock.classList.add('hidden');
+        vendorStats.classList.add('hidden');
+        vendorStats.classList.remove('grid');
+        vendorCatalog.classList.add('hidden');
+        vendorAppointment.classList.add('hidden');
+
+        roleBadge.className = "bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-black px-2.5 py-1 rounded-full border border-slate-300 dark:border-slate-700 flex items-center";
+        roleBadge.innerHTML = `<i class="fa-solid fa-bag-shopping mr-1.5 text-brand-terracotta"></i>Modo Comprador`;
+      }
+    }
+
+    function savePhoneNumber() {
+      const phoneInput = document.getElementById('user-phone-input');
+      const phoneBlock = document.getElementById('phone-registration-block');
+      const vendorSwitch = document.getElementById('toggle-vendor-mode');
+
+      if (phoneInput.value.trim().length >= 10) {
+        savedPhoneNumber = phoneInput.value.trim();
+        alert("¡WhatsApp guardado correctamente! Ya puedes activar el Modo Vendedor.");
+        phoneBlock.classList.add('hidden');
+        
+        // Activa automáticamente el switch una vez guardado
+        vendorSwitch.checked = true;
+        toggleVendorMode(vendorSwitch);
+      } else {
+        alert("Por favor ingresa un número de teléfono válido a 10 dígitos.");
+      }
+    }
+
+    function setSalesMode(mode) {
+      const btnAppointment = document.getElementById('btn-mode-appointment');
+      const btnFixed = document.getElementById('btn-mode-fixed');
+      const checkAppointment = document.getElementById('check-appointment');
+      const checkFixed = document.getElementById('check-fixed');
+      const fixedSettings = document.getElementById('fixed-point-settings');
+
+      if (mode === 'appointment') {
+        btnAppointment.className = "p-2.5 rounded-xl border border-brand-terracotta bg-black/5 text-left text-xs font-bold text-brand-textNavy dark:text-white flex flex-col justify-between";
+        btnFixed.className = "p-2.5 rounded-xl border border-black/10 text-left text-xs font-bold text-slate-500 flex flex-col justify-between";
+        checkAppointment.classList.remove('hidden');
+        checkFixed.classList.add('hidden');
+        fixedSettings.classList.add('hidden');
+      } else {
+        btnFixed.className = "p-2.5 rounded-xl border border-brand-terracotta bg-black/5 text-left text-xs font-bold text-brand-textNavy dark:text-white flex flex-col justify-between";
+        btnAppointment.className = "p-2.5 rounded-xl border border-black/10 text-left text-xs font-bold text-slate-500 flex flex-col justify-between";
+        checkFixed.classList.remove('hidden');
+        checkAppointment.classList.add('hidden');
+        fixedSettings.classList.remove('hidden');
+      }
+    }
+  </script>
+</body>
+</html>
