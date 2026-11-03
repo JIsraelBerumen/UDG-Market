@@ -1,0 +1,72 @@
+# 📝 Registro de Deuda Técnica
+**Proyecto:** UDG-MARKET
+**Última actualización:** 2026-10-29
+**Total de deudas registradas:** 3
+
+---
+
+## 📊 Resumen
+| Prioridad | Cantidad | Resueltas |
+|-----------|----------|-----------|
+| 🔴 Alta   | 3        | 1         |
+| 🟡 Media  | 0        | 0         |
+| 🟢 Baja   | 0        | 0         |
+| **Total** | **3**    | **1**     |
+
+---
+
+## 🔴 Deudas de Prioridad Alta
+
+### DT-001: Módulo de login incompleto
+| Campo | Detalle |
+|-------|---------|
+| **Descripción** | Aún no se ha terminado el módulo del login para hacer las pruebas de integración. |
+| **Ubicación** | Módulo Auth / Login |
+| **Impacto** | Alto |
+| **Prioridad** | Alta |
+| **Solución propuesta** | Revisar la estructura actual de los inputs y completar la conexión con la base de datos/Firebase. |
+| **Esfuerzo estimado** | S |
+| **Responsable** | Benito Flores |
+| **Fecha de registro** | 2026-10-29 |
+| **Estado** | En progreso |
+
+**Detalle:**
+- [ ] Criterio 1: Que el módulo de login siga la estructura visual acordada (tipografía, colores de Tailwind).
+- [ ] Criterio 2: Que el módulo registre correctamente el correo y nombre del usuario en la base de datos.
+
+---
+
+### DT-002: Pantalla de gestión de compra faltante en Match
+| Campo | Detalle |
+|-------|---------|
+| **Descripción** | El módulo de match no muestra una opción de compra al hacer match con algún producto. |
+| **Ubicación** | Módulo Match |
+| **Impacto** | Alto |
+| **Prioridad** | Alta |
+| **Solución propuesta** | Al seleccionar la opción de match (dar me gusta), lanzar una nueva pantalla modal con las opciones para gestionar la compra. |
+| **Esfuerzo estimado** | M |
+| **Responsable** | Christopher Herrera |
+| **Fecha de registro** | 2026-10-29 |
+| **Estado** | En progreso |
+
+---
+
+### DT-003: Código de pantallas duplicado en ramas
+| Campo | Detalle |
+|-------|---------|
+| **Descripción** | Por falta de comunicación en el control de versiones, se duplicaron las pantallas de dashboard y match en 3 ramas distintas. |
+| **Ubicación** | Ramas: mariana_uwu, main, venom |
+| **Impacto** | Alto |
+| **Prioridad** | Alta |
+| **Solución propuesta** | Se acordó en el Sprint Review hacer una limpieza de repositorio y eliminar los archivos duplicados de las ramas secundarias. |
+| **Esfuerzo estimado** | S |
+| **Responsable** | Jahir Israel Berumen |
+| **Fecha de registro** | 2026-10-28 |
+| **Estado** | Resuelta |
+
+---
+
+## 📖 Historial de Actualizaciones
+| Fecha | Cambio | Autor |
+|-------|--------|-------|
+| 2026-10-29 | Registro inicial de deudas técnicas y limpieza de código duplicado | Christopher Herrera |
