@@ -1,0 +1,35 @@
+# ADR-001: Definición del Stack Tecnológico Base (Web, Móvil y Backend)
+
+## Contexto
+El desarrollo de **Campus Market (UDGMarket)** requiere una arquitectura tecnológica capaz de soportar múltiples interfaces de usuario (web y móvil) y un backend que maneje concurrencia de datos en tiempo real (control de stock, reservas con tokens y negociación de horarios). Al ser un MVP gestionado en un entorno académico, los recursos de infraestructura y el tiempo de desarrollo son limitados. Se necesita un ecosistema que permita iteración rápida, escalabilidad inicial sin costos de servidor y compatibilidad con interfaces fluidas (como el módulo de descubrimiento *Swipe*).
+
+## Decisión
+Se establece el siguiente stack tecnológico para las distintas capas de la plataforma:
+* **Backend y Base de Datos:** Firebase (Firestore, Authentication, Hosting).
+* **Frontend Web (Portal/Catálogo):** HTML5, CSS3 y JavaScript (Vanilla).
+* **Frontend Móvil (App nativa):** Flutter (Dart).
+
+## Justificación
+* **Firebase:** Actuará como *Backend-as-a-Service* (BaaS). Su módulo de **Authentication** resuelve directamente la validación de dominios para restringir el acceso a correos institucionales. **Firestore** (base de datos NoSQL) provee sincronización de datos en tiempo real, lo que es crítico para descontar el stock al instante cuando un usuario aparta un producto, evitando la sobreventa sin necesidad de configurar WebSockets manuales.
+* **HTML/CSS:** Su uso para el portal web garantiza tiempos de carga ultrarrápidos, nula dependencia de paquetes externos (NPM/Node modules) y facilita la indexación inicial. Es la vía de acceso más rápida y ligera para los estudiantes que navegan desde computadoras en los laboratorios o la biblioteca del campus.
+* **Flutter:** Es el framework ideal para desarrollar el módulo móvil multiplataforma (iOS y Android) con un solo código base. Su motor de renderizado interno asegura 60 FPS consistentes, lo cual es un requisito técnico indispensable para que la funcionalidad de arrastrar tarjetas (*Swipe* tipo Tinder) se sienta natural y sin retrasos en cualquier dispositivo.
+
+## Consecuencias
+
+**Positivas:**
+* **Velocidad de comercialización (Time-to-Market):** El uso de Firebase elimina la necesidad de programar una API REST desde cero o configurar servidores, acelerando el lanzamiento del MVP.
+* **Unificación móvil:** Mantener una sola base de código en Flutter reduce a la mitad el esfuerzo de programación y mantenimiento frente al desarrollo nativo individual (Android / iOS).
+* **Ecosistema integrado:** Las librerías de Firebase tienen soporte oficial de primera clase tanto en Vanilla JS como en Flutter, asegurando que ambas plataformas lean la misma base de datos sin fricción.
+
+**Negativas (Riesgos):**
+* **Vendor Lock-in (Dependencia del proveedor):** La lógica de la aplicación quedará fuertemente acoplada a la infraestructura privativa de Google. Migrar a un backend propio en el futuro requeriría reescribir la capa de datos.
+* **Doble mantenimiento de interfaz:** El equipo deberá mantener dos bases de código visual (el HTML/CSS para web y los Widgets de Flutter para móvil) que hacen funcionalmente lo mismo.
+* **Diseño de datos NoSQL:** Al no usar bases de datos relacionales, las relaciones complejas (ej. Usuario -> Orden -> Producto -> Vendedor) deben estructurarse cuidadosamente, desnormalizando datos para evitar sobrecostos por exceso de lecturas.
+
+## Alternativas Consideradas
+1. **Backend tradicional (Node.js + MySQL):** 
+   * *Por qué se descartó:* Implica alquilar y configurar un servidor virtual, diseñar esquemas relacionales y programar endpoints. Alarga drásticamente el tiempo de desarrollo para un MVP.
+2. **Móvil (React Native):** 
+   * *Por qué se descartó:* Aunque permite desarrollo multiplataforma, su rendimiento en animaciones complejas basadas en gestos depende de puentes de comunicación con código nativo, haciéndolo propenso a caídas de fotogramas frente al renderizado directo de Flutter.
+3. **Frontend Web (React o Angular):** 
+   * *Por qué se descartó:* Para las funcionalidades iniciales, integrar un framework SPA completo añadía una curva de complejidad innecesaria y requería montar procesos de construcción (Webpack/Vite). HTML/CSS puro resuelve el MVP web de forma eficiente.

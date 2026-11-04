@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Recuperar Contraseña - UDG Market</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome para íconos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Tipografía Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] min-h-screen flex items-center justify-center p-4 md:p-8 antialiased">
+    
+    <!-- Contenedor Principal (Tarjeta Minimalista - Ley de Hick) -->
+    <main class="w-full max-w-sm bg-white rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 p-6 md:p-8 relative overflow-hidden">
+        
+        <!-- Detalle visual superior -->
+        <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#FF7A59] to-[#FBBF24]"></div>
+
+        <!-- Ícono Principal -->
+        <div class="w-16 h-16 bg-orange-50 text-[#FF7A59] rounded-[20px] flex items-center justify-center font-bold text-3xl mx-auto mb-5 border border-orange-100 shadow-sm">
+            <i class="fa-solid fa-unlock-keyhole"></i>
+        </div>
+
+        <!-- Encabezado y Visibilidad del Estado (Nielsen #1) -->
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-extrabold text-[#1E293B] tracking-tight">¿Olvidaste tu NIP?</h1>
+            <p class="text-sm text-slate-500 font-medium mt-2 leading-relaxed">
+                No te preocupes. Ingresa tu correo institucional y te enviaremos un enlace seguro para crear una nueva contraseña.
+            </p>
+        </div>
+
+        <!-- Formulario (Un solo campo - Ley de Hick) -->
+        <form class="space-y-6">
+            
+            <div class="space-y-1.5">
+                <label for="email" class="text-[12px] font-bold text-[#1E293B] ml-1 uppercase tracking-wide">Correo Institucional</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fa-regular fa-envelope text-slate-400"></i>
+                    </div>
+                    <!-- Input grande (Ley de Fitts) -->
+                    <input type="email" id="email" placeholder="tucorreo@alumnos.udg.mx" class="w-full bg-slate-50 border border-slate-200 text-[#1E293B] text-sm rounded-2xl focus:ring-2 focus:ring-[#FF7A59]/20 focus:border-[#FF7A59] block pl-11 p-3.5 transition-all outline-none" required>
+                </div>
+            </div>
+
+            <!-- Botón de Envío (Ley de Fitts: Gigante y accesible) -->
+            <button type="submit" class="w-full bg-[#1E293B] hover:bg-slate-800 text-white font-extrabold rounded-2xl text-[15px] px-5 py-4 text-center transition-transform active:scale-[0.98] shadow-md flex justify-center items-center gap-2">
+                Enviar enlace de recuperación <i class="fa-solid fa-paper-plane text-sm"></i>
+            </button>
+            
+        </form>
+
+        <!-- Control y Libertad del Usuario (Nielsen #3) -->
+        <div class="mt-8 text-center">
+            <a href="login.html" class="text-slate-400 hover:text-[#1E293B] transition-colors flex items-center justify-center gap-2 text-[13px] font-bold">
+                <i class="fa-solid fa-arrow-left"></i> Volver a Iniciar Sesión
+            </a>
+        </div>
+        
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Nuevo Artículo - UDG Market</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    .scrollbar-none::-webkit-scrollbar { display: none; }
+    .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+    /* Quita las flechas nativas del input numérico (usamos nuestros botones − / +) */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; }
+  </style>
+</head>
+<body class="bg-[#F8FAFC] text-[#1E293B] font-sans antialiased">
+
+  <!-- ===== Header fijo ===== -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-100 pt-[env(safe-area-inset-top)]">
+    <div class="max-w-2xl mx-auto h-14 px-3 sm:px-4 flex items-center justify-between">
+      <a href="index.html" aria-label="Volver / Cancelar" class="w-12 h-12 -ml-1 rounded-full flex items-center justify-center text-[#1E293B] hover:bg-slate-100 active:bg-slate-200 transition">
+        <i class="fa-solid fa-arrow-left text-lg"></i>
+      </a>
+      <h1 class="text-base sm:text-lg font-bold text-[#1E293B]">Nuevo Artículo</h1>
+      <button id="btn-draft" type="button" class="h-12 px-3 -mr-1 rounded-full text-sm font-semibold text-slate-500 hover:text-[#1E293B] hover:bg-slate-100 transition">Borrador</button>
+    </div>
+  </header>
+
+  <form id="publish-form" class="max-w-2xl mx-auto px-4 pt-5 pb-44 space-y-5" novalidate>
+
+    <!-- ===== Tarjeta 1: Foto y detalles básicos ===== -->
+    <section class="space-y-5">
+      <!-- Carga de imagen -->
+      <div>
+        <input id="photo-input" type="file" accept="image/*" class="sr-only" />
+        <label id="photo-drop" for="photo-input" tabindex="0"
+          class="relative block w-full aspect-video min-h-[200px] rounded-3xl bg-slate-100 border-2 border-dashed border-slate-300 hover:border-[#FF7A59] hover:bg-orange-50/50 cursor-pointer overflow-hidden transition focus-within:ring-2 focus-within:ring-[#FF7A59]">
+          <!-- Estado vacío -->
+          <div id="photo-empty" class="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center px-6">
+            <span class="w-16 h-16 rounded-full bg-white shadow-sm flex items-center justify-center text-[#FF7A59]"><i class="fa-solid fa-camera text-3xl"></i></span>
+            <span class="font-bold text-[#1E293B]">Toca para subir una foto</span>
+            <span class="text-xs text-slate-500">JPG o PNG · Una buena foto vende más</span>
+          </div>
+          <!-- Estado cargado -->
+          <img id="photo-preview" alt="Vista previa del artículo" class="hidden absolute inset-0 w-full h-full object-cover" />
+          <span id="photo-ok" class="hidden absolute top-3 left-3 items-center gap-1.5 bg-[#34D399] text-slate-900 text-xs font-bold px-3 py-1.5 rounded-full shadow"><i class="fa-solid fa-circle-check"></i> Foto lista</span>
+          <span id="photo-change" class="hidden absolute bottom-3 right-3 items-center gap-1.5 bg-white/95 text-[#1E293B] text-xs font-bold px-3 py-2 rounded-full shadow"><i class="fa-solid fa-arrows-rotate"></i> Cambiar foto</span>
+        </label>
+        <button id="photo-remove" type="button" class="hidden mt-2 h-12 px-3 text-sm font-semibold text-red-500 hover:bg-red-50 rounded-xl transition"><i class="fa-regular fa-trash-can mr-1.5"></i>Quitar foto</button>
+      </div>
+
+      <!-- Detalles -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 sm:p-5 space-y-4">
+        <div>
+          <label for="title" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1">Título del producto</label>
+          <input id="title" type="text" maxlength="60" required placeholder="Ej. Brownies de doble chocolate"
+            class="w-full h-14 px-4 rounded-xl bg-slate-50 border border-transparent text-base font-semibold placeholder:font-normal placeholder:text-slate-400 focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20 transition" />
+          <p class="mt-1 text-right text-[11px] text-slate-400"><span id="title-count">0</span>/60</p>
+        </div>
+        <div>
+          <label for="desc" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1">Descripción <span class="normal-case font-medium text-slate-400">(opcional)</span></label>
+          <textarea id="desc" rows="4" maxlength="240" placeholder="Ej. Hechos en casa, entrego en CUCEA entre clases..."
+            class="w-full min-h-[112px] px-4 py-3.5 rounded-xl bg-slate-50 border border-transparent text-base placeholder:text-slate-400 resize-none focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20 transition"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Tarjeta 2: Precio y clasificación ===== -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 sm:p-5 space-y-5">
+      <div class="grid grid-cols-2 gap-3">
+        <!-- Precio -->
+        <div>
+          <label for="price" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1">Precio</label>
+          <div class="relative">
+            <span class="absolute left-0 inset-y-0 w-12 flex items-center justify-center text-slate-500"><i class="fa-solid fa-dollar-sign"></i></span>
+            <input id="price" type="number" inputmode="decimal" min="0" step="1" placeholder="0" required
+              class="w-full h-14 pl-12 pr-12 rounded-xl bg-slate-50 border border-transparent text-lg font-bold placeholder:text-slate-300 focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20 transition" />
+            <span class="absolute right-3 inset-y-0 flex items-center text-[11px] font-bold text-slate-400">MXN</span>
+          </div>
+        </div>
+        <!-- Stock -->
+        <div>
+          <label for="stock" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1">Cantidad</label>
+          <div class="flex items-center h-14 rounded-xl bg-slate-50 overflow-hidden focus-within:ring-2 focus-within:ring-[#FF7A59]/30">
+            <button type="button" data-step="-1" aria-label="Disminuir cantidad" class="w-12 h-14 shrink-0 text-[#1E293B] hover:bg-slate-200 active:bg-slate-300 transition"><i class="fa-solid fa-minus"></i></button>
+            <input id="stock" type="number" inputmode="numeric" min="1" max="999" value="1" aria-label="Cantidad disponible"
+              class="flex-1 min-w-0 h-full text-center text-lg font-bold bg-transparent focus:outline-none" />
+            <button type="button" data-step="1" aria-label="Aumentar cantidad" class="w-12 h-14 shrink-0 text-[#1E293B] hover:bg-slate-200 active:bg-slate-300 transition"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Categoría (chips) -->
+      <div>
+        <p class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">Categoría</p>
+        <div id="chips" role="radiogroup" aria-label="Categoría" class="scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0 flex gap-2.5 overflow-x-auto sm:flex-wrap">
+          <button type="button" role="radio" aria-checked="false" data-cat="Postres"  class="chip shrink-0 h-12 px-5 rounded-full text-sm font-semibold border bg-white text-[#1E293B] border-slate-200 transition"><i class="fa-solid fa-cookie-bite mr-2"></i>Postres</button>
+          <button type="button" role="radio" aria-checked="false" data-cat="Comida"   class="chip shrink-0 h-12 px-5 rounded-full text-sm font-semibold border bg-white text-[#1E293B] border-slate-200 transition"><i class="fa-solid fa-burger mr-2"></i>Comida</button>
+          <button type="button" role="radio" aria-checked="false" data-cat="Apuntes"  class="chip shrink-0 h-12 px-5 rounded-full text-sm font-semibold border bg-white text-[#1E293B] border-slate-200 transition"><i class="fa-solid fa-book-open mr-2"></i>Apuntes</button>
+          <button type="button" role="radio" aria-checked="false" data-cat="Ropa"     class="chip shrink-0 h-12 px-5 rounded-full text-sm font-semibold border bg-white text-[#1E293B] border-slate-200 transition"><i class="fa-solid fa-shirt mr-2"></i>Ropa</button>
+          <button type="button" role="radio" aria-checked="false" data-cat="Servicios" class="chip shrink-0 h-12 px-5 rounded-full text-sm font-semibold border bg-white text-[#1E293B] border-slate-200 transition"><i class="fa-solid fa-print mr-2"></i>Servicios</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Tarjeta 3: Entrega en campus ===== -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 sm:p-5 space-y-5">
+      <h2 class="text-xs font-bold uppercase tracking-wide text-slate-500">Entrega en el campus</h2>
+
+      <!-- Toggle disponibilidad -->
+      <div class="flex items-center justify-between gap-4 min-h-[56px]">
+        <div class="min-w-0">
+          <p id="avail-title" class="font-bold">¿Disponible ahora?</p>
+          <p id="avail-sub" class="text-xs text-slate-500">Aparecerás como “Vendiendo ahora”</p>
+        </div>
+        <button id="avail-toggle" type="button" role="switch" aria-checked="true" aria-labelledby="avail-title"
+          class="relative shrink-0 w-16 h-9 rounded-full bg-[#34D399] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#34D399]">
+          <span id="avail-knob" class="absolute top-1 left-1 w-7 h-7 rounded-full bg-white shadow transition-transform translate-x-7"></span>
+        </button>
+      </div>
+
+      <!-- Hora (solo si NO está disponible ahora) -->
+      <div id="later-box" class="hidden">
+        <label for="later-time" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1">¿A qué hora entregas?</label>
+        <div class="relative">
+          <span class="absolute left-0 inset-y-0 w-12 flex items-center justify-center text-[#FBBF24]"><i class="fa-regular fa-clock"></i></span>
+          <input id="later-time" type="time"
+            class="w-full h-14 pl-12 pr-4 rounded-xl bg-slate-50 border border-transparent text-base font-semibold focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20 transition" />
+        </div>
+      </div>
+
+      <!-- Ubicación -->
+      <div>
+        <label for="place" class="block text-xs font-bold uppercase tracking-wide text-slate-500 mb-1">¿Dónde entregas?</label>
+        <div class="relative">
+          <span class="absolute left-0 inset-y-0 w-12 flex items-center justify-center text-[#FF7A59]"><i class="fa-solid fa-location-dot"></i></span>
+          <input id="place" type="text" list="places" placeholder="Ej. Canchas, Biblioteca" required
+            class="w-full h-14 pl-12 pr-4 rounded-xl bg-slate-50 border border-transparent text-base placeholder:text-slate-400 focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20 transition" />
+          <datalist id="places"><option value="Canchas"><option value="Biblioteca"><option value="Cafetería"><option value="Entrada principal"><option value="Edificio de Ingeniería"></datalist>
+        </div>
+      </div>
+    </section>
+
+    <p id="form-error" class="hidden text-sm font-semibold text-red-500 text-center" role="alert"></p>
+  </form>
+
+  <!-- ===== Action bar inferior ===== -->
+  <div class="fixed bottom-0 inset-x-0 z-40 bg-white shadow-[0_-8px_24px_-12px_rgba(30,41,59,0.25)] pb-[env(safe-area-inset-bottom)]">
+    <div class="max-w-2xl mx-auto px-4 pt-3 pb-3 space-y-1">
+      <button id="btn-publish" type="submit" form="publish-form"
+        class="w-full h-14 rounded-2xl bg-[#FF7A59] text-white text-base font-bold shadow-[0_10px_20px_-10px_rgba(255,122,89,0.9)] hover:brightness-95 active:scale-[0.98] transition flex items-center justify-center gap-2">
+        <i class="fa-solid fa-paper-plane"></i> Publicar ahora
+      </button>
+      <a href="index.html" class="block text-center text-sm font-semibold text-slate-500 hover:text-[#1E293B] py-2">Cancelar</a>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed left-1/2 -translate-x-1/2 top-20 z-50 hidden items-center gap-2 bg-[#1E293B] text-white text-sm font-semibold px-5 py-3 rounded-full shadow-lg"></div>
+
+<script>
+  const $ = id => document.getElementById(id);
+
+  /* ---------- Toast ---------- */
+  let toastTimer;
+  function toast(msg) {
+    const t = $('toast'); t.textContent = msg; t.classList.remove('hidden'); t.classList.add('flex');
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.classList.add('hidden'); t.classList.remove('flex'); }, 2200);
+  }
+
+  /* ---------- Foto: vacío / cargado ---------- */
+  const input = $('photo-input'), drop = $('photo-drop');
+  function showPhoto(url) {
+    const has = !!url;
+    $('photo-preview').src = url || '';
+    $('photo-preview').classList.toggle('hidden', !has);
+    $('photo-empty').classList.toggle('hidden', has);
+    ['photo-ok', 'photo-change'].forEach(id => { $(id).classList.toggle('hidden', !has); $(id).classList.toggle('inline-flex', has); });
+    $('photo-remove').classList.toggle('hidden', !has);
+    drop.classList.toggle('border-dashed', !has);
+    drop.classList.toggle('border-transparent', has);
+  }
+  input.addEventListener('change', () => {
+    const f = input.files[0]; if (!f) return;
+    if (!f.type.startsWith('image/')) { toast('Elige un archivo de imagen'); input.value = ''; return; }
+    showPhoto(URL.createObjectURL(f));
+  });
+  $('photo-remove').addEventListener('click', () => { input.value = ''; showPhoto(''); });
+  drop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); } });
+
+  /* ---------- Contador del título ---------- */
+  $('title').addEventListener('input', e => { $('title-count').textContent = e.target.value.length; });
+
+  /* ---------- Stock − / + ---------- */
+  const stock = $('stock');
+  document.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => {
+    const v = (parseInt(stock.value, 10) || 1) + Number(b.dataset.step);
+    stock.value = Math.min(999, Math.max(1, v));
+  }));
+  stock.addEventListener('blur', () => { stock.value = Math.min(999, Math.max(1, parseInt(stock.value, 10) || 1)); });
+  /* Solo números enteros / decimales válidos */
+  $('price').addEventListener('keydown', e => { if (['e', 'E', '+', '-'].includes(e.key)) e.preventDefault(); });
+  stock.addEventListener('keydown', e => { if (['e', 'E', '+', '-', '.', ','].includes(e.key)) e.preventDefault(); });
+
+  /* ---------- Chips de categoría ---------- */
+  let category = '';
+  const ON = ['bg-[#FF7A59]', 'text-white', 'border-[#FF7A59]', 'shadow-md'], OFF = ['bg-white', 'text-[#1E293B]', 'border-slate-200'];
+  $('chips').addEventListener('click', e => {
+    const chip = e.target.closest('.chip'); if (!chip) return;
+    document.querySelectorAll('#chips .chip').forEach(c => { c.classList.remove(...ON); c.classList.add(...OFF); c.setAttribute('aria-checked', 'false'); });
+    chip.classList.remove(...OFF); chip.classList.add(...ON); chip.setAttribute('aria-checked', 'true');
+    category = chip.dataset.cat;
+  });
+
+  /* ---------- Toggle disponibilidad ---------- */
+  const tgl = $('avail-toggle');
+  tgl.addEventListener('click', () => {
+    const on = tgl.getAttribute('aria-checked') !== 'true';
+    tgl.setAttribute('aria-checked', on);
+    tgl.classList.toggle('bg-[#34D399]', on); tgl.classList.toggle('bg-slate-300', !on);
+    $('avail-knob').classList.toggle('translate-x-7', on);
+    $('avail-title').textContent = on ? '¿Disponible ahora?' : '¿Para entregar después?';
+    $('avail-sub').textContent = on ? 'Aparecerás como “Vendiendo ahora”' : 'Elige la hora a la que entregarás';
+    $('later-box').classList.toggle('hidden', on);
+  });
+
+  /* ---------- Borrador ---------- */
+  const KEY = 'udg-market-draft';
+  const fields = ['title', 'desc', 'price', 'stock', 'place', 'later-time'];
+  $('btn-draft').addEventListener('click', () => {
+    const data = Object.fromEntries(fields.map(f => [f, $(f).value]));
+    data.category = category; data.available = tgl.getAttribute('aria-checked') === 'true';
+    localStorage.setItem(KEY, JSON.stringify(data));
+    toast('Borrador guardado');
+  });
+  (function loadDraft() {
+    let d; try { d = JSON.parse(localStorage.getItem(KEY)); } catch { return; }
+    if (!d) return;
+    fields.forEach(f => { if (d[f] !== undefined) $(f).value = d[f]; });
+    $('title-count').textContent = $('title').value.length;
+    if (d.category) document.querySelector(`.chip[data-cat="${d.category}"]`)?.click();
+    if (d.available === false) tgl.click();
+  })();
+
+  /* ---------- Validación y publicación ---------- */
+  function invalid(el, msg) {
+    $('form-error').textContent = msg; $('form-error').classList.remove('hidden');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.focus?.();
+    el.classList.add('ring-2', 'ring-red-400'); setTimeout(() => el.classList.remove('ring-2', 'ring-red-400'), 1800);
+  }
+  $('publish-form').addEventListener('submit', e => {
+    e.preventDefault(); $('form-error').classList.add('hidden');
+    if (!input.files[0]) return invalid(drop, 'Sube una foto de tu artículo.');
+    if (!$('title').value.trim()) return invalid($('title'), 'Ponle un título a tu artículo.');
+    if (!($('price').value > 0)) return invalid($('price'), 'Indica un precio mayor a $0.');
+    if (!category) return invalid($('chips'), 'Elige una categoría.');
+    if (!$('place').value.trim()) return invalid($('place'), 'Indica dónde entregas.');
+    localStorage.removeItem(KEY);
+    toast('¡Artículo publicado!');
+    $('btn-publish').disabled = true; $('btn-publish').classList.add('opacity-70');
+    setTimeout(() => { location.href = 'index.html#profile'; }, 1200);
+  });
+</script>
+</body>
+</html>

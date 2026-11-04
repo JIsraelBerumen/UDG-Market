@@ -1,0 +1,43 @@
+# Registro de Bloqueos
+
+### BLK-001: Duplicidad de código por mala asignación de tareas
+
+| Campo | Detalle |
+|-------|---------|
+| **Descripción** | No se tuvo una comunicación clara respecto a la asignación de las tareas, lo que provocó que varios desarrolladores trabajaran en las mismas pantallas, duplicando el código. |
+| **Tipo** | Organizacional |
+| **Afecta a** | Todo el equipo |
+| **Fecha de inicio** | 2026-10-20 |
+| **Días sin resolver** | 8 |
+| **Prioridad** | Alta |
+| **Nivel de escalamiento** | Nivel 3 (Todo el equipo de desarrollo) |
+| **Responsable** | Israel Berumen |
+| **Fecha límite** | 2026-10-28 |
+| **Estado actual** | Resuelto |
+
+**Acciones y Seguimiento:**
+*   **Qué se intentó:** En el Sprint Review se habló de la falta de comunicación y se hizo una revisión del repositorio para decidir qué versión de las pantallas se mantenía en el proyecto.
+*   **Acción correctiva inmediata:** Eliminar las pantallas duplicadas de las ramas secundarias y unificar el esquema en la rama `main`.
+*   **Acción preventiva (Raíz del problema):** A partir de ahora, ninguna tarea se comenzará a programar si no está explícitamente asignada a un solo desarrollador en el tablero del proyecto (GitHub Projects/Trello).
+
+
+
+### BLK-002: Desorganizacion y bajo nivel de compromiso en la ejecucion de tareas
+
+| Campo | Detalle |
+|-------|---------|
+| **Descripción** | Ausencia de una estructura clara para el seguimiento de tareas y falta de responsabilidad individual ,lo que esta provocando un estancamiento en el proyecto |
+| **Tipo** | Organizacional |
+| **Afecta a** | Todo el equipo |
+| **Fecha de inicio** | 2026-10-29 |
+| **Días sin resolver** | 0 |
+| **Prioridad** | Critica |
+| **Nivel de escalamiento** | Nivel 3 (Todo el equipo de desarrollo) |
+| **Responsable** | Israel Berumen |
+| **Fecha límite** | 2026-10-28 |
+| **Estado actual** | Abierto |
+
+**Acciones y Seguimiento:**
+*   Acción correctiva inmediata: Convocar una reunión de emergencia (Planning) de 30 minutos estrictamente para listar todo lo que falta por hacer, dividirlo en tareas pequeñas y asignar responsables directos con fechas de entrega fijas.
+
+* Acción preventiva (Raíz del problema): Implementar un tablero visual obligatorio (GitHub Projects, Trello o Jira). Regla de oro: Si una tarea no está en el tablero con la foto/nombre de alguien asignado, no existe. Establecer reportes de avance cada 48 horas.
