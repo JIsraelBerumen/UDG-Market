@@ -7,6 +7,39 @@
 ###
 
 <p data-importer="text" align="left">🎓 Campus Market<br><br>UDGMarket is a web platform designed to structure, digitize, and bring transparency to internal commerce (micro-entrepreneurship) among the student community of the university campus.<br><br>🎯 The Problem<br>Currently, informal commerce on campus offers no certainty regarding food ingredients and exposes students' privacy by forcing them to use personal phone numbers (WhatsApp) to coordinate purchases. This manual management through messaging groups interrupts class schedules, generates inventory waste (shrinkage) for sellers, and fails to guarantee sanitary or efficient logistical measures.<br><br>💡 The Solution<br>A centralized pre-order marketplace that eliminates insecure intermediation. The platform allows student sellers to publish catalogs with strict control over stock, ingredients, and allergens. Buyers can reserve products and pick them up at pre-established times through the validation of a unique digital code, keeping their personal data private.<br><br>🔥 Dynamic Discovery (Swipe / Tinder Module): Individually explore available food, drinks, and products by swiping cards, making a match, or saving your favorite items.<br><br>⏰ Custom Delivery Appointments: A schedule negotiation system where the seller receives immediate notifications to accept the proposed delivery time or suggest a time counteroffer.<br><br>📍 Campus Geolocation: Sellers activate their selling mode and share their live location or usual meeting point within the university facilities.<br><br>🎓 Exclusive Student Access: User authentication is strictly limited to institutional emails (@university.edu).</p>
+## 📱 Installation 
+
+UDG Market is designed as a Progressive Web App (PWA). This means students can install it directly on their phones without needing to download it from the Play Store or App Store, saving space and time.
+
+### Installation on Android (From your browser)
+1. Open the UDG Market link in your phone's browser.
+2. Tap the options menu (the three vertical dots in the top right corner).
+3. Select the **"Add to Home screen"** option or tap the floating **"Install app"** button if it appears at the bottom.
+4. Confirm the installation. UDG Market will appear in your app drawer as a native app.
+
+### Installation on iOS (via Safari)
+1. Open the UDG Market link using the **Safari** browser on your iPhone.
+2. Tap the **"Share"** button (the icon with a square and an upward arrow on the bottom bar).
+3. Scroll down the menu and select **"Add to Home Screen"**.
+4. Tap "Add" in the top right corner. The app icon will be added alongside your other apps.
+
+## 🛠️ How to use UDG Market
+
+Welcome to UDG Market! The platform is designed so you can buy a snack between classes or sell your own products to the university community quickly and safely.
+
+### 🛒 If you want to Buy
+1. **Log In:** Use your institutional email (`@alumnos.udg.mx`) to log in. This ensures everyone on the app is a real student.
+2. **Explore the Campus:** On the main screen (Dashboard), you will see the products and food available today at your university center.
+3. **Check the Details:** Tap any product to see its price, description, and, very importantly, the **allergen alerts** (e.g., if it contains dairy or nuts).
+4. **Arrange the Delivery:** Check which modules, libraries, or campus areas the seller delivers to and coordinate a time. 
+5. **Enjoy!** Meet your peer at the agreed spot, make the payment, and receive your order.
+
+### 🏪 If you want to Sell
+Any student can become a seller in a couple of taps, with no need to create another account:
+1. **Activate your Store:** Go to the **Profile** tab on the bottom bar and turn on the **"Seller Mode"** switch.
+2. **Upload your Products:** Go to the *My Inventory* menu to add what you sell. Upload a good photo, set your price, and check the allergens to take care of your customers.
+3. **Manage your Deliveries:** In the **Sales** tab, you will see your active orders. The design is intended so that, amid the stress of classes, you know exactly **What** to deliver, **Where** (meeting point), and **When** (exact time).
+4. **Confirm and Collect:** Once you deliver the product, press **"Mark Delivered"** to keep track of your daily sales.
 
 ###
 
