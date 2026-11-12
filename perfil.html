@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Mi perfil - UDG Market</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="tailwind-config.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-brand-bg text-brand-navy font-sans antialiased">
+
+  <div class="max-w-md mx-auto min-h-screen pb-28">
+
+    <!-- Parte superior (blanco puro) -->
+    <div class="bg-white px-5 pt-5 pb-6 md:rounded-b-3xl md:shadow-sm">
+      <header class="flex items-center justify-between">
+        <h1 class="text-xl font-bold text-brand-navy">Mi perfil</h1>
+        <button aria-label="Ajustes" class="w-11 h-11 rounded-full bg-slate-100 text-brand-navy flex items-center justify-center hover:bg-slate-200 transition"><i class="fa-solid fa-gear text-lg"></i></button>
+      </header>
+
+      <section class="mt-5 flex flex-col items-center text-center">
+        <div class="relative">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80" alt="Lucía Martínez" class="w-[84px] h-[84px] rounded-full object-cover bg-slate-200" />
+          <span class="absolute bottom-0.5 right-0.5 w-4 h-4 rounded-full bg-brand-mint border-2 border-white"></span>
+        </div>
+        <h2 class="mt-4 text-3xl font-extrabold tracking-tight text-brand-navy">Lucía Martínez</h2>
+        <p class="mt-1 text-sm text-slate-500">Diseño · Universidad Complutense</p>
+        <p class="mt-2 text-xs font-medium text-emerald-600">En línea</p>
+      </section>
+
+      <section class="mt-6 grid grid-cols-3 rounded-3xl bg-slate-50 border border-slate-100 py-5">
+        <div class="flex flex-col items-center gap-1">
+          <p class="flex items-center gap-1.5 text-2xl font-medium text-brand-navy"><i class="fa-regular fa-star text-amber-400 text-lg"></i>4.9</p>
+          <span class="text-xs text-slate-500">Estrellas</span>
+        </div>
+        <div class="flex flex-col items-center gap-1 border-x border-slate-200">
+          <p class="text-2xl font-medium text-brand-navy">12</p><span class="text-xs text-slate-500">Ventas</span>
+        </div>
+        <div class="flex flex-col items-center gap-1">
+          <p class="text-2xl font-medium text-brand-navy">34</p><span class="text-xs text-slate-500">Favoritos</span>
+        </div>
+      </section>
+    </div>
+
+    <main class="px-5 pt-6">
+      <a href="publicar.html" class="w-full h-14 rounded-2xl bg-brand-orange text-brand-navy text-base font-bold flex items-center justify-center gap-3 shadow-[0_10px_20px_-10px_rgba(255,122,89,0.8)] hover:brightness-95 active:scale-[0.98] transition">
+        <i class="fa-solid fa-plus"></i> Publicar artículo
+      </a>
+
+      <div class="mt-7 mb-3 flex items-center justify-between">
+        <h3 class="text-base text-brand-navy">Tu espacio en el campus</h3>
+        <button class="text-sm text-slate-500 hover:text-brand-navy">Editar perfil</button>
+      </div>
+
+      <section class="rounded-3xl bg-white px-4 shadow-sm divide-y divide-slate-100">
+        <button class="w-full text-left flex items-center gap-4 py-4">
+          <span class="w-11 h-11 shrink-0 rounded-xl bg-slate-100 text-brand-navy flex items-center justify-center"><i class="fa-solid fa-box"></i></span>
+          <span class="flex-1 min-w-0"><span class="block font-bold text-brand-navy">Mis artículos</span><span class="block text-xs text-slate-500">Gestiona tus publicaciones</span></span>
+          <span class="shrink-0 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1">3 activos</span>
+          <i class="fa-solid fa-chevron-right text-slate-400 text-sm"></i>
+        </button>
+        <button class="w-full text-left flex items-center gap-4 py-4">
+          <span class="w-11 h-11 shrink-0 rounded-xl bg-slate-100 text-brand-navy flex items-center justify-center"><i class="fa-solid fa-bag-shopping"></i></span>
+          <span class="flex-1 min-w-0"><span class="block font-bold text-brand-navy">Mis compras</span><span class="block text-xs text-slate-500">Tus pedidos y entregas</span></span>
+          <i class="fa-solid fa-chevron-right text-slate-400 text-sm"></i>
+        </button>
+        <button class="w-full text-left flex items-center gap-4 py-4">
+          <span class="w-11 h-11 shrink-0 rounded-xl bg-slate-100 text-brand-navy flex items-center justify-center"><i class="fa-regular fa-message"></i></span>
+          <span class="flex-1 min-w-0"><span class="block font-bold text-brand-navy">Mis valoraciones</span><span class="block text-xs text-slate-500">Lo que dice tu comunidad</span></span>
+          <i class="fa-solid fa-chevron-right text-slate-400 text-sm"></i>
+        </button>
+      </section>
+
+      <button class="mt-6 w-full text-left flex items-center gap-3 px-1 py-3 text-sm text-slate-500 hover:text-brand-navy">
+        <i class="fa-regular fa-circle-question text-lg"></i><span class="flex-1">¿Necesitas ayuda?</span><i class="fa-solid fa-chevron-right text-slate-400 text-sm"></i>
+      </button>
+    </main>
+  </div>
+
+  <!-- Navegación inferior -->
+  <nav class="fixed bottom-0 inset-x-0 z-50 bg-white/95 backdrop-blur border-t border-slate-200 pb-[env(safe-area-inset-bottom)]" aria-label="Secciones">
+    <div class="grid grid-cols-4 max-w-md mx-auto">
+      <a href="index.html#ubereats" class="flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold text-slate-400 hover:text-brand-navy transition"><i class="fa-solid fa-house text-lg"></i>Inicio</a>
+      <a href="index.html#catalog"  class="flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold text-slate-400 hover:text-brand-navy transition"><i class="fa-solid fa-bag-shopping text-lg"></i>Catálogo</a>
+      <a href="index.html#swipe"    class="flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold text-slate-400 hover:text-brand-navy transition"><i class="fa-solid fa-fire text-lg"></i>Match</a>
+      <a href="perfil.html" aria-current="page" class="flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold text-brand-orange"><i class="fa-solid fa-user text-lg"></i>Perfil</a>
+    </div>
+  </nav>
+
+</body>
+</html>

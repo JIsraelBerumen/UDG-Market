@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - UDG Market</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-[#F8FAFC] flex items-center justify-center min-h-screen p-4 font-sans antialiased">
+    <div class="bg-white w-full max-w-sm rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 p-8 space-y-8 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#FF7A59] to-[#FBBF24]"></div>
+        <div class="text-center space-y-2 mt-2">
+            <div class="w-16 h-16 bg-[#FF7A59] text-white rounded-[20px] flex items-center justify-center font-bold text-3xl shadow-lg shadow-orange-200 mx-auto mb-5">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <h1 class="text-2xl font-extrabold text-[#1E293B] tracking-tight">UDG Market</h1>
+            <p class="text-sm text-slate-500 font-medium">Acceso exclusivo para comunidad UDG</p>
+        </div>
+        <form class="space-y-5">
+            <div class="space-y-1.5">
+                <label for="email" class="text-[12px] font-bold text-[#1E293B] ml-1 uppercase tracking-wide">Correo Institucional</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fa-regular fa-envelope text-slate-400"></i>
+                    </div>
+                    <input type="email" id="email" placeholder="tucorreo@alumnos.udg.mx" class="w-full bg-slate-50 border border-slate-200 text-[#1E293B] text-sm rounded-2xl focus:ring-2 focus:ring-[#FF7A59]/20 focus:border-[#FF7A59] block pl-11 p-3.5 transition-all outline-none" required>
+                </div>
+            </div>
+            <div class="space-y-1.5">
+                <div class="flex justify-between items-center ml-1">
+                    <label for="password" class="text-[12px] font-bold text-[#1E293B] uppercase tracking-wide">Contraseña</label>
+                    <a href="recuperar_contrase_a.html" class="text-[11px] font-bold text-[#FF7A59] hover:text-orange-600 transition-colors">¿Olvidaste tu nip?</a>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-lock text-slate-400"></i>
+                    </div>
+                    <input type="password" id="password" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 text-[#1E293B] text-sm rounded-2xl focus:ring-2 focus:ring-[#FF7A59]/20 focus:border-[#FF7A59] block pl-11 p-3.5 transition-all outline-none" required>
+                    <button type="button" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-[#1E293B] transition-colors">
+                        <i class="fa-regular fa-eye-slash"></i>
+                    </button>
+                </div>
+            </div>
+            <button type="submit" class="w-full bg-[#1E293B] hover:bg-slate-800 text-white font-bold rounded-2xl text-sm px-5 py-4 text-center transition-transform active:scale-[0.98] shadow-md mt-2 flex justify-center items-center gap-2">
+                Iniciar Sesión <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
+        </form>
+        <div class="flex items-center justify-between text-[10px] text-slate-400 font-bold uppercase tracking-widest pt-2">
+            <hr class="w-full border-slate-100">
+            <span class="px-3">O ingresa rápido</span>
+            <hr class="w-full border-slate-100">
+        </div>
+        <p class="text-center text-xs text-slate-500 font-medium">
+            ¿Aún no tienes cuenta? <a href="registro_de_cuenta.html" class="text-[#FF7A59] font-bold hover:text-orange-600 transition-colors">Regístrate aquí</a>
+        </p>

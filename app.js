@@ -84,4 +84,6 @@ document.querySelectorAll('.fav').forEach(b => b.addEventListener('click', () =>
 
 /* ---------- Init ---------- */
 renderCard(false);
-switchTab('ubereats');
+/* Permite abrir una pestaña directo: index.html#swipe, #catalog */
+const startTab = location.hash.slice(1);
+switchTab(VIEWS[startTab] ? startTab : 'ubereats');

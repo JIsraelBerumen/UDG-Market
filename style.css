@@ -1,6 +1,6 @@
 /* Tema del Catálogo: fondo oscuro. Para modo claro usa:
    --cat-bg:#ffffff; --cat-fg:#1E293B; --cat-muted:#64748B; */
-:root { --cat-bg:#0E1426; --cat-fg:#ffffff; --cat-muted:#9AA3B8; }
+:root { --cat-bg:#f6f6f7; --cat-fg:#080808; --cat-muted:#9AA3B8; }
 .scrollbar-none::-webkit-scrollbar { display: none; }
 .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
 .card-in { animation: cardIn .35s cubic-bezier(.2,.8,.2,1); }
