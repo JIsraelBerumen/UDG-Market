@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#FF7A59" />
+  <title>UDG Market</title>
+  <script src="js/auth.js"></script>
+
+  <!-- 1. Tailwind + FontAwesome + fuente -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- 2. Configuración de Tailwind (tailwind-config.js) -->
+  <script src="js/tailwind-config.js"></script>
+
+  <!-- 3. Estilos personalizados (style.css) -->
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Estilos para el switch iOS personalizado */
+    .toggle-checkbox:checked {
+      right: 2px;
+      border-color: #228276;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+      background-color: #228276;
+    }
+  </style>
+</head>
+
+<body class="bg-brand-bg text-slate-800 font-sans antialiased pb-24 md:pb-0 transition-colors duration-300">
+
+  <!-- Sprite de íconos SVG -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5s-7.5-4.6-9.3-9.4C1.5 7.7 3.4 4.5 6.6 4.5c2 0 3.7 1.1 5.4 3 1.7-1.9 3.4-3 5.4-3 3.2 0 5.1 3.2 3.9 6.6-1.8 4.8-9.3 9.4-9.3 9.4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+      <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M10 4l1.7 4.6L16.3 10.3l-4.6 1.7L10 16.6 8.3 12 3.7 10.3 8.3 8.6 10 4zM18 14l.9 2.1 2.1.9-2.1.9L18 20l-.9-2.1-2.1-.9 2.1-.9L18 14zM18.5 3l.6 1.4 1.4.6-1.4.6-.6 1.4-.6-1.4-1.4-.6 1.4-.6.6-1.4z" fill="currentColor"/></symbol>
+      <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5M4 9h10.5a5.5 5.5 0 010 11H11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8 6.8 19.6l1-5.8L3.5 9.7l5.9-.8L12 3.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0113 0c0 5-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    </defs>
+  </svg>
+
+  <!-- ===================== HEADER / NAVBAR ===================== -->
+  <header id="main-header" class="bg-white border-b border-slate-100 sticky top-0 z-50 shadow-sm pt-[env(safe-area-inset-top)]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-10 h-10 shrink-0 bg-brand-orange text-white rounded-2xl flex items-center justify-center shadow-md shadow-orange-200">
+          <i class="fa-solid fa-graduation-cap text-lg"></i>
+        </div>
+        <div class="min-w-0">
+          <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-brand-navy leading-none truncate">UDG Market</h1>
+          <span class="hidden sm:block text-xs font-medium text-slate-400">Comercio Universitario Ambulante</span>
+        </div>
+      </div>
+
+      <!-- Tabs escritorio / tablet -->
+      <nav class="hidden md:flex items-center gap-1 bg-slate-100 p-1 rounded-full" aria-label="Secciones">
+        <button data-tab="ubereats" class="tab-desktop px-4 py-2 rounded-full text-xs font-bold transition-all"><i class="fa-solid fa-house mr-1"></i> Inicio</button>
+        <button data-tab="catalog"  class="tab-desktop px-4 py-2 rounded-full text-xs font-bold transition-all"><i class="fa-solid fa-bag-shopping mr-1"></i> Catálogo</button>
+        <button data-tab="swipe"    class="tab-desktop px-4 py-2 rounded-full text-xs font-bold transition-all"><i class="fa-solid fa-fire mr-1"></i> Match</button>
+        <button data-tab="seller-orders" id="nav-seller-desktop" class="seller-mode-only hidden tab-desktop px-4 py-2 rounded-full text-xs font-bold transition-all text-terracota hover:bg-terracota-light"><i class="fa-solid fa-store mr-1"></i> Modo Vendedor</button>
+        <button data-tab="profile" onclick="switchView('profile')" class="tab-desktop px-4 py-2 rounded-full text-xs font-bold transition-all"><i class="fa-solid fa-user mr-1"></i> Perfil</button>
+      </nav>
+
+      <!-- Acceso rápido móvil -->
+      <button type="button" onclick="switchView('profile')" aria-label="Mi perfil" class="md:hidden shrink-0 inline-flex items-center gap-1.5 bg-brand-orange text-white text-xs font-bold px-3.5 py-2 rounded-full shadow-sm shadow-orange-200">
+        <i class="fa-solid fa-user"></i> Perfil
+      </button>
+    </div>
+  </header>
+
+  <!-- ===================== VISTA EXPLORAR (vendedores) ===================== -->
+  <div id="view-ubereats">
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 pt-6 pb-10 space-y-8">
+
+      <!-- Guía de identidad (plegable para no ocupar espacio) -->
+      <details class="bg-white rounded-2xl-friendly border border-slate-100 shadow-sm group">
+        <summary class="cursor-pointer list-none flex items-center justify-between px-5 sm:px-6 py-4">
+          <span class="text-sm font-bold tracking-wider uppercase text-brand-orange">Guía de Identidad &amp; Paleta</span>
+          <i class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform group-open:rotate-180"></i>
+        </summary>
+        <div class="px-5 sm:px-6 pb-5">
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+            <div class="p-3 rounded-xl-friendly bg-brand-orange text-white">
+              <p class="text-xs opacity-80">Naranja Vívido</p><p class="font-bold text-sm">#FF7A59</p><span class="text-[10px] opacity-90">Apetito &amp; Energía</span>
+            </div>
+            <div class="p-3 rounded-xl-friendly bg-brand-navy text-white">
+              <p class="text-xs opacity-80">Azul Escolar</p><p class="font-bold text-sm">#1E293B</p><span class="text-[10px] opacity-90">Confianza &amp; Estructura</span>
+            </div>
+            <div class="p-3 rounded-xl-friendly bg-brand-mint text-slate-900">
+              <p class="text-xs opacity-80">Menta Activo</p><p class="font-bold text-sm">#34D399</p><span class="text-[10px] opacity-90">Disponible Ahora</span>
+            </div>
+            <div class="p-3 rounded-xl-friendly bg-brand-yellow text-slate-900">
+              <p class="text-xs opacity-80">Amarillo Recreo</p><p class="font-bold text-sm">#FBBF24</p><span class="text-[10px] opacity-90">Toque Juvenil</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            <strong>Principios clave:</strong> Iconos grandes y amigables, bordes redondeados (18px - 28px) para dar sensación accesible, tipografía limpia y etiquetas de disponibilidad en tiempo real.
+          </p>
+        </div>
+      </details>
+
+      <div class="space-y-6">
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-brand-navy">Vendedores en el Campus</h2>
+            <p class="text-xs sm:text-sm text-slate-500">Encuentra alumnos vendiendo cerca de tus facultades</p>
+          </div>
+          <button class="shrink-0 bg-slate-100 p-3 rounded-xl-friendly text-brand-navy hover:bg-slate-200 transition" aria-label="Filtros">
+            <i class="fa-solid fa-sliders text-lg"></i>
+          </button>
+        </div>
+
+        <!-- Categorías rápidas -->
+        <div class="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-none">
+          <button class="flex items-center gap-2 bg-brand-navy text-white px-4 py-2.5 rounded-2xl font-medium text-xs whitespace-nowrap shadow-sm"><i class="fa-solid fa-utensils text-sm"></i><span>Todo</span></button>
+          <button class="flex items-center gap-2 bg-white text-slate-600 border border-slate-200 px-4 py-2.5 rounded-2xl font-medium text-xs whitespace-nowrap"><i class="fa-solid fa-cookie text-brand-orange text-sm"></i><span>Postres y Snacks</span></button>
+          <button class="flex items-center gap-2 bg-white text-slate-600 border border-slate-200 px-4 py-2.5 rounded-2xl font-medium text-xs whitespace-nowrap"><i class="fa-solid fa-burger text-brand-yellow text-sm"></i><span>Comida Preparada</span></button>
+          <button class="flex items-center gap-2 bg-white text-slate-600 border border-slate-200 px-4 py-2.5 rounded-2xl font-medium text-xs whitespace-nowrap"><i class="fa-solid fa-print text-blue-500 text-sm"></i><span>Artículos / Servicios</span></button>
+        </div>
+
+        <!-- Lista de vendedores -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+          <!-- Vendedor 1 -->
+          <div class="bg-white rounded-2xl-friendly border border-slate-100 shadow-sm hover:shadow-md transition overflow-hidden">
+            <div class="relative h-36 sm:h-44 bg-slate-200">
+              <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=800&q=80" alt="Snacks" loading="lazy" class="w-full h-full object-cover">
+              <span class="absolute top-3 left-3 bg-brand-mint text-slate-900 font-bold text-[11px] px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-slate-900 animate-pulse"></span> Vendiendo Ahora
+              </span>
+              <span class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-brand-navy font-extrabold text-xs px-2.5 py-1 rounded-lg">
+                <i class="fa-solid fa-location-dot text-brand-orange mr-1"></i> Fac. de Ingeniería
+              </span>
+            </div>
+            <div class="p-4 sm:p-5">
+              <div class="flex justify-between items-start gap-2 mb-2">
+                <div>
+                  <h3 class="font-extrabold text-lg text-brand-navy leading-snug">Marcos - Brownies &amp; Galletas</h3>
+                  <p class="text-xs text-slate-500 font-medium">Estudiante de Computación</p>
+                </div>
+                <span class="shrink-0 bg-amber-50 text-amber-700 text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1"><i class="fa-solid fa-star text-amber-400"></i> 4.9</span>
+              </div>
+              <div class="bg-slate-50 p-2.5 rounded-xl-friendly mb-3 border border-slate-100">
+                <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1"><i class="fa-regular fa-clock text-brand-orange mr-1"></i> Horario de Atención</p>
+                <div class="flex flex-wrap items-center justify-between gap-x-3 text-xs font-semibold text-brand-navy">
+                  <span>Hoy: 11:00 AM - 2:30 PM</span>
+                  <span class="text-brand-orange text-[11px]">En receso a las 1:00 PM</span>
+                </div>
+              </div>
+              <div class="mb-4">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wide mb-1.5">Productos Habituales</p>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2.5 py-1 rounded-lg">Brownie Clásico ($25)</span>
+                  <span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2.5 py-1 rounded-lg">Galleta Red Velvet ($20)</span>
+                  <span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2.5 py-1 rounded-lg">Café Frío ($30)</span>
+                </div>
+              </div>
+              <button class="w-full bg-brand-navy text-white font-bold text-xs py-3 rounded-xl-friendly hover:bg-slate-800 transition flex items-center justify-center gap-2"><i class="fa-regular fa-calendar-check text-sm"></i> Agendar Cita de Entrega</button>
+            </div>
+          </div>
+
+          <!-- Vendedor 2 -->
+          <div class="bg-white rounded-2xl-friendly border border-slate-100 shadow-sm hover:shadow-md transition overflow-hidden">
+            <div class="relative h-36 sm:h-44 bg-slate-200">
+              <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80" alt="Tacos" loading="lazy" class="w-full h-full object-cover">
+              <span class="absolute top-3 left-3 bg-amber-100 text-amber-800 font-bold text-[11px] px-3 py-1 rounded-full shadow-sm"><i class="fa-regular fa-clock mr-1"></i> Inicia en 30 min</span>
+              <span class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-md text-brand-navy font-extrabold text-xs px-2.5 py-1 rounded-lg">
+                <i class="fa-solid fa-location-dot text-brand-orange mr-1"></i> Biblioteca Central
+              </span>
+            </div>
+            <div class="p-4 sm:p-5">
+              <div class="flex justify-between items-start gap-2 mb-2">
+                <div>
+                  <h3 class="font-extrabold text-lg text-brand-navy leading-snug">Sofía - Tacos &amp; Burritos</h3>
+                  <p class="text-xs text-slate-500 font-medium">Estudiante de Arquitectura</p>
+                </div>
+                <span class="shrink-0 bg-amber-50 text-amber-700 text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1"><i class="fa-solid fa-star text-amber-400"></i> 4.8</span>
+              </div>
+              <div class="bg-slate-50 p-2.5 rounded-xl-friendly mb-3 border border-slate-100">
+                <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1"><i class="fa-regular fa-clock text-brand-orange mr-1"></i> Horario de Atención</p>
+                <div class="flex flex-wrap items-center justify-between gap-x-3 text-xs font-semibold text-brand-navy">
+                  <span>Hoy: 12:30 PM - 4:00 PM</span>
+                  <span class="text-slate-400 text-[11px]">Próximo turno</span>
+                </div>
+              </div>
+              <div class="mb-4">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wide mb-1.5">Productos Habituales</p>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2.5 py-1 rounded-lg">Burrito de Guisado ($45)</span>
+                  <span class="bg-slate-100 text-slate-700 text-[11px] font-medium px-2.5 py-1 rounded-lg">Agua del Día ($20)</span>
+                </div>
+              </div>
+              <button class="w-full bg-brand-navy text-white font-bold text-xs py-3 rounded-xl-friendly hover:bg-slate-800 transition flex items-center justify-center gap-2"><i class="fa-regular fa-calendar-check text-sm"></i> Agendar Cita Previa</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===================== VISTA CATÁLOGO ===================== -->
+  <div id="view-catalog" class="hidden bg-[var(--cat-bg)] min-h-[calc(100vh-72px)]">
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 pt-5 pb-10">
+
+      <!-- Banner + buscador (lado a lado en pantallas grandes) -->
+      <div class="lg:grid lg:grid-cols-5 lg:gap-6 lg:items-stretch">
+        <section class="lg:col-span-3 rounded-2xl-friendly bg-[#FFE3DB] px-5 py-5 sm:px-8 sm:py-8 flex flex-col justify-center">
+          <p class="text-[11px] font-bold tracking-[0.08em] text-brand-red uppercase flex items-center gap-1.5"><svg class="w-3.5 h-3.5"><use href="#i-sparkles"/></svg>De estudiante a estudiante</p>
+          <h2 class="mt-2 text-[28px] sm:text-4xl lg:text-5xl leading-[1.1] font-extrabold tracking-tight text-brand-navy">Tu próximo hallazgo está en el campus.</h2>
+          <p class="mt-2 sm:mt-3 text-[13px] sm:text-base leading-relaxed text-[#5B5560] max-w-xl">Antojos, apuntes y cosas con otra vida. Compra local y conecta con tu comunidad.</p>
+        </section>
+
+        <div class="lg:col-span-2 mt-5 lg:mt-0 flex flex-col justify-center gap-3">
+          <label class="flex items-center gap-3 h-[52px] px-5 rounded-full bg-white border border-slate-200">
+            <svg class="w-5 h-5 text-slate-500 shrink-0"><use href="#i-search"/></svg>
+            <input type="text" placeholder="¿Qué necesitas para hoy?" class="flex-1 min-w-0 bg-transparent outline-none text-[14px] text-brand-navy placeholder:text-slate-500" />
+          </label>
+          <button class="w-full flex items-center gap-3 h-[48px] px-5 rounded-full bg-white border border-slate-200 text-left">
+            <svg class="w-5 h-5 text-brand-orange shrink-0"><use href="#i-pin"/></svg>
+            <span class="flex-1 text-[14px] font-medium text-brand-navy">Cerca de CUCEA</span>
+            <svg class="w-5 h-5 text-brand-navy"><use href="#i-chevron"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Categorías -->
+      <div class="scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0 mt-5 flex gap-4 overflow-x-auto">
+        <button class="shrink-0 flex flex-col items-center gap-2">
+          <span class="w-[68px] h-[68px] sm:w-20 sm:h-20 rounded-[22px] bg-brand-orange grid place-items-center text-brand-navy shadow-lg shadow-orange-500/20"><svg class="w-7 h-7"><use href="#i-grid"/></svg></span>
+          <span class="text-[12px] font-bold text-brand-orange">Todo</span>
+        </button>
+        <button class="shrink-0 flex flex-col items-center gap-2">
+          <span class="w-[68px] h-[68px] sm:w-20 sm:h-20 rounded-full overflow-hidden bg-slate-300 ring-2 ring-white/80"><img data-src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=200&q=70" alt="Comida" class="w-full h-full object-cover" /></span>
+          <span class="text-[12px] font-semibold text-[var(--cat-fg)]">Comida</span>
+        </button>
+        <button class="shrink-0 flex flex-col items-center gap-2">
+          <span class="w-[68px] h-[68px] sm:w-20 sm:h-20 rounded-full overflow-hidden bg-slate-300 ring-2 ring-white/80"><img data-src="https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=200&q=70" alt="Apuntes" class="w-full h-full object-cover" /></span>
+          <span class="text-[12px] font-semibold text-[var(--cat-fg)]">Apuntes</span>
+        </button>
+        <button class="shrink-0 flex flex-col items-center gap-2">
+          <span class="w-[68px] h-[68px] sm:w-20 sm:h-20 rounded-full overflow-hidden bg-slate-300 ring-2 ring-white/80"><img data-src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=200&q=70" alt="Ropa" class="w-full h-full object-cover" /></span>
+          <span class="text-[12px] font-semibold text-[var(--cat-fg)]">Ropa</span>
+        </button>
+      </div>
+
+      <!-- Chips -->
+      <div class="scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0 mt-4 flex gap-2.5 overflow-x-auto">
+        <button id="open-filters" type="button" aria-haspopup="dialog" class="shrink-0 inline-flex items-center gap-2 h-[40px] px-4 rounded-full text-[13px] font-bold bg-white text-brand-navy border border-slate-200 hover:border-slate-400 transition"><i class="fa-solid fa-sliders"></i>Filtros<span id="filter-badge" class="hidden min-w-[20px] h-5 px-1.5 rounded-full bg-brand-orange text-brand-navy text-[11px] font-extrabold place-items-center">0</span></button>
+        <button class="shrink-0 inline-flex items-center gap-2 h-[40px] px-4 rounded-full text-[13px] font-bold bg-brand-navy text-white border border-white/20"><svg class="w-4 h-4"><use href="#i-sparkles"/></svg>Para ti</button>
+        <button class="shrink-0 h-[40px] px-4 rounded-full text-[13px] font-semibold bg-white text-brand-navy border border-slate-200">Disponible hoy</button>
+        <button class="shrink-0 h-[40px] px-4 rounded-full text-[13px] font-semibold bg-white text-brand-navy border border-slate-200">Hasta $200</button>
+      </div>
+
+      <!-- Hecho en tu campus: scroll en móvil, grid en escritorio -->
+      <section class="mt-8">
+        <h2 class="text-[22px] sm:text-2xl font-extrabold tracking-tight text-[var(--cat-fg)]">Hecho en tu campus</h2>
+        <p class="mt-0.5 text-[13px] text-[var(--cat-muted)]">Conoce quién está detrás de tu próximo hallazgo.</p>
+
+        <div class="scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0 mt-4 flex gap-4 overflow-x-auto snap-x lg:grid lg:grid-cols-3 lg:overflow-visible">
+          <article class="snap-start shrink-0 w-[290px] sm:w-[320px] lg:w-auto rounded-[24px] bg-white overflow-hidden shadow-xl shadow-black/20">
+            <div class="relative h-[190px] bg-slate-200">
+              <img data-src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=700&q=70" alt="Brownies" class="w-full h-full object-cover" />
+              <span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white rounded-full px-2.5 py-1 text-[11px] font-bold text-brand-navy"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Disponible hoy</span>
+              <button class="fav absolute bottom-3 right-3 w-10 h-10 rounded-full bg-white grid place-items-center text-brand-navy shadow-md active:scale-90 transition" aria-label="Guardar"><svg class="w-5 h-5"><use href="#i-heart"/></svg></button>
+            </div>
+            <div class="p-4">
+              <div class="flex items-start justify-between gap-2"><h3 class="text-[17px] font-extrabold text-brand-navy">Brownies de Sofi</h3><span class="inline-flex items-center gap-1 text-[12px] font-bold text-brand-navy"><svg class="w-4 h-4 text-amber-400"><use href="#i-star"/></svg>4.9</span></div>
+              <p class="mt-0.5 text-[12px] text-slate-500">Brownie de chocolate · por pieza</p>
+              <div class="mt-3 flex items-end justify-between"><span class="text-[11px] text-slate-500">Sofía M. · CUCEA</span><span class="text-[20px] leading-none font-extrabold text-brand-navy">$35</span></div>
+            </div>
+          </article>
+
+          <article class="snap-start shrink-0 w-[290px] sm:w-[320px] lg:w-auto rounded-[24px] bg-white overflow-hidden shadow-xl shadow-black/20">
+            <div class="relative h-[190px] bg-slate-200">
+              <img data-src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=700&q=70" alt="Pan artesanal" class="w-full h-full object-cover" />
+              <span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white rounded-full px-2.5 py-1 text-[11px] font-bold text-brand-navy"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Disponible hoy</span>
+              <button class="fav absolute bottom-3 right-3 w-10 h-10 rounded-full bg-white grid place-items-center text-brand-navy shadow-md active:scale-90 transition" aria-label="Guardar"><svg class="w-5 h-5"><use href="#i-heart"/></svg></button>
+            </div>
+            <div class="p-4">
+              <div class="flex items-start justify-between gap-2"><h3 class="text-[17px] font-extrabold text-brand-navy">Entre panes</h3><span class="inline-flex items-center gap-1 text-[12px] font-bold text-brand-navy"><svg class="w-4 h-4 text-amber-400"><use href="#i-star"/></svg>4.8</span></div>
+              <p class="mt-0.5 text-[12px] text-slate-500">Ciabatta de pollo · por pieza</p>
+              <div class="mt-3 flex items-end justify-between"><span class="text-[11px] text-slate-500">Diego R. · CUCEI</span><span class="text-[20px] leading-none font-extrabold text-brand-navy">$55</span></div>
+            </div>
+          </article>
+
+          <article class="snap-start shrink-0 w-[290px] sm:w-[320px] lg:w-auto rounded-[24px] bg-white overflow-hidden shadow-xl shadow-black/20">
+            <div class="relative h-[190px] bg-slate-200">
+              <img data-src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=700&q=70" alt="Galletas" class="w-full h-full object-cover" />
+              <span class="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-white rounded-full px-2.5 py-1 text-[11px] font-bold text-brand-navy"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Disponible hoy</span>
+              <button class="fav absolute bottom-3 right-3 w-10 h-10 rounded-full bg-white grid place-items-center text-brand-navy shadow-md active:scale-90 transition" aria-label="Guardar"><svg class="w-5 h-5"><use href="#i-heart"/></svg></button>
+            </div>
+            <div class="p-4">
+              <div class="flex items-start justify-between gap-2"><h3 class="text-[17px] font-extrabold text-brand-navy">Galletas de Marcos</h3><span class="inline-flex items-center gap-1 text-[12px] font-bold text-brand-navy"><svg class="w-4 h-4 text-amber-400"><use href="#i-star"/></svg>4.9</span></div>
+              <p class="mt-0.5 text-[12px] text-slate-500">Red Velvet · por pieza</p>
+              <div class="mt-3 flex items-end justify-between"><span class="text-[11px] text-slate-500">Marcos T. · CUCEI</span><span class="text-[20px] leading-none font-extrabold text-brand-navy">$20</span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Recién llegados -->
+      <section class="mt-8">
+        <h2 class="text-[22px] sm:text-2xl font-extrabold tracking-tight text-[var(--cat-fg)]">Recién llegados</h2>
+        <p class="mt-0.5 text-[13px] text-[var(--cat-muted)]">Algo rico, algo útil, algo muy tú.</p>
+
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5">
+          <article class="rounded-[22px] bg-white overflow-hidden shadow-xl shadow-black/20">
+            <div class="relative aspect-[4/3.6] bg-slate-200">
+              <img data-src="https://images.unsplash.com/photo-1587145820266-a5951ee6f620?auto=format&fit=crop&w=500&q=70" alt="Calculadora" class="w-full h-full object-cover" />
+              <button class="fav absolute top-2.5 right-2.5 w-9 h-9 rounded-full bg-white grid place-items-center text-brand-navy shadow-md active:scale-90 transition" aria-label="Guardar"><svg class="w-[18px] h-[18px]"><use href="#i-heart"/></svg></button>
+            </div>
+            <div class="p-3.5">
+              <p class="text-[10px] font-bold text-emerald-600">Como nueva</p>
+              <h3 class="mt-0.5 text-[14px] leading-snug font-extrabold text-brand-navy">Calculadora científica</h3>
+              <p class="text-[11px] text-slate-500">Andrés L. · CUCEI</p>
+              <p class="mt-2 text-[17px] font-extrabold text-brand-navy">$180 <span class="text-[10px] font-semibold text-slate-500">MXN</span></p>
+            </div>
+          </article>
+
+          <article class="rounded-[22px] bg-white overflow-hidden shadow-xl shadow-black/20">
+            <div class="relative aspect-[4/3.6] bg-slate-200">
+              <img data-src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=500&q=70" alt="Sudadera lavanda" class="w-full h-full object-cover" />
+              <button class="fav absolute top-2.5 right-2.5 w-9 h-9 rounded-full bg-white grid place-items-center text-brand-navy shadow-md active:scale-90 transition" aria-label="Guardar"><svg class="w-[18px] h-[18px]"><use href="#i-heart"/></svg></button>
+            </div>
+            <div class="p-3.5">
+              <p class="text-[10px] font-bold text-emerald-600">Segunda vida</p>
+              <h3 class="mt-0.5 text-[14px] leading-snug font-extrabold text-brand-navy">Sudadera lavanda</h3>
+              <p class="text-[11px] text-slate-500">Mariana C. · CUAAD</p>
+              <p class="mt-2 text-[17px] font-extrabold text-brand-navy">$150 <span class="text-[10px] font-semibold text-slate-500">MXN</span></p>
+            </div>
+          </article>
+
+          <article class="rounded-[22px] bg-white overflow-hidden shadow-xl shadow-black/20">
+            <div class="relative aspect-[4/3.6] bg-slate-200">
+              <img data-src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=500&q=70" alt="Libros" class="w-full h-full object-cover" />
+              <button class="fav absolute top-2.5 right-2.5 w-9 h-9 rounded-full bg-white grid place-items-center text-brand-navy shadow-md active:scale-90 transition" aria-label="Guardar"><svg class="w-[18px] h-[18px]"><use href="#i-heart"/></svg></button>
+            </div>
+            <div class="p-3.5">
+              <p class="text-[10px] font-bold text-emerald-600">Segunda vida</p>
+              <h3 class="mt-0.5 text-[14px] leading-snug font-extrabold text-brand-navy">Libros de economía</h3>
+              <p class="text-[11px] text-slate-500">Emilio T. · CUCEA</p>
+              <p class="mt-2 text-[17px] font-extrabold text-brand-navy">$90 <span class="text-[10px] font-semibold text-slate-500">MXN</span></p>
+            </div>
+          </article>
+
+          <article class="rounded-[22px] bg-white overflow-hidden shadow-xl shadow-black/20">
+            <div class="relative aspect-[4/3.6] bg-slate-200">
+              <img data-src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=500&q=70" alt="Latte para llevar" class="w-full h-full object-cover" />
+              <button class="fav absolute top-2.5 right-2.5 w-9 h-9 rounded-full bg-white grid place-items-center text-brand-navy shadow-md active:scale-90 transition" aria-label="Guardar"><svg class="w-[18px] h-[18px]"><use href="#i-heart"/></svg></button>
+            </div>
+            <div class="p-3.5">
+              <p class="text-[10px] font-bold text-emerald-600">Disponible hoy</p>
+              <h3 class="mt-0.5 text-[14px] leading-snug font-extrabold text-brand-navy">Latte para llevar</h3>
+              <p class="text-[11px] text-slate-500">Alex V. · CUCEA</p>
+              <p class="mt-2 text-[17px] font-extrabold text-brand-navy">$40 <span class="text-[10px] font-semibold text-slate-500">MXN</span></p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <p id="cat-empty" class="hidden mt-8 rounded-2xl-friendly bg-white/10 border border-white/20 px-5 py-8 text-center text-[var(--cat-fg)]"><i class="fa-solid fa-magnifying-glass text-2xl mb-2 text-brand-orange"></i><span class="block font-bold">Sin resultados con estos filtros</span><button id="cat-empty-clear" type="button" class="mt-3 h-12 px-5 rounded-full bg-brand-orange text-brand-navy text-sm font-bold">Limpiar filtros</button></p>
+
+      <!-- CTA inferior -->
+      <section class="mt-8 rounded-2xl-friendly bg-[#FFF4CC] px-5 py-6 sm:px-8 sm:py-8 md:flex md:items-center md:justify-between md:gap-8">
+        <div class="md:max-w-xl">
+          <h2 class="text-[20px] sm:text-2xl font-extrabold tracking-tight text-brand-navy">¿Tienes algo para compartir?</h2>
+          <p class="mt-1.5 text-[13px] sm:text-sm leading-relaxed text-[#5B5560]">Tus brownies, tus apuntes o eso que ya no usas. Dale un lugar en el campus.</p>
+        </div>
+        <button class="mt-4 md:mt-0 w-full md:w-auto md:px-8 md:shrink-0 h-[52px] rounded-full bg-brand-orange text-brand-navy text-[15px] font-bold inline-flex items-center justify-center gap-2 shadow-[0_10px_20px_-8px_rgba(255,122,89,0.7)] active:scale-[0.98] transition">
+          <svg class="w-5 h-5"><use href="#i-plus"/></svg>Publicar mi primer anuncio
+        </button>
+      </section>
+
+      <p class="mt-6 text-[11px] text-[var(--cat-muted)]">Todos los precios en MXN · Trato entre estudiantes</p>
+    </main>
+  </div>
+
+  <!-- ===================== VISTA MATCH / SWIPE ===================== -->
+  <div id="view-swipe" class="hidden">
+    <!-- Móvil: usa todo el ancho y alto disponible. Escritorio: columna tipo teléfono centrada (max-w-md) -->
+    <main class="w-full max-w-md mx-auto flex flex-col px-5 pt-5 pb-6 min-h-[calc(100dvh-10.5rem)] md:min-h-[720px] md:my-6 md:rounded-[32px] md:border md:border-slate-200 md:bg-white md:shadow-xl">
+
+      <!-- Texto + chips -->
+      <div>
+        <p class="text-[11px] font-bold tracking-[0.08em] text-brand-red uppercase">Un hallazgo a la vez</p>
+        <h2 class="mt-1.5 text-[32px] leading-[1.1] font-extrabold tracking-tight text-brand-navy">Menos buscar. Más descubrir.</h2>
+        <p class="mt-2.5 text-[14px] text-slate-500">Pasa o guarda lo que te guste. Tú eliges.</p>
+
+        <div id="swipe-chips" class="scrollbar-none -mx-5 px-5 mt-5 flex gap-2.5 overflow-x-auto">
+          <button class="chip shrink-0 inline-flex items-center gap-2 h-[46px] px-5 rounded-full text-[14px] font-bold bg-brand-navy text-white border border-brand-navy"><svg class="w-[18px] h-[18px]"><use href="#i-sparkles"/></svg>Para ti</button>
+          <button class="chip shrink-0 h-[46px] px-5 rounded-full text-[14px] font-semibold bg-white text-brand-navy border border-slate-200">Mi campus</button>
+          <button class="chip shrink-0 h-[46px] px-5 rounded-full text-[14px] font-semibold bg-white text-brand-navy border border-slate-200">Hasta $200</button>
+          <button class="chip shrink-0 h-[46px] px-5 rounded-full text-[14px] font-semibold bg-white text-brand-navy border border-slate-200">Comida</button>
+          <button class="chip shrink-0 h-[46px] px-5 rounded-full text-[14px] font-semibold bg-white text-brand-navy border border-slate-200">Apuntes</button>
+        </div>
+      </div>
+
+      <!-- Tarjeta (se estira para ocupar el alto libre) -->
+      <section class="relative mt-8 flex-1 flex flex-col min-h-[400px]">
+        <div class="absolute inset-0 rounded-2xl-friendly bg-[#FFE6DD] scale-[0.88] -translate-y-5 shadow-sm"></div>
+        <div class="absolute inset-0 rounded-2xl-friendly bg-[#FFF1EB] scale-[0.94] -translate-y-2.5 shadow-md shadow-black/5"></div>
+
+        <article id="swipe-card" class="card-swipe relative flex-1 flex flex-col rounded-2xl-friendly bg-white shadow-[0_18px_40px_-12px_rgba(30,41,59,0.22)]">
+          <!-- Imagen + precio solapado (toca la imagen para ver el punto de venta / agendar) -->
+          <div onclick="triggerTinderAppointment()" class="relative flex-1 min-h-[220px] cursor-pointer">
+            <div class="absolute inset-0 rounded-t-2xl-friendly overflow-hidden bg-slate-200">
+              <img id="sw-img" src="" alt="" class="w-full h-full object-cover" />
+              <span class="absolute top-4 left-4 inline-flex items-center gap-1.5 bg-white rounded-full px-3 py-1.5 text-[12px] font-bold text-brand-navy shadow-sm"><span class="w-2 h-2 rounded-full bg-brand-mint"></span><span id="sw-badge">Disponible hoy</span></span>
+              <span id="sw-count" class="absolute top-4 right-4 bg-white rounded-full px-3 py-1.5 text-[12px] font-bold text-brand-navy shadow-sm">1 de 2</span>
+            </div>
+            <div class="absolute right-4 bottom-0 translate-y-1/2 z-10 flex items-baseline gap-1.5 bg-white rounded-[18px] px-4 py-2.5 shadow-[0_8px_20px_-6px_rgba(30,41,59,0.25)]">
+              <span id="sw-price" class="text-[26px] leading-none font-extrabold text-brand-navy">$35</span>
+              <span id="sw-unit" class="text-[12px] font-semibold text-slate-500">MXN / pieza</span>
+            </div>
+          </div>
+
+          <div class="px-5 pt-6 pb-5 shrink-0">
+            <div class="flex items-start justify-between gap-3">
+              <h3 id="sw-title" class="text-[24px] leading-tight font-extrabold tracking-tight text-brand-navy">Rebanada Pastel Chocolate</h3>
+              <span class="shrink-0 inline-flex items-center gap-1 mt-1.5 text-[15px] font-bold text-brand-navy"><svg class="w-[18px] h-[18px] text-amber-400"><use href="#i-star"/></svg><span id="sw-rating">4.9</span></span>
+            </div>
+            <p id="sw-desc" class="mt-2 text-[14px] leading-relaxed text-slate-500"></p>
+            <div class="mt-4 flex items-center justify-between gap-3">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <span id="sw-avatar" class="w-10 h-10 shrink-0 rounded-full bg-[#FFE9E1] text-[#E8552F] text-[13px] font-extrabold grid place-items-center">VG</span>
+                <span id="sw-seller" class="text-[13px] font-bold text-brand-navy truncate">Valeria Gómez (Derecho)</span>
+              </div>
+              <span class="shrink-0 inline-flex items-center gap-1 text-[12px] text-slate-500"><svg class="w-4 h-4"><use href="#i-pin"/></svg><span id="sw-location">En campus</span></span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Acciones -->
+      <div class="mt-8 flex items-end justify-center gap-6">
+        <div class="flex flex-col items-center gap-2">
+          <button id="btn-back" type="button" aria-label="Volver" class="w-[52px] h-[52px] rounded-full bg-white border border-slate-200 grid place-items-center text-slate-500 shadow-sm hover:bg-slate-50 active:scale-90 transition"><svg class="w-5 h-5"><use href="#i-undo"/></svg></button>
+          <span class="text-[12px] font-medium text-slate-500">Volver</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <button id="btn-pass" type="button" aria-label="Pasar" class="w-[68px] h-[68px] rounded-full bg-white border border-slate-200 grid place-items-center text-brand-navy shadow-sm hover:bg-slate-50 active:scale-90 transition"><svg class="w-7 h-7"><use href="#i-x"/></svg></button>
+          <span class="text-[12px] font-medium text-slate-500">Pasar</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <button id="btn-save" type="button" aria-label="Guardar" class="w-[78px] h-[78px] rounded-full bg-brand-orange grid place-items-center text-brand-navy shadow-[0_12px_24px_-8px_rgba(255,122,89,0.7)] hover:scale-105 active:scale-90 transition"><svg class="w-9 h-9"><use href="#i-heart"/></svg></button>
+          <span class="text-[12px] font-bold text-brand-red">Guardar</span>
+        </div>
+      </div>
+
+      <!-- Toast -->
+      <div class="mt-7 flex items-center gap-2.5 rounded-2xl bg-[#E4F7EE] px-4 py-3.5 text-[13px] font-medium text-emerald-800">
+        <svg class="w-6 h-6 shrink-0 text-emerald-700"><use href="#i-heart"/></svg>
+        <span id="toast-text">Tus favoritos te esperan en Guardados.</span>
+      </div>
+    </main>
+  </div>
+
+  <!-- ===================== VISTA MODO VENDEDOR (Gestión de Pedidos Activos) ===================== -->
+  <section id="view-seller-orders" class="hidden flex flex-col h-full w-full bg-slate-50 min-h-screen text-navy antialiased selection:bg-terracota selection:text-white">
+    <!-- Contenedor Principal Responsivo (móvil, tablet y desktop) -->
+    <div class="w-full max-w-screen-xl mx-auto min-h-screen flex flex-col relative pb-28 sm:pb-24">
+
+      <!-- 1. HEADER FIJO -->
+      <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md px-4 sm:px-6 pt-5 pb-3 border-b border-slate-200 shadow-sm">
+        <div class="flex items-center justify-between mb-2">
+          <!-- Logo / Marca UDG Market -->
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-xl bg-terracota flex items-center justify-center text-white shadow-sm font-black text-sm tracking-tighter">
+              UDG
+            </div>
+            <span class="text-xs font-bold tracking-wider uppercase text-slate-500">Panel Vendedor</span>
+          </div>
+
+          <!-- Botón Volver a Modo Comprador y Campana -->
+          <div class="flex items-center gap-2">
+            <button onclick="switchView('ubereats')" class="text-[11px] font-bold text-terracota bg-terracota-light px-2.5 py-1 rounded-full border border-terracota/20 hover:bg-terracota hover:text-white transition-all flex items-center gap-1.5 shadow-sm" title="Cambiar a Modo Comprador">
+              <i class="fa-solid fa-arrow-left text-[10px]"></i>
+              <span>Comprador</span>
+            </button>
+            <button class="relative w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-navy hover:bg-slate-200 transition-all">
+              <i class="fa-regular fa-bell text-xs"></i>
+              <span class="absolute top-1 right-1 w-2 h-2 bg-terracota rounded-full animate-pulse"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Título & Switch de Estado -->
+        <div class="flex items-end justify-between gap-4">
+          <div>
+            <h1 class="text-2xl font-black tracking-tight text-navy leading-tight">
+              Mis Entregas Hoy
+            </h1>
+            <p class="text-xs font-medium text-slate-500">Viernes, 24 de Mayo • Campus CUCEI</p>
+          </div>
+
+          <!-- Switch tipo iOS: Estado Tienda Activa -->
+          <div class="flex flex-col items-end gap-1 shrink-0">
+            <label for="store-toggle" class="cursor-pointer flex items-center gap-2 bg-slate-100/90 py-1.5 px-3 rounded-full border border-slate-200 shadow-sm">
+              <span id="status-text" class="text-[11px] font-bold text-mint tracking-tight flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-mint animate-ping inline-block"></span>
+                Recibiendo
+              </span>
+              <div class="relative inline-block w-9 align-middle select-none transition duration-200 ease-in">
+                <input type="checkbox" name="toggle" id="store-toggle" checked class="toggle-checkbox absolute block w-5 h-4 top-[2px] right-4 rounded-full bg-white border-2 border-transparent appearance-none cursor-pointer transition-all duration-300 shadow-sm" onchange="toggleStoreStatus(this)" />
+                <label for="store-toggle" class="toggle-label block overflow-hidden h-5 rounded-full bg-mint cursor-pointer transition-colors duration-300"></label>
+              </div>
+            </label>
+          </div>
+        </div>
+      </header>
+
+      <!-- BANNER DE CONTEXTO RÁPIDO (PRÓXIMA CLASE) -->
+      <div class="px-4 sm:px-6 pt-4">
+        <div class="bg-navy rounded-2xl p-3.5 sm:p-4 text-white flex items-center justify-between text-xs sm:text-sm shadow-md">
+          <div class="flex items-center gap-2.5 sm:gap-3">
+            <div class="w-8 h-8 rounded-xl bg-yellowAlert/20 text-yellowAlert flex items-center justify-center font-bold text-sm shrink-0">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div>
+              <span class="text-white/60 block text-[10px] uppercase font-bold tracking-wider">Tu próxima clase</span>
+              <p class="font-bold text-white text-xs sm:text-sm leading-tight mt-0.5">Física II (Edificio Beta) • <span class="text-yellowAlert">1:50 PM</span></p>
+            </div>
+          </div>
+          <span class="bg-white/10 px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-semibold text-white/80 shrink-0">en 38 min</span>
+        </div>
+      </div>
+
+      <!-- 2. RESUMEN RÁPIDO -->
+      <div class="px-4 sm:px-6 pt-4 pb-2">
+        <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <!-- Card 1: Total entregas -->
+          <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-terracota-light text-terracota flex items-center justify-center text-lg font-bold shrink-0">
+              <i class="fa-solid fa-box-open"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-semibold text-slate-500 block uppercase tracking-wider">Por Entregar</span>
+              <div class="flex items-baseline gap-1 mt-0.5">
+                <span class="text-2xl font-extrabold text-navy">5</span>
+                <span class="text-[11px] text-slate-400 font-bold">artículos</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Ganancia esperada -->
+          <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-mint-light text-mint flex items-center justify-center text-lg font-bold shrink-0">
+              <i class="fa-solid fa-circle-dollar-to-slot"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-semibold text-slate-500 block uppercase tracking-wider">Ganancia Hoy</span>
+              <div class="flex items-baseline gap-1 mt-0.5">
+                <span class="text-2xl font-extrabold text-navy">$245</span>
+                <span class="text-[11px] text-mint font-bold font-mono">MXN</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN FILTRO / TÍTULO DE LISTA -->
+      <div class="px-4 sm:px-6 pt-4 pb-1 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <h2 class="text-sm sm:text-base font-extrabold uppercase tracking-wider text-navy">
+            Pedidos Activos <span class="bg-terracota text-white text-[10px] px-2 py-0.5 rounded-full ml-1 font-black">3</span>
+          </h2>
+        </div>
+        <span class="text-xs text-slate-500 font-semibold flex items-center gap-1.5">
+          <i class="fa-solid fa-arrow-down-short-wide text-xs"></i> Ordenados por hora
+        </span>
+      </div>
+
+      <!-- 3. LISTA DE PEDIDOS ACTIVOS RESPONSIVA (1 col móvil, 2 col tablet, 3 col desktop) -->
+      <main class="px-4 sm:px-6 py-3 flex-1">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+          <!-- TARJETA 1: PEDIDO URGENTE (Próxima entrega) -->
+          <article class="bg-white rounded-2xl p-4 sm:p-5 border-2 border-yellowAlert/60 shadow-card relative overflow-hidden transition-all duration-200 flex flex-col justify-between">
+            <div>
+              <!-- Indicador de urgencia en borde -->
+              <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-yellowAlert via-terracota to-yellowAlert"></div>
+
+              <!-- Fila 1: Quién y Estado -->
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-xs font-black text-navy shrink-0">
+                    MG
+                  </div>
+                  <div class="min-w-0">
+                    <p class="font-extrabold text-navy text-sm leading-tight flex items-center gap-1.5 truncate">
+                      Mateo González
+                      <span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-medium shrink-0">Ing. Computación</span>
+                    </p>
+                    <span class="text-[10px] text-slate-400 font-medium truncate block">Pedido #UDG-1048 • Pagado con SPEI</span>
+                  </div>
+                </div>
+                <!-- Badge Estado (Yellow) -->
+                <span class="inline-flex items-center gap-1 bg-yellowAlert/20 text-yellowAlert-dark border border-yellowAlert/40 px-2.5 py-1 rounded-full text-xs font-black tracking-tight shrink-0">
+                  <span class="w-1.5 h-1.5 rounded-full bg-yellowAlert-dark animate-ping"></span>
+                  Por Entregar
+                </span>
+              </div>
+
+              <!-- Fila 2: El Pedido - QUÉ -->
+              <div class="py-3.5 flex items-start gap-3 bg-slate-50 rounded-xl p-3.5 my-3 border border-slate-100">
+                <div class="bg-navy text-white text-base font-black px-2.5 py-1.5 rounded-lg flex items-center justify-center shadow-sm shrink-0">
+                  2x
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-base font-black text-navy leading-snug tracking-tight">
+                    Rebanada Pastel Chocolate Matildas
+                  </h3>
+                  <p class="text-xs text-slate-500 font-semibold mt-0.5">
+                    Extra betún y chispas • <span class="text-terracota font-bold">$90.00</span>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Fila 3: Logística - CUÁNDO y DÓNDE -->
+              <div class="grid grid-cols-2 gap-2 my-2.5">
+                <div class="flex items-center gap-2.5 bg-yellowAlert/10 p-2.5 rounded-xl border border-yellowAlert/30">
+                  <div class="w-8 h-8 rounded-lg bg-yellowAlert text-navy flex items-center justify-center text-xs shadow-sm font-bold shrink-0">
+                    <i class="fa-regular fa-clock"></i>
+                  </div>
+                  <div class="min-w-0">
+                    <span class="text-[10px] uppercase font-bold text-slate-500 block">Hora de Entrega</span>
+                    <p class="text-sm font-black text-navy leading-tight truncate">1:00 PM</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2.5 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                  <div class="w-8 h-8 rounded-lg bg-navy text-white flex items-center justify-center text-xs shadow-sm font-bold shrink-0">
+                    <i class="fa-solid fa-location-dot"></i>
+                  </div>
+                  <div class="truncate">
+                    <span class="text-[10px] uppercase font-bold text-slate-500 block">Punto Encuentro</span>
+                    <p class="text-sm font-black text-navy leading-tight truncate">Módulo O (Bancas)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fila 4: Acciones -->
+            <div class="pt-3 flex items-center gap-2 border-t border-slate-100 mt-2">
+              <a href="https://wa.me/523312345678" target="_blank" class="w-12 h-11 rounded-xl bg-terracota text-white flex items-center justify-center text-lg shadow-sm hover:bg-terracota-dark active:scale-95 transition-all shrink-0" title="Contactar por WhatsApp">
+                <i class="fa-brands fa-whatsapp text-xl"></i>
+              </a>
+
+              <button onclick="markDelivered(this, 'Mateo González')" class="flex-1 h-11 rounded-xl bg-mint text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-sm hover:bg-mint-dark active:scale-[0.98] transition-all border border-mint/20">
+                <i class="fa-solid fa-circle-check text-base"></i>
+                <span>Marcar Entregado</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- TARJETA 2: SEGUNDO PEDIDO -->
+          <article class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-card relative overflow-hidden transition-all duration-200 flex flex-col justify-between">
+            <div>
+              <!-- Fila 1: Quién y Estado -->
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-xs font-black text-navy shrink-0">
+                    SP
+                  </div>
+                  <div class="min-w-0">
+                    <p class="font-extrabold text-navy text-sm leading-tight flex items-center gap-1.5 truncate">
+                      Sofía Paredes
+                      <span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-medium shrink-0">Lic. Química</span>
+                    </p>
+                    <span class="text-[10px] text-slate-400 font-medium truncate block">Pedido #UDG-1049 • Pago en Efectivo</span>
+                  </div>
+                </div>
+                <span class="inline-flex items-center gap-1 bg-yellowAlert/20 text-yellowAlert-dark border border-yellowAlert/40 px-2.5 py-1 rounded-full text-xs font-black tracking-tight shrink-0">
+                  <span class="w-1.5 h-1.5 rounded-full bg-yellowAlert-dark"></span>
+                  Por Entregar
+                </span>
+              </div>
+
+              <!-- Fila 2: El Pedido - QUÉ -->
+              <div class="py-3.5 flex items-start gap-3 bg-slate-50 rounded-xl p-3.5 my-3 border border-slate-100">
+                <div class="bg-navy text-white text-base font-black px-2.5 py-1.5 rounded-lg flex items-center justify-center shadow-sm shrink-0">
+                  1x
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-base font-black text-navy leading-snug tracking-tight">
+                    Brownie Clásico Nuez
+                  </h3>
+                  <p class="text-xs text-slate-500 font-semibold mt-0.5">
+                    Empaque individual térmico • <span class="text-terracota font-bold">$35.00</span>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Fila 3: Logística - CUÁNDO y DÓNDE -->
+              <div class="grid grid-cols-2 gap-2 my-2.5">
+                <div class="flex items-center gap-2.5 bg-yellowAlert/10 p-2.5 rounded-xl border border-yellowAlert/30">
+                  <div class="w-8 h-8 rounded-lg bg-yellowAlert text-navy flex items-center justify-center text-xs shadow-sm font-bold shrink-0">
+                    <i class="fa-regular fa-clock"></i>
+                  </div>
+                  <div class="min-w-0">
+                    <span class="text-[10px] uppercase font-bold text-slate-500 block">Hora de Entrega</span>
+                    <p class="text-sm font-black text-navy leading-tight truncate">1:20 PM</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2.5 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                  <div class="w-8 h-8 rounded-lg bg-navy text-white flex items-center justify-center text-xs shadow-sm font-bold shrink-0">
+                    <i class="fa-solid fa-location-dot"></i>
+                  </div>
+                  <div class="truncate">
+                    <span class="text-[10px] uppercase font-bold text-slate-500 block">Punto Encuentro</span>
+                    <p class="text-sm font-black text-navy leading-tight truncate">Entrada Biblioteca Central</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fila 4: Acciones -->
+            <div class="pt-3 flex items-center gap-2 border-t border-slate-100 mt-2">
+              <a href="https://wa.me/523312345678" target="_blank" class="w-12 h-11 rounded-xl bg-terracota text-white flex items-center justify-center text-lg shadow-sm hover:bg-terracota-dark active:scale-95 transition-all shrink-0" title="Contactar">
+                <i class="fa-brands fa-whatsapp text-xl"></i>
+              </a>
+
+              <button onclick="markDelivered(this, 'Sofía Paredes')" class="flex-1 h-11 rounded-xl bg-mint text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-sm hover:bg-mint-dark active:scale-[0.98] transition-all border border-mint/20">
+                <i class="fa-solid fa-circle-check text-base"></i>
+                <span>Marcar Entregado</span>
+              </button>
+            </div>
+          </article>
+
+          <!-- TARJETA 3: TERCER PEDIDO -->
+          <article class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-card relative overflow-hidden transition-all duration-200 flex flex-col justify-between">
+            <div>
+              <!-- Fila 1: Quién y Estado -->
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-xs font-black text-navy shrink-0">
+                    CR
+                  </div>
+                  <div class="min-w-0">
+                    <p class="font-extrabold text-navy text-sm leading-tight flex items-center gap-1.5 truncate">
+                      Carlos Ramírez
+                      <span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-medium shrink-0">Ing. Civil</span>
+                    </p>
+                    <span class="text-[10px] text-slate-400 font-medium truncate block">Pedido #UDG-1050 • Transferencia</span>
+                  </div>
+                </div>
+                <span class="inline-flex items-center gap-1 bg-yellowAlert/20 text-yellowAlert-dark border border-yellowAlert/40 px-2.5 py-1 rounded-full text-xs font-black tracking-tight shrink-0">
+                  <span class="w-1.5 h-1.5 rounded-full bg-yellowAlert-dark"></span>
+                  Por Entregar
+                </span>
+              </div>
+
+              <!-- Fila 2: El Pedido - QUÉ -->
+              <div class="py-3.5 flex items-start gap-3 bg-slate-50 rounded-xl p-3.5 my-3 border border-slate-100">
+                <div class="bg-navy text-white text-base font-black px-2.5 py-1.5 rounded-lg flex items-center justify-center shadow-sm shrink-0">
+                  2x
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h3 class="text-base font-black text-navy leading-snug tracking-tight">
+                    Galletas Red Velvet Rellenas
+                  </h3>
+                  <p class="text-xs text-slate-500 font-semibold mt-0.5">
+                    Relleno de queso crema artesanal • <span class="text-terracota font-bold">$120.00</span>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Fila 3: Logística - CUÁNDO y DÓNDE -->
+              <div class="grid grid-cols-2 gap-2 my-2.5">
+                <div class="flex items-center gap-2.5 bg-yellowAlert/10 p-2.5 rounded-xl border border-yellowAlert/30">
+                  <div class="w-8 h-8 rounded-lg bg-yellowAlert text-navy flex items-center justify-center text-xs shadow-sm font-bold shrink-0">
+                    <i class="fa-regular fa-clock"></i>
+                  </div>
+                  <div class="min-w-0">
+                    <span class="text-[10px] uppercase font-bold text-slate-500 block">Hora de Entrega</span>
+                    <p class="text-sm font-black text-navy leading-tight truncate">1:40 PM</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2.5 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                  <div class="w-8 h-8 rounded-lg bg-navy text-white flex items-center justify-center text-xs shadow-sm font-bold shrink-0">
+                    <i class="fa-solid fa-location-dot"></i>
+                  </div>
+                  <div class="truncate">
+                    <span class="text-[10px] uppercase font-bold text-slate-500 block">Punto Encuentro</span>
+                    <p class="text-sm font-black text-navy leading-tight truncate">Laboratorio L2 (Planta Baja)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fila 4: Acciones -->
+            <div class="pt-3 flex items-center gap-2 border-t border-slate-100 mt-2">
+              <a href="https://wa.me/523312345678" target="_blank" class="w-12 h-11 rounded-xl bg-terracota text-white flex items-center justify-center text-lg shadow-sm hover:bg-terracota-dark active:scale-95 transition-all shrink-0" title="Contactar">
+                <i class="fa-brands fa-whatsapp text-xl"></i>
+              </a>
+
+              <button onclick="markDelivered(this, 'Carlos Ramírez')" class="flex-1 h-11 rounded-xl bg-mint text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-sm hover:bg-mint-dark active:scale-[0.98] transition-all border border-mint/20">
+                <i class="fa-solid fa-circle-check text-base"></i>
+                <span>Marcar Entregado</span>
+              </button>
+            </div>
+          </article>
+
+        </div>
+      </main>
+
+      <!-- 4. NAVEGACIÓN INFERIOR (Vendedor) Centrada y contenida -->
+      <nav class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-md bg-white/95 backdrop-blur border-t border-slate-200 shadow-nav z-40 px-4 py-2.5 sm:bottom-4 sm:rounded-2xl sm:border sm:shadow-xl">
+        <div class="flex items-center justify-around">
+          
+          <!-- Tab 1: Inicio / Dashboard -->
+          <button onclick="switchView('dashboard')" class="flex flex-col items-center justify-center py-1 text-slate-400 hover:text-navy transition-colors group">
+            <i class="fa-solid fa-house text-xl transition-transform group-hover:scale-110"></i>
+            <span class="text-[11px] font-bold tracking-tight mt-1">Inicio</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
+          </button>
+
+          <!-- Tab 2: Match -->
+          <button onclick="switchView('swipe')" class="flex flex-col items-center justify-center py-1 text-slate-400 hover:text-navy transition-colors group">
+            <i class="fa-solid fa-fire text-xl transition-transform group-hover:scale-110"></i>
+            <span class="text-[11px] font-bold tracking-tight mt-1">Match</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
+          </button>
+
+          <!-- Tab 3: Ventas / Pedidos (Activo en Terracota) -->
+          <button onclick="switchView('seller-orders')" class="flex flex-col items-center justify-center py-1 text-terracota group relative">
+            <div class="relative">
+              <i class="fa-solid fa-bag-shopping text-xl transition-transform group-hover:scale-110"></i>
+              <span class="absolute -top-1 -right-2 bg-terracota text-white text-[9px] font-black rounded-full h-4 w-4 flex items-center justify-center border-2 border-white">3</span>
+            </div>
+            <span class="text-[11px] font-black tracking-tight mt-1">Ventas</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-terracota mt-0.5"></span>
+          </button>
+
+          <!-- Tab 4: Inventario -->
+          <button onclick="location.href='pages/inventario.html'" class="flex flex-col items-center justify-center py-1 text-slate-400 hover:text-navy transition-colors group">
+            <i class="fa-solid fa-boxes-stacked text-xl transition-transform group-hover:scale-110"></i>
+            <span class="text-[11px] font-bold tracking-tight mt-1">Inventario</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
+          </button>
+
+          <!-- Tab 5: Perfil -->
+          <button onclick="switchView('profile')" class="flex flex-col items-center justify-center py-1 text-slate-400 hover:text-navy transition-colors group">
+            <i class="fa-solid fa-user-gear text-xl transition-transform group-hover:scale-110"></i>
+            <span class="text-[11px] font-bold tracking-tight mt-1">Perfil</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
+          </button>
+
+        </div>
+      </nav>
+
+    </div>
+  </section>
+
+  <!-- ===================== VISTA MI PERFIL / AJUSTES ===================== -->
+  <section id="view-profile" class="hidden flex flex-col h-full overflow-y-auto w-full bg-slate-50 min-h-screen text-navy antialiased selection:bg-terracota selection:text-white">
+    <div class="w-full max-w-3xl mx-auto min-h-screen flex flex-col relative pb-28">
+
+      <!-- 1. HEADER FIJO / APP BAR -->
+      <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md px-4 sm:px-6 py-3.5 border-b border-slate-200/80 flex items-center justify-between transition-all shadow-sm">
+        <button aria-label="Regresar" class="w-10 h-10 rounded-full flex items-center justify-center text-navy hover:bg-slate-200/70 active:scale-95 transition-all" onclick="switchView('dashboard')">
+          <i class="fa-solid fa-arrow-left text-lg"></i>
+        </button>
+        <h1 class="text-base font-bold tracking-tight text-navy">Mi Perfil</h1>
+        <button aria-label="Ajustes o Guardar" class="w-10 h-10 rounded-full flex items-center justify-center text-navy hover:bg-slate-200/70 active:scale-95 transition-all relative" id="btn-save" onclick="openEditModal()">
+          <i class="fa-solid fa-user-pen text-lg text-slate-700"></i>
+          <!-- Micro badge notification -->
+          <span class="absolute top-2 right-2 w-2 h-2 bg-terracota rounded-full ring-2 ring-slate-50"></span>
+        </button>
+      </header>
+
+      <!-- MAIN SCROLLABLE CONTENT -->
+      <main class="flex-1 px-4 sm:px-6 py-5 space-y-4">
+
+        <!-- 2. TARJETA DE USUARIO (INFO BÁSICA) -->
+        <section class="bg-white rounded-3xl p-5 shadow-soft border border-slate-100 flex items-center gap-4 relative overflow-hidden group">
+          <!-- Background subtle decor pattern -->
+          <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-slate-100 rounded-full blur-xl pointer-events-none"></div>
+          <!-- Avatar con botón editar -->
+          <div class="relative shrink-0">
+            <div class="w-[72px] h-[72px] rounded-full ring-4 ring-slate-100 bg-slate-200 flex items-center justify-center text-navy font-bold text-xl overflow-hidden shadow-inner cursor-pointer" onclick="openEditModal()">
+              <img alt="Foto de perfil de Mateo" class="w-full h-full object-cover" id="profile-card-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEILJRvTvvwpTp6T95xdRvw4qMAaiLsBZxSnZCJKATokQk_Gj_AlSKUV_scsGXtqiA7ew0Hys5B0Ggc22ShfTZymA9b0Uitj5A4CtBsrj2lbCYZBJw-VJOHYuUHVFqBMwo8k8VC4tmoR8yH2bgwN1IHwc7Pk4yaJwrrXKprBBlb5vMMd-_juXSlRT9X7zk0k542TayxmfOBS8C6jcreZOd0FhA9l4qaM5Zte5EB1SE"/>
+            </div>
+            <button aria-label="Cambiar foto de perfil" class="absolute bottom-0 right-0 w-7 h-7 bg-terracota text-white rounded-full flex items-center justify-center text-xs shadow-md hover:bg-terracota-dark active:scale-90 transition-transform ring-2 ring-white" onclick="openEditModal()">
+              <i class="fa-solid fa-camera"></i>
+            </button>
+          </div>
+          <!-- Info personal y centro universitario -->
+          <div class="flex-1 min-w-0 cursor-pointer" onclick="openEditModal()">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1.5 min-w-0">
+                <h2 class="text-lg font-extrabold text-navy truncate tracking-tight" id="profile-card-name">Mateo González</h2>
+                <i class="fa-solid fa-circle-check text-mint text-xs shrink-0" title="Estudiante Verificado UDG"></i>
+              </div>
+              <span class="text-[11px] font-bold text-terracota hover:underline flex items-center gap-1 shrink-0 ml-1">
+                <i class="fa-solid fa-pen text-[10px]"></i> Editar
+              </span>
+            </div>
+            <p class="text-xs font-semibold text-slate-500 truncate mt-0.5" id="profile-card-academic">
+              Ing. en Computación • CUCEI
+            </p>
+            <div class="flex items-center gap-2 mt-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-navy border border-slate-200">
+                <span class="w-1.5 h-1.5 rounded-full bg-mint mr-1.5"></span> Código: <span class="ml-1" id="profile-card-code">218491024</span>
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. BLOQUE PRINCIPAL: SWITCH MODO VENDEDOR -->
+        <section class="bg-white rounded-3xl p-5 shadow-soft border-2 border-slate-100 hover:border-terracota/30 transition-colors relative">
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex items-start gap-3.5">
+              <div class="w-11 h-11 rounded-2xl bg-terracota/10 flex items-center justify-center text-terracota shrink-0 mt-0.5">
+                <i class="fa-solid fa-store text-lg"></i>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="text-base font-bold text-navy">Activar Modo Vendedor</h3>
+                  <span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wide bg-slate-100 text-slate-500" id="seller-status-badge">
+                    Inactivo
+                  </span>
+                </div>
+                <p class="text-xs text-slate-500 leading-relaxed mt-1 pr-1">
+                  Actívalo para ofrecer tus productos en el campus, gestionar pedidos y sincronizar stock.
+                </p>
+              </div>
+            </div>
+            <!-- Switch estilo iOS -->
+            <div class="shrink-0 flex items-center pl-1">
+              <label class="relative inline-flex items-center cursor-pointer select-none">
+                <input class="sr-only peer" id="seller-mode-switch" onchange="toggleSellerMode(this)" type="checkbox"/>
+                <!-- Track -->
+                <div class="w-14 h-8 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-6 peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-[26px] after:w-[26px] after:transition-all after:shadow-sm peer-checked:bg-mint transition-colors duration-300"></div>
+              </label>
+            </div>
+          </div>
+          <!-- Tip rápido para vendedores cuando está inactivo -->
+          <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400" id="seller-hint">
+            <span><i class="fa-regular fa-clock mr-1"></i> Horarios de entrega recomendados: recesos</span>
+            <span class="text-terracota font-semibold" id="seller-hint-campus">Campus CUCEI</span>
+          </div>
+        </section>
+
+        <!-- 4. CONTENEDOR CONDICIONAL (OPCIONES DE VENDEDOR) -->
+        <div class="hidden transition-all duration-300 ease-in-out opacity-0 translate-y-2 space-y-2.5" id="seller-menu">
+          <div class="flex items-center justify-between px-1">
+            <button type="button" onclick="switchView('seller-orders')" class="text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-terracota transition-colors flex items-center gap-1.5">
+              <i class="fa-solid fa-bolt text-yellowAccent"></i> Panel de Vendedor Activo
+            </button>
+            <span class="text-[11px] font-bold text-mint bg-mint/10 px-2 py-0.5 rounded-full">
+              En línea
+            </span>
+          </div>
+          <div class="bg-white rounded-3xl shadow-soft border border-slate-100 overflow-hidden divide-y divide-slate-100">
+            <!-- Opción Principal: Panel de Vendedor / Pedidos Activos -->
+            <button type="button" onclick="switchView('seller-orders')" class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group text-left">
+              <div class="flex items-center gap-3.5">
+                <div class="w-10 h-10 rounded-2xl bg-terracota/10 text-terracota flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+                  <i class="fa-solid fa-store"></i>
+                </div>
+                <div class="text-left">
+                  <p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Panel de Vendedor</p>
+                  <p class="text-xs text-slate-400">Gestionar entregas y pedidos activos de hoy</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-white bg-terracota px-2 py-0.5 rounded-full">3 activos</span>
+                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+              </div>
+            </button>
+            <!-- Opción: Mi Inventario -->
+            <a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group" href="pages/inventario.html">
+              <div class="flex items-center gap-3.5">
+                <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+                  <i class="fa-solid fa-boxes-stacked"></i>
+                </div>
+                <div class="text-left">
+                  <p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Mi Inventario</p>
+                  <p class="text-xs text-slate-400">Edición rápida de stock y precios (4 productos)</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-yellowAccent" title="Stock bajo en algunos ítems"></span>
+                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+              </div>
+            </a>
+            <!-- Opción: Puntos de Encuentro Activos -->
+            <button type="button" onclick="switchView('seller-orders')" class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group text-left">
+              <div class="flex items-center gap-3.5">
+                <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-mint flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+                  <i class="fa-solid fa-location-dot"></i>
+                </div>
+                <div class="text-left">
+                  <p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Puntos de Encuentro Activos</p>
+                  <p class="text-xs text-slate-400" id="seller-points-sub">Módulo O, Entrada Biblioteca Central</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">2 puntos</span>
+                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+              </div>
+            </button>
+            <!-- Opción: Mis Ganancias / Finanzas -->
+            <button type="button" onclick="switchView('seller-orders')" class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group text-left">
+              <div class="flex items-center gap-3.5">
+                <div class="w-10 h-10 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+                  <i class="fa-solid fa-wallet"></i>
+                </div>
+                <div class="text-left">
+                  <p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Mis Ganancias</p>
+                  <p class="text-xs text-slate-400">Balance del día y transferencias SPEI</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-mint font-mono">$245.00</span>
+                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 5. OPCIONES GENERALES (COMPRADOR / CUENTA) -->
+        <section class="space-y-2.5">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500 px-1">
+            Mi Cuenta &amp; Compras
+          </span>
+          <div class="bg-white rounded-3xl shadow-soft border border-slate-100 overflow-hidden divide-y divide-slate-100">
+            <!-- Mis Compras -->
+            <a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group" href="pages/pedidos.html">
+              <div class="flex items-center gap-3.5">
+                <div class="w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+                  <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+                <div class="text-left">
+                  <p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Mis Compras</p>
+                  <p class="text-xs text-slate-400">Historial y pedidos en curso</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">3 pedidos</span>
+                <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+              </div>
+            </a>
+            <!-- Métodos de Pago -->
+            <button type="button" onclick="showToast('Métodos activos: SPEI y Efectivo en campus', 'mint', 'fa-credit-card')" class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group text-left">
+              <div class="flex items-center gap-3.5">
+                <div class="w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+                  <i class="fa-regular fa-credit-card"></i>
+                </div>
+                <div class="text-left">
+                  <p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Métodos de Pago</p>
+                  <p class="text-xs text-slate-400">SPEI, Tarjetas y Efectivo en mano</p>
+                </div>
+              </div>
+              <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+            </button>
+            <!-- Notificaciones del Campus -->
+            <button type="button" onclick="showToast('Tienes 2 alertas de entrega en Campus CUCEI', 'terracota', 'fa-bell')" class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group text-left">
+              <div class="flex items-center gap-3.5">
+                <div class="w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+                  <i class="fa-regular fa-bell"></i>
+                </div>
+                <div class="text-left">
+                  <p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Notificaciones</p>
+                  <p class="text-xs text-slate-400">Alertas de pedidos y avisos de clase</p>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-white bg-terracota px-2 py-0.5 rounded-full">2 nuevas</span>
+            </button>
+            <!-- Soporte / Ayuda Estudiantil -->
+            <button type="button" onclick="showToast('Guía de convivencia estudiantil UDG disponible', 'mint', 'fa-circle-question')" class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group text-left">
+              <div class="flex items-center gap-3.5">
+                <div class="w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+                  <i class="fa-regular fa-circle-question"></i>
+                </div>
+                <div class="text-left">
+                  <p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Soporte &amp; Preguntas Frecuentes</p>
+                  <p class="text-xs text-slate-400">Guía de convivencia y entregas UDG</p>
+                </div>
+              </div>
+              <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+            </button>
+            <!-- Cerrar Sesión -->
+            <button type="button" class="w-full px-5 py-4 flex items-center justify-between hover:bg-red-50/50 active:bg-red-50 transition-colors group text-left" onclick="handleLogout()">
+              <div class="flex items-center gap-3.5">
+                <div class="w-10 h-10 rounded-2xl bg-red-50 text-terracota flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+                  <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </div>
+                <div>
+                  <p class="text-sm font-bold text-terracota">Cerrar Sesión</p>
+                  <p class="text-xs text-slate-400">Desvincular cuenta en este dispositivo</p>
+                </div>
+              </div>
+              <i class="fa-solid fa-chevron-right text-xs text-terracota/60 group-hover:translate-x-0.5 transition-transform"></i>
+            </button>
+          </div>
+        </section>
+
+        <!-- App version & branding footer micro-copy -->
+        <div class="pt-3 pb-2 text-center text-xs text-slate-400 space-y-1">
+          <p class="font-bold text-slate-500" id="footer-campus-text">UDG Market • Campus CUCEI</p>
+          <p class="text-[11px]">Versión 1.4.2 PWA • Hecho por y para la comunidad</p>
+        </div>
+      </main>
+
+      <!-- 6. BARRA DE NAVEGACIÓN INFERIOR (PWA PERSISTENTE) -->
+      <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white/95 backdrop-blur-md border-t border-slate-200/80 py-2.5 px-6 z-40 flex items-center justify-around shadow-nav sm:bottom-4 sm:rounded-2xl sm:border sm:shadow-xl">
+        <!-- Pestaña Inicio (Dashboard) -->
+        <button type="button" onclick="switchView('dashboard')" class="flex flex-col items-center gap-1 text-slate-400 hover:text-navy transition-colors group">
+          <i class="fa-solid fa-house text-xl group-hover:scale-110 transition-transform"></i>
+          <span class="text-[11px] font-medium tracking-tight">Inicio</span>
+        </button>
+        <!-- Pestaña Match -->
+        <button type="button" onclick="switchView('swipe')" class="flex flex-col items-center gap-1 text-slate-400 hover:text-navy transition-colors group">
+          <i class="fa-solid fa-fire text-xl group-hover:scale-110 transition-transform"></i>
+          <span class="text-[11px] font-medium tracking-tight">Match</span>
+        </button>
+        <!-- Pestaña Perfil (Activa en Terracota) -->
+        <button type="button" onclick="switchView('profile')" class="flex flex-col items-center gap-1 text-terracota transition-colors group">
+          <div class="relative">
+            <i class="fa-solid fa-user-gear text-xl"></i>
+            <span class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-terracota rounded-full"></span>
+          </div>
+          <span class="text-[11px] font-bold tracking-tight text-navy">Perfil</span>
+        </button>
+      </nav>
+
+    </div>
+  </section>
+
+  <!-- VISTA: Editar Producto -->
+  <section id="view-editar-producto" class="hidden flex flex-col min-h-screen w-full bg-slate-50 text-brand-navy antialiased selection:bg-red-100 selection:text-brand-terracota">
+    <div class="w-full max-w-2xl mx-auto min-h-screen flex flex-col bg-slate-50 relative pb-28 sm:pb-32">
+      <!-- Sticky Top Navigation Bar -->
+      <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-100 px-5 pt-4 pb-3 flex items-center justify-between" data-purpose="top-navigation">
+        <button type="button" onclick="volverAlInventario()" aria-label="Volver al inventario" class="w-10 h-10 -ml-2 rounded-full flex items-center justify-center text-brand-navy hover:bg-slate-100 active:scale-95 transition-all">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path d="M15.75 19.5L8.25 12l7.5-7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </button>
+        <h1 class="text-lg font-extrabold tracking-tight text-brand-navy">Editar Producto</h1>
+        <button type="button" aria-label="Eliminar producto" class="w-10 h-10 -mr-2 rounded-full flex items-center justify-center text-slate-400 hover:text-brand-terracota hover:bg-red-50 active:scale-95 transition-all">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </button>
+      </header>
+
+      <!-- Main Content Scrollable Area -->
+      <main class="flex-1 px-5 py-6 space-y-6">
+        <!-- Product Image Upload Card -->
+        <section class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100" data-purpose="product-media-editor">
+          <div class="relative w-full h-56 rounded-2xl overflow-hidden bg-slate-100 group">
+            <img alt="Fotografía actual del producto: Chilaquiles Rojos" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1599974579688-8dbdd335c77f?auto=format&fit=crop&w=800&q=80"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+            <label class="absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm text-brand-navy font-bold text-xs px-4 py-2.5 rounded-full shadow-lg flex items-center gap-2 cursor-pointer hover:bg-white active:scale-95 transition-all" for="product-image-upload">
+              <svg class="w-4 h-4 text-brand-terracota" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+              <span>Cambiar foto</span>
+              <input accept="image/*" class="hidden" id="product-image-upload" type="file"/>
+            </label>
+            <div class="absolute top-3 left-3 bg-brand-navy/85 backdrop-blur-sm text-white text-[11px] font-bold px-2.5 py-1 rounded-full">
+              ID: #PROD-042
+            </div>
+          </div>
+          <p class="text-[11px] text-slate-400 text-center mt-2.5 font-medium">Recomendado: Foto cuadrada o 4:3 con buena luz</p>
+        </section>
+
+        <!-- Form Details Card -->
+        <form class="space-y-5" id="edit-product-form">
+          <!-- Basic Info Card -->
+          <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 space-y-4">
+            <div class="flex items-center justify-between mb-1">
+              <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-400">Información Básica</h2>
+              <span class="text-[11px] font-bold text-brand-mint bg-emerald-50 px-2.5 py-0.5 rounded-full">Visible en catálogo</span>
+            </div>
+
+            <!-- Product Name -->
+            <div>
+              <label class="block text-xs font-bold text-brand-navy mb-1.5" for="product-name">Nombre del producto</label>
+              <input class="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-sm font-semibold text-brand-navy focus:outline-none focus:ring-2 focus:ring-brand-terracota/20 focus:border-brand-terracota transition-all" id="product-name" name="product-name" placeholder="Ej. Chilaquiles Rojos con Pollo" required type="text" value="Chilaquiles Rojos"/>
+            </div>
+
+            <!-- Price & Category Grid -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-brand-navy mb-1.5" for="product-price">Precio (MXN)</label>
+                <div class="relative">
+                  <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">$</span>
+                  <input class="w-full pl-8 pr-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-sm font-bold text-brand-navy focus:outline-none focus:ring-2 focus:ring-brand-terracota/20 focus:border-brand-terracota transition-all" id="product-price" min="1" name="product-price" required step="0.50" type="number" value="45.00"/>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-brand-navy mb-1.5" for="product-category">Categoría</label>
+                <div class="relative">
+                  <select class="w-full px-3.5 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-sm font-semibold text-brand-navy appearance-none focus:outline-none focus:ring-2 focus:ring-brand-terracota/20 focus:border-brand-terracota transition-all pr-8" id="product-category" name="product-category">
+                    <option selected value="alimentos">Alimentos</option>
+                    <option value="bebidas">Bebidas</option>
+                    <option value="postres">Postres</option>
+                    <option value="papeleria">Papelería</option>
+                    <option value="servicios">Servicios</option>
+                  </select>
+                  <svg class="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M19.5 8.25l-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+              <div class="flex justify-between items-center mb-1.5">
+                <label class="block text-xs font-bold text-brand-navy" for="product-desc">Descripción corta</label>
+                <span class="text-[11px] font-medium text-slate-400">68/140</span>
+              </div>
+              <textarea class="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-sm font-medium text-brand-navy focus:outline-none focus:ring-2 focus:ring-brand-terracota/20 focus:border-brand-terracota transition-all resize-none" id="product-desc" name="product-desc" placeholder="Describe ingredientes, porción o detalles clave..." rows="3">Totopos crujientes bañados en salsa roja casera, con queso, crema y cebolla morada. Incluye porción de frijoles.</textarea>
+            </div>
+          </div>
+
+          <!-- Inventory & Availability Card -->
+          <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 space-y-5">
+            <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-400">Inventario y Estado</h2>
+
+            <!-- Stock Counter Stepper -->
+            <div class="flex items-center justify-between">
+              <div>
+                <label class="block text-sm font-bold text-brand-navy" for="product-stock">Stock disponible</label>
+                <p class="text-xs text-slate-400 font-medium">Unidades listas para entrega hoy</p>
+              </div>
+              <div class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-200">
+                <button type="button" aria-label="Disminuir stock" class="w-9 h-9 rounded-xl bg-white shadow-sm flex items-center justify-center text-brand-navy font-bold hover:bg-slate-100 active:scale-95 transition-all">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M19.5 12h-15" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </button>
+                <input class="w-12 text-center bg-transparent font-extrabold text-base text-brand-navy focus:outline-none" id="product-stock" min="0" name="product-stock" type="number" value="15"/>
+                <button type="button" aria-label="Aumentar stock" class="w-9 h-9 rounded-xl bg-brand-navy text-white shadow-sm flex items-center justify-center font-bold hover:bg-slate-800 active:scale-95 transition-all">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M12 4.5v15m7.5-7.5h-15" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Quick Stock Adjustment Chips -->
+            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-1">
+              <span class="text-[11px] font-bold text-slate-400 mr-1 shrink-0">Ajuste rápido:</span>
+              <button type="button" class="px-3 py-1.5 rounded-full bg-slate-100 text-xs font-bold text-brand-navy hover:bg-slate-200 transition-colors shrink-0">+5</button>
+              <button type="button" class="px-3 py-1.5 rounded-full bg-slate-100 text-xs font-bold text-brand-navy hover:bg-slate-200 transition-colors shrink-0">+10</button>
+              <button type="button" class="px-3 py-1.5 rounded-full bg-red-50 text-xs font-bold text-brand-terracota hover:bg-red-100 transition-colors shrink-0">Agotar (0)</button>
+            </div>
+
+            <hr class="border-slate-100"/>
+
+            <!-- Availability Switch -->
+            <div class="flex items-center justify-between">
+              <div class="pr-4">
+                <span class="block text-sm font-bold text-brand-navy">Publicar en tienda</span>
+                <p class="text-xs text-slate-400 font-medium">Si lo apagas, los estudiantes no podrán pedirlo</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer shrink-0">
+                <input checked class="sr-only peer" id="product-active" type="checkbox"/>
+                <div class="w-12 h-7 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-brand-mint"></div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Delivery / Campus Location Card -->
+          <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 space-y-4">
+            <h2 class="text-sm font-extrabold uppercase tracking-wider text-slate-400">Punto de Entrega Preferente</h2>
+            <div>
+              <label class="block text-xs font-bold text-brand-navy mb-1.5" for="delivery-spot">Zona en CUCEI</label>
+              <input class="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 text-sm font-semibold text-brand-navy focus:outline-none focus:ring-2 focus:ring-brand-terracota/20 focus:border-brand-terracota transition-all" id="delivery-spot" name="delivery-spot" type="text" value="Módulo X / Explanada Principal"/>
+            </div>
+          </div>
+        </form>
+      </main>
+
+      <!-- Fixed Bottom Action Footer -->
+      <footer class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-100 px-5 py-4 z-30">
+        <div class="max-w-2xl mx-auto flex items-center gap-3">
+          <button type="button" onclick="volverAlInventario()" class="w-1/3 py-3.5 rounded-full border border-slate-200 text-sm font-bold text-slate-600 hover:bg-slate-50 active:scale-95 transition-all">
+            Descartar
+          </button>
+          <button type="submit" form="edit-product-form" class="w-2/3 py-3.5 rounded-full bg-brand-terracota text-white text-sm font-extrabold shadow-lg shadow-brand-terracota/30 hover:bg-brand-terracota-dark active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path d="M4.5 12.75l6 6 9-13.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+            Guardar Cambios
+          </button>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+  <!-- Filtros de búsqueda (US-14): hoja a pantalla completa en móvil, modal centrado en escritorio -->
+  <div id="filter-sheet" class="hidden fixed inset-0 z-[70] bg-black/50 items-end sm:items-center justify-center" role="dialog" aria-modal="true" aria-labelledby="fs-title">
+    <div class="flex flex-col w-full h-full sm:h-[min(90vh,760px)] sm:max-w-md bg-brand-bg sm:rounded-3xl overflow-hidden">
+      <header class="shrink-0 bg-white border-b border-slate-100 pt-[env(safe-area-inset-top)]">
+        <div class="h-14 px-3 flex items-center justify-between">
+          <button id="fs-close" type="button" aria-label="Cerrar filtros" class="w-12 h-12 -ml-1 rounded-full flex items-center justify-center text-brand-navy hover:bg-slate-100 active:bg-slate-200 transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+          <h2 id="fs-title" class="text-base font-bold text-brand-navy">Filtros</h2>
+          <span class="w-12" aria-hidden="true"></span>
+        </div>
+      </header>
+      <div id="fs-body" class="flex-1 overflow-y-auto px-5 pt-6 pb-6 space-y-8"></div>
+      <div class="shrink-0 bg-white shadow-[0_-8px_24px_-12px_rgba(30,41,59,0.25)] pb-[env(safe-area-inset-bottom)]">
+        <div class="px-5 pt-3 pb-2 space-y-1">
+          <button id="fs-apply" type="button" class="w-full h-14 rounded-2xl bg-brand-orange text-brand-navy text-base font-bold shadow-[0_10px_20px_-10px_rgba(255,122,89,0.9)] hover:brightness-95 active:scale-[0.98] disabled:opacity-50 disabled:shadow-none transition"></button>
+          <button id="fs-clear" type="button" class="w-full h-12 text-sm font-bold text-slate-500 hover:text-brand-navy disabled:opacity-40 disabled:hover:text-slate-500 transition">Limpiar filtros</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reserva confirmada (US-20): pantalla completa sobre la app -->
+  <div id="reserva-view" class="hidden fixed inset-0 z-[80] bg-brand-bg overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="rv-title">
+    <main class="max-w-md mx-auto min-h-full flex flex-col px-5 pt-[calc(2rem+env(safe-area-inset-top))] pb-56">
+
+      <section class="flex flex-col items-center text-center" aria-live="polite">
+        <div class="relative w-36 h-36 flex items-center justify-center">
+          <span class="ring-pulse absolute inset-0 rounded-full bg-brand-mint"></span>
+          <span class="pop relative w-36 h-36 rounded-full bg-brand-mint shadow-[0_18px_40px_-12px_rgba(52,211,153,0.9)] flex items-center justify-center">
+            <svg viewBox="0 0 52 52" class="w-20 h-20" fill="none" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="draw" d="M14 27l8 8 16-17" /></svg>
+          </span>
+        </div>
+        <h2 id="rv-title" class="rise mt-7 text-3xl font-extrabold tracking-tight text-brand-navy" style="animation-delay:.3s">¡Reserva confirmada!</h2>
+        <p class="rise mt-2 text-slate-500 text-sm max-w-xs" style="animation-delay:.4s">El vendedor ya sabe que vas. Muestra este pedido al recogerlo.</p>
+      </section>
+
+      <section class="rise mt-8 rounded-3xl bg-brand-mint text-brand-navy p-5 shadow-[0_18px_40px_-20px_rgba(52,211,153,0.9)]" style="animation-delay:.5s" aria-label="Hora y lugar de recogida">
+        <div class="flex items-center gap-4">
+          <span class="w-12 h-12 shrink-0 rounded-2xl bg-white/50 flex items-center justify-center"><i class="fa-regular fa-clock text-xl"></i></span>
+          <div><p class="text-xs font-bold uppercase tracking-wide opacity-80">Hora de recogida</p><p id="rv-time" class="text-4xl font-black leading-tight"></p></div>
+        </div>
+        <div class="my-4 border-t border-brand-navy/15"></div>
+        <div class="flex items-center gap-4">
+          <span class="w-12 h-12 shrink-0 rounded-2xl bg-white/50 flex items-center justify-center"><i class="fa-solid fa-location-dot text-xl"></i></span>
+          <div class="min-w-0"><p class="text-xs font-bold uppercase tracking-wide opacity-80">Lugar exacto</p><p id="rv-place" class="text-2xl font-black leading-tight"></p><p id="rv-ref" class="text-sm font-semibold opacity-80"></p></div>
+        </div>
+      </section>
+
+      <section class="rise mt-5 rounded-3xl bg-white border border-slate-100 shadow-sm p-5" style="animation-delay:.6s" aria-label="Resumen del pedido">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xs font-bold uppercase tracking-wide text-slate-500">Resumen del pedido</h3>
+          <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 rounded-full px-3 py-1"><i class="fa-solid fa-circle-check mr-1"></i>Confirmado</span>
+        </div>
+        <dl class="mt-4 space-y-4 text-sm">
+          <div class="flex items-start justify-between gap-4"><dt class="text-slate-500">Producto</dt><dd id="rv-product" class="font-bold text-right text-brand-navy"></dd></div>
+          <div class="flex items-start justify-between gap-4"><dt class="text-slate-500">Vendedor</dt><dd id="rv-seller" class="font-bold text-right text-brand-navy"></dd></div>
+          <div class="flex items-start justify-between gap-4"><dt class="text-slate-500">Ubicación</dt><dd id="rv-place2" class="font-bold text-right text-brand-navy"></dd></div>
+          <div class="flex items-start justify-between gap-4"><dt class="text-slate-500">Pedido</dt><dd id="rv-code" class="font-bold text-right tracking-wider text-brand-navy"></dd></div>
+        </dl>
+        <div class="mt-5 pt-4 border-t border-dashed border-slate-200 flex items-end justify-between gap-4">
+          <div><p class="text-xs font-bold uppercase tracking-wide text-slate-500">Total a pagar</p><p class="text-xs text-slate-500 mt-0.5"><i class="fa-solid fa-money-bill-wave text-brand-mint mr-1"></i>En efectivo al recoger</p></div>
+          <p class="text-3xl font-black text-brand-navy"><span id="rv-total"></span> <span class="text-xs font-semibold text-slate-400">MXN</span></p>
+        </div>
+      </section>
+    </main>
+
+    <div class="fixed bottom-0 inset-x-0 bg-white shadow-[0_-8px_24px_-12px_rgba(30,41,59,0.25)] pb-[env(safe-area-inset-bottom)]">
+      <div class="max-w-md mx-auto px-5 pt-3 pb-3 space-y-2">
+        <a href="pages/pedidos.html" class="w-full h-16 rounded-2xl bg-brand-orange text-brand-navy text-lg font-extrabold shadow-[0_10px_20px_-10px_rgba(255,122,89,0.9)] hover:brightness-95 active:scale-[0.98] transition flex items-center justify-center gap-3"><i class="fa-regular fa-calendar-check"></i> Ver mis citas y pedidos</a>
+        <button id="rv-home" type="button" class="w-full h-14 rounded-2xl bg-white border-2 border-slate-200 text-brand-navy text-base font-bold hover:bg-slate-50 active:scale-[0.98] transition flex items-center justify-center gap-2"><i class="fa-solid fa-house"></i> Volver al inicio</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de cita (lo abre openAppointmentModal desde el módulo Match) -->
+  <div id="appt-modal" class="hidden fixed inset-0 z-[60] items-end sm:items-center justify-center bg-black/60 p-0 sm:p-4" role="dialog" aria-modal="true" aria-labelledby="appt-title">
+    <div class="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] space-y-4">
+      <div class="flex items-start justify-between gap-3">
+        <div class="min-w-0">
+          <p class="text-[11px] font-bold uppercase tracking-wide text-brand-orange">Agendar cita de entrega</p>
+          <h3 id="appt-title" class="text-xl font-extrabold text-brand-navy leading-tight">Producto</h3>
+          <p id="appt-seller" class="text-sm text-slate-500">Vendedor</p>
+        </div>
+        <button id="appt-close" type="button" aria-label="Cerrar" class="w-11 h-11 shrink-0 rounded-full bg-slate-100 text-brand-navy hover:bg-slate-200 transition"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="flex items-center justify-between bg-slate-50 rounded-xl-friendly p-3 text-sm">
+        <span class="flex items-center gap-2 font-semibold text-brand-navy"><i class="fa-solid fa-location-dot text-brand-orange"></i><span id="appt-location"></span></span>
+        <span id="appt-price" class="text-lg font-extrabold text-brand-navy"></span>
+      </div>
+      <div>
+        <p id="appt-range" class="text-xs font-semibold text-slate-500 mb-1.5"></p>
+        <input id="appt-time" type="time" aria-label="Hora de entrega" class="w-full h-14 px-4 rounded-xl-friendly bg-slate-50 border border-transparent text-base font-semibold focus:bg-white focus:border-brand-orange focus:outline-none focus:ring-2 focus:ring-brand-orange/20" />
+      </div>
+      <button id="appt-confirm" type="button" class="w-full h-14 rounded-2xl bg-brand-orange text-brand-navy text-base font-bold hover:brightness-95 active:scale-[0.98] transition"><i class="fa-regular fa-calendar-check mr-2"></i>Confirmar cita</button>
+      <p id="appt-done" class="hidden text-center text-sm font-bold text-emerald-600" role="status"></p>
+    </div>
+  </div>
+
+  <!-- Navegación inferior (solo móvil) -->
+  <nav id="main-bottom-nav" class="md:hidden fixed bottom-0 inset-x-0 z-50 bg-white/95 backdrop-blur border-t border-slate-200 pb-[env(safe-area-inset-bottom)]" aria-label="Secciones">
+    <div id="main-bottom-nav-grid" class="grid grid-cols-4 max-w-md mx-auto">
+      <button data-tab="ubereats" class="tab-mobile flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold transition"><i class="fa-solid fa-house text-lg"></i>Inicio</button>
+      <button data-tab="catalog"  class="tab-mobile flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold transition"><i class="fa-solid fa-bag-shopping text-lg"></i>Catálogo</button>
+      <button data-tab="swipe"    class="tab-mobile flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold transition"><i class="fa-solid fa-fire text-lg"></i>Match</button>
+      <button data-tab="seller-orders" id="nav-seller-mobile" onclick="switchView('seller-orders')" class="seller-mode-only hidden tab-mobile flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold transition"><i class="fa-solid fa-store text-lg"></i>Vendedor</button>
+      <button data-tab="profile" onclick="switchView('profile')" class="tab-mobile flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold transition"><i class="fa-solid fa-user text-lg"></i>Perfil</button>
+    </div>
+  </nav>
+
+  <!-- MODAL / BOTTOM SHEET DE EDICIÓN DE PERFIL Y CENTRO UNIVERSITARIO -->
+  <div class="fixed inset-0 z-[85] flex items-end sm:items-center justify-center hidden opacity-0 transition-opacity duration-300" id="edit-profile-modal">
+    <!-- Fondo oscurecido con desenfoque -->
+    <div class="absolute inset-0 bg-navy/60 backdrop-blur-sm" onclick="closeEditModal()"></div>
+    <!-- Contenido modal tipo bottom sheet -->
+    <div class="relative w-full max-w-[425px] bg-white rounded-t-[32px] sm:rounded-3xl shadow-2xl max-h-[90vh] flex flex-col z-10 transform translate-y-full transition-transform duration-300 ease-out overflow-hidden" id="modal-content-card">
+      <!-- Pestaña de arrastre táctil superior -->
+      <div class="pt-3 pb-1 flex justify-center cursor-pointer" onclick="closeEditModal()">
+        <div class="w-12 h-1.5 rounded-full bg-slate-300"></div>
+      </div>
+      <!-- Encabezado del modal -->
+      <div class="px-6 py-3 border-b border-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-terracota/10 text-terracota flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-user-pen"></i>
+          </div>
+          <h3 class="text-base font-extrabold text-navy">Editar Información</h3>
+        </div>
+        <button type="button" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition-colors" onclick="closeEditModal()">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+      <!-- Cuerpo con scroll -->
+      <div class="p-6 overflow-y-auto space-y-5 no-scrollbar flex-1">
+        <!-- 1. SELECCIÓN DE FOTO DE PERFIL / AVATAR -->
+        <div class="flex flex-col items-center text-center">
+          <div class="relative">
+            <div class="w-24 h-24 rounded-full ring-4 ring-terracota/20 overflow-hidden shadow-md bg-slate-100 flex items-center justify-center">
+              <img alt="Vista previa avatar" class="w-full h-full object-cover" id="modal-avatar-preview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCarReakPHmiZB7S_BXAqppBIFQ3toS6I7HNEGWdG9amGhuyFsQZVAc2y8epQE3lkZ9AxQH5zlu78NQTqsrfbeojmtLecLQ3pzV1YjWPubboYX0bYOqMn09TjjwQIMuNK4JJaKRbqAgbjTErwxdlNWXDRBAuRN_ByaYcACvN52AbdT2U6h5hxrYsX3d5QEnRzr0DsO9lBpZyWfWg-c78GGWjhGLpx-M64H2MwLmb2EY"/>
+            </div>
+            <label class="absolute bottom-0 right-0 w-8 h-8 bg-terracota text-white rounded-full flex items-center justify-center text-xs shadow-lg cursor-pointer hover:bg-terracota-dark active:scale-95 transition-all ring-2 ring-white" for="avatar-file-input" title="Subir foto">
+              <i class="fa-solid fa-camera"></i>
+            </label>
+            <input accept="image/*" class="hidden" id="avatar-file-input" onchange="handleAvatarFileSelect(this)" type="file"/>
+          </div>
+          <p class="text-xs font-bold text-navy mt-2.5">Fotografía de Estudiante</p>
+          <p class="text-[11px] text-slate-400">Elige un avatar representativo o sube una foto tuya</p>
+          <!-- Avatares rápidos predeterminados -->
+          <div class="flex items-center justify-center gap-2.5 mt-3">
+            <button class="w-8 h-8 rounded-full overflow-hidden border-2 border-transparent hover:border-terracota focus:border-terracota transition-all ring-1 ring-slate-200" onclick="selectPresetAvatar('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80')" type="button">
+              <img alt="Preset 1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJQTPe8bNadRXyCx-mRR4joSBeX2Ad_TUcwBW3IYlAFlEck0oEF2z2iD0DsA16VIcNie4kRixBVTsBjOIRBa1S0liwPeCB4BLxkgxv9C85j7YNSyIYnFTTHNAiy7f5WqCKWMVywvtChlH9KIAWXz83KPNFUahxlZ2frsGshS_iZ5XfgO8wVSN-36wyeBTkP4saC4En09IHcDIPRhjXBK2mMeGMdEluCvd3oceMfWQf"/>
+            </button>
+            <button class="w-8 h-8 rounded-full overflow-hidden border-2 border-transparent hover:border-terracota focus:border-terracota transition-all ring-1 ring-slate-200" onclick="selectPresetAvatar('https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=300&q=80')" type="button">
+              <img alt="Preset 2" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxtCP7ivkzGHRt0n-egIL-iRpf5i98EqM3X_yesSy98yRXsUyZa7IfpmC__8KyEASPanYfzps4Ci8if5U676LHZmiBCNFxiAo4zOEAzt9mxZWhDi0GqRJZ1gelfaAdbXahBRJPdyZAMRrnyhCZdIZNs94H81qp3YZwJwoNjktT46b5-EDVey65zVpXW0ge9wf3FP9ST0R44j9ZZTeUDqM4ru8tUfSmjKE20ctuTDD_"/>
+            </button>
+            <button class="w-8 h-8 rounded-full overflow-hidden border-2 border-transparent hover:border-terracota focus:border-terracota transition-all ring-1 ring-slate-200" onclick="selectPresetAvatar('https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80')" type="button">
+              <img alt="Preset 3" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuKFKjGJAHWLP43R-yQAJ26v9DMNm_sVoV_L33shhOhtcaccZ8d0fsOfnTSOWnxXP8rig3KDB8jqpTfIuJiQ89MYEGYTOqq4uKWfyFBq7zWM_8abpfkxnFrgfVSVztUjfO2G4MXWYO2uxfT2ouK9fhqxxFUkJGRvPPZcz3GjPFLHnmNoxtfhD99gB0BxP4WyHW7_GUMuwe4lyhNQA-V0GWtJUY-ONoyyHwbrPf1y3f"/>
+            </button>
+            <button class="w-8 h-8 rounded-full overflow-hidden border-2 border-transparent hover:border-terracota focus:border-terracota transition-all ring-1 ring-slate-200" onclick="selectPresetAvatar('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80')" type="button">
+              <img alt="Preset 4" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC62kS_rmUSzcfFzb9cFjurKTB7Kv71oXbYSpTW3MeirECxwc_TA_BbzfOqSstjMKhFB1B2DeSzfJOJIN6bL_GoHIil35QzhtC3SYYyhwLO8F_fpaFKpUQ_MqS0W7e46YFDJ5fQoFGPk4QLu2an30hH6NrYnLKbb0f3IJRNKzQ3aTrybnbtODx9XKNpKgmOWcJOJU4XTg3EXd0gYh5tZjCXoK1gBZ19evLnWQldQioP"/>
+            </button>
+            <button class="px-2.5 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold flex items-center gap-1 transition-colors" onclick="triggerFileUpload()" type="button">
+              <i class="fa-solid fa-cloud-arrow-up text-xs"></i> Subir
+            </button>
+          </div>
+        </div>
+        <!-- FORMULARIO DE DATOS ACADÉMICOS -->
+        <form class="space-y-3.5" id="edit-profile-form" onsubmit="saveProfileChanges(event)">
+          <!-- Nombre completo -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1" for="input-name">
+              Nombre Completo
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                <i class="fa-regular fa-user text-sm"></i>
+              </span>
+              <input class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-semibold text-navy focus:bg-white focus:border-terracota focus:ring-2 focus:ring-terracota/20 focus:outline-none transition-all" id="input-name" required type="text" value="Mateo González"/>
+            </div>
+          </div>
+          <!-- Selector Centro Universitario UDG -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1" for="select-campus">
+              Centro Universitario (Red UDG)
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                <i class="fa-solid fa-building-columns text-sm"></i>
+              </span>
+              <select class="w-full pl-10 pr-9 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-semibold text-navy focus:bg-white focus:border-terracota focus:ring-2 focus:ring-terracota/20 focus:outline-none appearance-none transition-all cursor-pointer" id="select-campus">
+                <option value="CUCEI">CUCEI - Ciencias Exactas e Ingenierías</option>
+                <option value="CUCEA">CUCEA - Ciencias Económico-Administrativas</option>
+                <option value="CUAAD">CUAAD - Arte, Arquitectura y Diseño</option>
+                <option value="CUCS">CUCS - Ciencias de la Salud</option>
+                <option value="CUCSH">CUCSH - Ciencias Sociales y Humanidades</option>
+                <option value="CUCBA">CUCBA - Ciencias Biológicas y Agropecuarias</option>
+                <option value="CUTONALA">CUTONALÁ - Centro Universitario Tonalá</option>
+                <option value="CUTLAJOMULCO">CUTLAJOMULCO - Tlajomulco</option>
+                <option value="CUALTOS">CUALTOS - Los Altos (Tepatitlán)</option>
+                <option value="CUVALLES">CUVALLES - Valles (Ameca)</option>
+                <option value="CUCOSTA">CUCOSTA - Costa (Puerto Vallarta)</option>
+                <option value="SUV">SUV - Sistema de Universidad Virtual</option>
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+              </div>
+            </div>
+            <p class="text-[10px] text-slate-400 mt-1 pl-1">Permite a compradores saber en qué campus recoger entregas.</p>
+          </div>
+          <!-- Carrera / Licenciatura -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1" for="input-career">
+              Carrera o Licenciatura
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                <i class="fa-solid fa-graduation-cap text-sm"></i>
+              </span>
+              <input class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-semibold text-navy focus:bg-white focus:border-terracota focus:ring-2 focus:ring-terracota/20 focus:outline-none transition-all" id="input-career" placeholder="Ej. Lic. en Administración" required type="text" value="Ing. en Computación"/>
+            </div>
+          </div>
+          <!-- Código de Estudiante -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1" for="input-code">
+              Código de Estudiante (Siiau)
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                <i class="fa-solid fa-id-card text-sm"></i>
+              </span>
+              <input class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-mono font-bold text-navy focus:bg-white focus:border-terracota focus:ring-2 focus:ring-terracota/20 focus:outline-none transition-all tracking-wider" id="input-code" maxlength="10" placeholder="9 dígitos oficiales" required type="text" value="218491024"/>
+            </div>
+            <span class="inline-flex items-center text-[10px] text-mint font-semibold mt-1 pl-1 gap-1">
+              <i class="fa-solid fa-shield-halved"></i> Verificación estudiantil activa para intercambios seguros
+            </span>
+          </div>
+          <!-- Botones de Acción -->
+          <div class="pt-3 flex items-center gap-3">
+            <button class="w-1/3 py-3 px-4 rounded-2xl border border-slate-200 text-slate-600 font-bold text-xs hover:bg-slate-100 active:scale-95 transition-all text-center" onclick="closeEditModal()" type="button">
+              Cancelar
+            </button>
+            <button class="w-2/3 py-3 px-4 rounded-2xl bg-terracota hover:bg-terracota-dark text-white font-extrabold text-xs shadow-md shadow-terracota/30 active:scale-95 transition-all flex items-center justify-center gap-2" type="submit">
+              <i class="fa-solid fa-check"></i>
+              <span>Guardar Cambios</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- SISTEMA UNIFICADO DE NOTIFICACIONES GLOBAL (TOAST) -->
+  <div class="fixed top-6 left-1/2 -translate-x-1/2 w-11/12 max-w-sm bg-navy text-white text-xs font-semibold px-4 py-3 rounded-2xl shadow-xl z-[95] flex items-center gap-3 transition-all duration-300 opacity-0 pointer-events-none -translate-y-4" id="toast-notification">
+    <div class="w-7 h-7 rounded-full bg-mint flex items-center justify-center text-white shrink-0" id="toast-icon-box">
+      <i class="fa-solid fa-check text-xs" id="toast-icon"></i>
+    </div>
+    <div class="flex-1 min-w-0">
+      <p class="font-bold text-xs leading-snug" id="toast-message">Modo vendedor actualizado</p>
+      <p class="hidden text-[11px] text-gray-300 font-normal mt-0.5 leading-snug" id="toast-desc"></p>
+    </div>
+  </div>
+
+  <script src="js/app.js" defer></script>
+</body>
+</html>
