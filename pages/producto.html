@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Producto - UDG Market</title>
+  <script src="../js/auth.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body class="bg-[#F8FAFC] text-[#1E293B] font-sans antialiased">
+
+  <div class="max-w-md mx-auto relative bg-[#F8FAFC] min-h-screen pb-48">
+
+    <!-- Header flotante -->
+    <a href="../index.html#catalog" aria-label="Volver atrás" class="absolute top-[calc(0.75rem+env(safe-area-inset-top))] left-4 z-20 w-12 h-12 rounded-full bg-white/70 backdrop-blur-md text-[#1E293B] shadow-md flex items-center justify-center hover:bg-white/90 active:scale-95 transition">
+      <i class="fa-solid fa-arrow-left text-lg"></i>
+    </a>
+
+    <!-- Hero -->
+    <img id="p-img" src="" alt="" class="w-full h-64 sm:h-80 object-cover bg-slate-200" />
+
+    <!-- Bloque 1: Info principal -->
+    <section class="relative -mt-6 rounded-t-3xl bg-white px-5 pt-6 pb-5 shadow-[0_-8px_20px_-12px_rgba(30,41,59,0.2)]">
+      <p id="p-badge" class="hidden mb-2 inline-flex rounded-full bg-slate-100 text-slate-600 text-[11px] font-bold px-3 py-1"></p>
+      <h1 id="p-title" class="text-2xl font-extrabold tracking-tight leading-tight"></h1>
+      <p class="mt-2 flex items-baseline gap-2">
+        <span id="p-price" class="text-3xl font-black text-[#FF7A59]"></span>
+        <span id="p-unit" class="text-sm font-semibold text-slate-500"></span>
+      </p>
+
+      <button type="button" class="mt-4 w-full min-h-[64px] rounded-2xl bg-slate-50 border border-slate-100 px-3 flex items-center gap-3 text-left hover:bg-slate-100 active:scale-[0.99] transition">
+        <span id="p-initials" class="w-11 h-11 shrink-0 rounded-full bg-[#FFE9E1] text-[#E8552F] font-extrabold text-sm flex items-center justify-center"></span>
+        <span class="flex-1 min-w-0">
+          <span id="p-seller" class="block font-bold truncate"></span>
+          <span class="flex items-center gap-1 text-xs text-slate-500"><i class="fa-solid fa-star text-[#FBBF24]"></i><strong id="p-rating" class="text-[#1E293B]"></strong> · <span id="p-reviews"></span> valoraciones</span>
+        </span>
+        <i class="fa-solid fa-chevron-right text-slate-400 text-sm"></i>
+      </button>
+    </section>
+
+    <!-- Bloque 2: Detalles y salud -->
+    <section class="mt-3 bg-white px-5 py-5 space-y-5">
+      <div>
+        <h2 class="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">Descripción</h2>
+        <p id="p-desc" class="text-[15px] leading-relaxed"></p>
+      </div>
+
+      <div id="p-ingredients-box" class="hidden">
+        <h2 class="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">Ingredientes</h2>
+        <p id="p-ingredients" class="text-sm text-slate-500 leading-relaxed"></p>
+      </div>
+
+      <!-- Alérgenos (destacado) -->
+      <div id="p-allergens-box" class="hidden rounded-2xl bg-red-50 border border-red-200 p-4 text-red-800" role="alert">
+        <p class="flex items-center gap-2 font-extrabold"><i class="fa-solid fa-triangle-exclamation text-lg"></i>Contiene alérgenos</p>
+        <ul id="p-allergens" class="mt-3 flex flex-wrap gap-2"></ul>
+        <p class="mt-3 text-xs">Si tienes alguna alergia, pregunta al vendedor antes de reservar.</p>
+      </div>
+    </section>
+
+    <!-- Bloque 3: Logística -->
+    <section class="mt-3 bg-white px-5 py-5 space-y-5">
+      <div class="flex items-center justify-between gap-3">
+        <h2 class="text-xs font-bold uppercase tracking-wide text-slate-500">Disponibilidad</h2>
+        <span class="inline-flex items-center gap-1.5 rounded-full bg-[#34D399]/20 text-emerald-800 text-xs font-extrabold px-3 py-1.5"><span class="w-2 h-2 rounded-full bg-[#34D399]"></span>Stock: <span id="stock-label"></span> disponible<span id="stock-s">s</span></span>
+      </div>
+
+      <div>
+        <h2 class="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">Horario de entrega · hoy</h2>
+        <p class="flex items-center gap-2 text-sm font-semibold mb-3"><i class="fa-regular fa-clock text-[#FF7A59]"></i><span id="p-schedule"></span></p>
+        <div id="slots" role="radiogroup" aria-label="Hora de recogida" class="flex flex-wrap gap-2.5"></div>
+      </div>
+
+      <div>
+        <h2 class="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">Puntos de encuentro</h2>
+        <div id="places" role="radiogroup" aria-label="Punto de encuentro" class="flex flex-wrap gap-2.5"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer fijo -->
+  <div class="fixed bottom-0 inset-x-0 z-40 bg-white shadow-[0_-8px_24px_-12px_rgba(30,41,59,0.3)] pb-[env(safe-area-inset-bottom)]">
+    <div class="max-w-md mx-auto px-5 pt-3 pb-3 space-y-3">
+      <div class="flex items-center justify-between">
+        <span class="text-sm font-bold">Cantidad</span>
+        <div class="inline-flex items-center rounded-xl bg-slate-100 overflow-hidden" role="group" aria-label="Cantidad">
+          <button id="dec" type="button" aria-label="Quitar uno" class="w-12 h-12 text-lg hover:bg-slate-200 active:bg-slate-300 disabled:opacity-30 transition"><i class="fa-solid fa-minus"></i></button>
+          <span id="qty" class="w-12 text-center text-xl font-extrabold tabular-nums" aria-live="polite">1</span>
+          <button id="inc" type="button" aria-label="Agregar uno" class="w-12 h-12 text-lg hover:bg-slate-200 active:bg-slate-300 disabled:opacity-30 transition"><i class="fa-solid fa-plus"></i></button>
+        </div>
+      </div>
+      <button id="reserve" type="button" class="w-full min-h-[56px] rounded-2xl bg-[#FF7A59] text-[#1E293B] text-lg font-extrabold shadow-[0_10px_20px_-10px_rgba(255,122,89,0.9)] hover:brightness-95 active:scale-[0.98] transition">
+        Reservar por <span id="total"></span>
+      </button>
+    </div>
+  </div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const img = (id, w) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
+
+  /* Los ids coinciden con el orden de las tarjetas del catálogo en index.html */
+  const SLOTS = ['1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM'];
+  const PRODUCTS = [
+    { title: 'Brownies de Sofi', price: 35, unit: 'MXN / pieza', photo: 'photo-1606313564200-e75d5e30476c', seller: 'Sofía M. · CUCEA', rating: '4.9', reviews: 38, stock: 5,
+      desc: 'Chocolate intenso, centro suave y hechos en casa. El antojo perfecto entre clases. Cada pieza es porción individual.',
+      ingredients: 'Harina de trigo, chocolate semiamargo, mantequilla, huevo, azúcar, cacao en polvo y esencia de vainilla.',
+      allergens: ['Lácteos', 'Huevo', 'Gluten'], schedule: '11:00 AM – 3:00 PM', places: ['Canchas CUCEA', 'Biblioteca', 'Cafetería'] },
+    { title: 'Entre panes', price: 55, unit: 'MXN / pieza', photo: 'photo-1509440159596-0249088772ff', seller: 'Diego R. · CUCEI', rating: '4.8', reviews: 21, stock: 8,
+      desc: 'Ciabatta de pollo con queso y vegetales frescos, hecha al momento. Alcanza para una comida completa.',
+      ingredients: 'Pan ciabatta, pechuga de pollo, queso manchego, lechuga, jitomate y aderezo de la casa.',
+      allergens: ['Gluten', 'Lácteos'], schedule: '12:00 PM – 3:30 PM', places: ['Cafetería', 'Entrada principal', 'Edificio de Ingeniería'] },
+    { title: 'Galletas de Marcos', price: 20, unit: 'MXN / pieza', photo: 'photo-1558961363-fa8fdf82db35', seller: 'Marcos T. · CUCEI', rating: '4.9', reviews: 44, stock: 12,
+      desc: 'Galleta Red Velvet suave por dentro y crujiente por fuera, con chispas de chocolate blanco.',
+      ingredients: 'Harina de trigo, mantequilla, azúcar, huevo, cacao, colorante alimenticio y chocolate blanco.',
+      allergens: ['Gluten', 'Lácteos', 'Huevo'], schedule: '11:00 AM – 2:30 PM', places: ['Edificio de Ingeniería', 'Biblioteca'] },
+    { title: 'Calculadora científica', price: 180, unit: 'MXN', photo: 'photo-1587145820266-a5951ee6f620', seller: 'Andrés L. · CUCEI', rating: '4.7', reviews: 12, stock: 1, badge: 'Como nueva',
+      desc: 'Casi nueva, perfecta para cálculo y física. Incluye tapa y pilas nuevas.',
+      schedule: '10:00 AM – 4:00 PM', places: ['Biblioteca', 'Edificio de Ingeniería'] },
+    { title: 'Sudadera lavanda', price: 150, unit: 'MXN', photo: 'photo-1434389677669-e08b4cac3105', seller: 'Mariana C. · CUAAD', rating: '4.6', reviews: 9, stock: 1, badge: 'Segunda vida',
+      desc: 'Talla M, súper suave y en excelente estado. Segunda vida para tu clóset.',
+      schedule: '1:00 PM – 5:00 PM', places: ['Entrada principal', 'Cafetería'] },
+    { title: 'Libros de economía', price: 90, unit: 'MXN / libro', photo: 'photo-1512820790803-83ca734da794', seller: 'Emilio T. · CUCEA', rating: '4.8', reviews: 15, stock: 3, badge: 'Segunda vida',
+      desc: 'Libros de texto de economía en buen estado, con algunos subrayados a lápiz.',
+      schedule: '9:00 AM – 2:00 PM', places: ['Biblioteca', 'Canchas CUCEA'] },
+    { title: 'Latte para llevar', price: 40, unit: 'MXN / vaso', photo: 'photo-1461023058943-07fcbe16d735', seller: 'Alex V. · CUCEA', rating: '4.8', reviews: 27, stock: 10, badge: 'Disponible hoy',
+      desc: 'Café de especialidad preparado al momento. Pásalo a recoger antes de tu clase.',
+      ingredients: 'Espresso doble, leche entera y jarabe de vainilla (opcional).',
+      allergens: ['Lácteos'], schedule: '8:00 AM – 1:00 PM', places: ['Cafetería', 'Biblioteca'] }
+  ];
+
+  const id = parseInt(new URLSearchParams(location.search).get('id'), 10);
+  const P = PRODUCTS[id] || PRODUCTS[0];
+  let qty = 1;
+
+  document.title = `${P.title} - UDG Market`;
+  $('p-img').src = img(P.photo, 1000); $('p-img').alt = P.title;
+  $('p-title').textContent = P.title;
+  $('p-price').textContent = '$' + P.price; $('p-unit').textContent = P.unit;
+  $('p-seller').textContent = P.seller;
+  $('p-initials').textContent = (P.seller.split('·')[0].trim().split(/\s+/).map(w => w[0]).join('')).slice(0, 2).toUpperCase();
+  $('p-rating').textContent = P.rating; $('p-reviews').textContent = P.reviews;
+  $('p-desc').textContent = P.desc;
+  if (P.badge) { $('p-badge').textContent = P.badge; $('p-badge').classList.remove('hidden'); }
+  if (P.ingredients) { $('p-ingredients').textContent = P.ingredients; $('p-ingredients-box').classList.remove('hidden'); }
+  if (P.allergens?.length) {
+    $('p-allergens').innerHTML = P.allergens.map(a => `<li class="rounded-full bg-white border border-red-200 px-3 py-1.5 text-xs font-bold">${a}</li>`).join('');
+    $('p-allergens-box').classList.remove('hidden');
+  }
+  $('stock-label').textContent = P.stock; $('stock-s').hidden = P.stock === 1;
+  $('p-schedule').textContent = P.schedule;
+
+  /* Opciones de una sola elección (hora y punto de encuentro) */
+  const ON = ['bg-[#1E293B]', 'text-white', 'border-[#1E293B]'], OFF = ['bg-white', 'text-[#1E293B]', 'border-slate-200', 'hover:border-slate-400'];
+  const optClass = 'opt h-12 px-5 rounded-full border text-sm font-semibold transition';
+  $('slots').innerHTML  = SLOTS.map((s, i) => `<button type="button" role="radio" aria-checked="${i === 0}" data-v="${s}" class="${optClass}">${s}</button>`).join('');
+  $('places').innerHTML = P.places.map((s, i) => `<button type="button" role="radio" aria-checked="${i === 0}" data-v="${s}" class="${optClass}"><i class="fa-solid fa-location-dot mr-2"></i>${s}</button>`).join('');
+  function paint(group) {
+    group.querySelectorAll('.opt').forEach(b => {
+      const on = b.getAttribute('aria-checked') === 'true';
+      b.classList.remove(...ON, ...OFF); b.classList.add(...(on ? ON : OFF));
+    });
+  }
+  ['slots', 'places'].forEach(gid => {
+    const g = $(gid); paint(g);
+    g.addEventListener('click', e => {
+      const b = e.target.closest('.opt'); if (!b) return;
+      g.querySelectorAll('.opt').forEach(x => x.setAttribute('aria-checked', x === b));
+      paint(g);
+    });
+  });
+  const picked = gid => $(gid).querySelector('[aria-checked="true"]').dataset.v;
+
+  /* Cantidad y total */
+  function renderQty() {
+    $('qty').textContent = qty;
+    $('total').textContent = '$' + (qty * P.price);
+    $('dec').disabled = qty <= 1;
+    $('inc').disabled = qty >= P.stock;
+  }
+  $('dec').addEventListener('click', () => { qty = Math.max(1, qty - 1); renderQty(); });
+  $('inc').addEventListener('click', () => { qty = Math.min(P.stock, qty + 1); renderQty(); });
+  renderQty();
+
+  /* Reservar: abre la confirmación de reserva en index.html con los datos elegidos */
+  $('reserve').addEventListener('click', () => {
+    const params = new URLSearchParams({
+      producto: `${P.title}${qty > 1 ? ' (x' + qty + ')' : ''}`,
+      vendedor: P.seller,
+      lugar:    picked('places'),
+      ref:      `Horario del vendedor: ${P.schedule}`,
+      hora:     picked('slots'),
+      total:    String(qty * P.price)
+    });
+    location.href = '../index.html?' + params.toString();
+  });
+</script>
+</body>
+</html>

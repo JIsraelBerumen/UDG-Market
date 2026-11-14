@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - UDG Market</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        @keyframes shake {
+            10%, 90% { transform: translateX(-1px); }
+            20%, 80% { transform: translateX(2px); }
+            30%, 50%, 70% { transform: translateX(-4px); }
+            40%, 60% { transform: translateX(4px); }
+        }
+        .shake { animation: shake .4s ease-in-out; }
+        @media (prefers-reduced-motion: reduce) { .shake { animation: none; } }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] flex items-center justify-center min-h-screen p-4 font-sans antialiased">
+    <div id="login-card" class="bg-white w-full max-w-sm rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 p-8 space-y-6 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#FF7A59] to-[#FBBF24]"></div>
+
+        <div class="text-center space-y-2 mt-2">
+            <div class="w-16 h-16 bg-[#FF7A59] text-white rounded-[20px] flex items-center justify-center font-bold text-3xl shadow-lg shadow-orange-200 mx-auto mb-5">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <h1 class="text-2xl font-extrabold text-[#1E293B] tracking-tight">UDG Market</h1>
+            <p class="text-sm text-slate-500 font-medium">Acceso exclusivo para comunidad UDG</p>
+        </div>
+
+        <!-- Formulario de Login -->
+        <form id="login-form" class="space-y-4" novalidate>
+            <div class="space-y-1.5">
+                <label for="email" class="text-[12px] font-bold text-[#1E293B] ml-1 uppercase tracking-wide">Correo Institucional</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fa-regular fa-envelope text-slate-400"></i>
+                    </div>
+                    <input type="email" id="email" autocomplete="username" placeholder="prueba@alumnos.udg.mx" aria-describedby="email-error" class="w-full bg-slate-50 border border-slate-200 text-[#1E293B] text-sm rounded-2xl focus:ring-2 focus:ring-[#FF7A59]/20 focus:border-[#FF7A59] block pl-11 p-3.5 transition-all outline-none" required>
+                </div>
+                <p id="email-error" class="hidden ml-1 text-xs font-semibold text-red-600 flex items-center gap-1.5"></p>
+            </div>
+
+            <div class="space-y-1.5">
+                <div class="flex justify-between items-center ml-1">
+                    <label for="password" class="text-[12px] font-bold text-[#1E293B] uppercase tracking-wide">Contraseña</label>
+                    <a href="recuperar_contrase_a.html" class="text-[11px] font-bold text-[#FF7A59] hover:text-orange-600 transition-colors">¿Olvidaste tu nip?</a>
+                </div>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-lock text-slate-400"></i>
+                    </div>
+                    <input type="password" id="password" autocomplete="current-password" placeholder="••••••••" aria-describedby="password-error" class="w-full bg-slate-50 border border-slate-200 text-[#1E293B] text-sm rounded-2xl focus:ring-2 focus:ring-[#FF7A59]/20 focus:border-[#FF7A59] block pl-11 pr-12 p-3.5 transition-all outline-none" required>
+                    <button id="toggle-password" type="button" aria-label="Mostrar contraseña" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-[#1E293B] transition-colors">
+                        <i class="fa-regular fa-eye-slash"></i>
+                    </button>
+                </div>
+                <p id="password-error" class="hidden ml-1 text-xs font-semibold text-red-600 flex items-center gap-1.5"></p>
+            </div>
+
+            <!-- Error general (credenciales incorrectas) -->
+            <div id="form-error" role="alert" aria-live="assertive" class="hidden rounded-2xl bg-red-50 border border-red-200 px-4 py-3 text-sm font-semibold text-red-700 flex items-start gap-2">
+                <i class="fa-solid fa-circle-exclamation mt-0.5"></i>
+                <span id="form-error-text"></span>
+            </div>
+
+            <button id="submit-btn" type="submit" class="w-full bg-[#1E293B] hover:bg-slate-800 text-white font-bold rounded-2xl text-sm px-5 py-4 text-center transition-transform active:scale-[0.98] shadow-md mt-2 flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-wait">
+                <span id="submit-label">Iniciar Sesión</span>
+                <i id="submit-icon" class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
+        </form>
+
+        <!-- Separador Modo Dev -->
+        <div class="space-y-3 pt-1">
+            <div class="flex items-center justify-between text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+                <hr class="w-full border-slate-100">
+                <span class="px-3 shrink-0">Acceso Rápido</span>
+                <hr class="w-full border-slate-100">
+            </div>
+
+            <!-- BOTÓN DE BYPASS (MODO DEV) -->
+            <button id="dev-bypass-btn" type="button" onclick="enterDevMode()" class="w-full py-3.5 px-5 rounded-2xl border-2 border-dashed border-[#FF7A59] bg-orange-50/70 hover:bg-orange-100 text-[#1E293B] font-extrabold text-xs uppercase tracking-wider transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-sm">
+                <i class="fa-solid fa-bolt text-[#FF7A59] text-sm"></i>
+                <span>Modo Dev: Entrar directo</span>
+            </button>
+        </div>
+
+        <p class="text-center text-xs text-slate-500 font-medium pt-1">
+            ¿Aún no tienes cuenta? <a href="registro_de_cuenta.html" class="text-[#FF7A59] font-bold hover:text-orange-600 transition-colors">Regístrate aquí</a>
+        </p>
+    </div>
+
+<script>
+    /* ---------- Configuración del Mock ---------- */
+    const MOCK_USER = {
+        email: 'prueba@alumnos.udg.mx',
+        password: '123456'
+    };
+    const SESSION_KEY = 'udg-market-session';
+
+    /**
+     * Guarda la sesión tanto en sessionStorage como en localStorage
+     * (y en window.name como respaldo para protocolo file://)
+     */
+    function saveUserSession(email, isDev = false) {
+        const sessionData = JSON.stringify({
+            email: email,
+            name: 'Mateo González',
+            campus: 'CUCEI',
+            isAuthenticated: true,
+            devMode: isDev,
+            loggedAt: Date.now()
+        });
+
+        try { sessionStorage.setItem(SESSION_KEY, sessionData); } catch (err) { console.warn('sessionStorage aviso:', err); }
+        try { localStorage.setItem(SESSION_KEY, sessionData); } catch (err) { console.warn('localStorage aviso:', err); }
+        try { window.name = 'udg-auth:' + email; } catch (err) {}
+    }
+
+    /**
+     * 2. FUNCIÓN DE BYPASS (Modo Dev: Entrar directo)
+     * Guarda una sesión válida en sessionStorage/localStorage y redirige a index.html
+     * saltándose todas las validaciones.
+     */
+    function getPostLoginTarget() {
+        const next = new URLSearchParams(window.location.search).get('next');
+        if (next && !/^https?:\/\//i.test(next) && !next.startsWith('//')) {
+            return next;
+        }
+        return '../index.html';
+    }
+
+    function enterDevMode() {
+        saveUserSession(MOCK_USER.email, true);
+        window.location.href = getPostLoginTarget();
+    }
+
+    /* ---------- Referencias del DOM ---------- */
+    const $ = id => document.getElementById(id);
+    const form = $('login-form');
+    const emailInput = $('email');
+    const passInput = $('password');
+
+    const ERROR_INPUT = ['border-red-400', 'bg-red-50', 'focus:border-red-500', 'focus:ring-red-500/20'];
+    const OK_INPUT    = ['border-slate-200', 'bg-slate-50', 'focus:border-[#FF7A59]', 'focus:ring-[#FF7A59]/20'];
+
+    /* ---------- Helpers de UI de Error ---------- */
+    function setFieldError(input, errorEl, message) {
+        input.classList.remove(...OK_INPUT);
+        input.classList.add(...ERROR_INPUT);
+        input.setAttribute('aria-invalid', 'true');
+        errorEl.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> <span>${message}</span>`;
+        errorEl.classList.remove('hidden');
+    }
+
+    function clearFieldError(input, errorEl) {
+        input.classList.remove(...ERROR_INPUT);
+        input.classList.add(...OK_INPUT);
+        input.removeAttribute('aria-invalid');
+        errorEl.classList.add('hidden');
+        errorEl.textContent = '';
+    }
+
+    function showFormError(message) {
+        $('form-error-text').textContent = message;
+        $('form-error').classList.remove('hidden');
+        const card = $('login-card');
+        card.classList.remove('shake');
+        void card.offsetWidth;
+        card.classList.add('shake');
+    }
+
+    function hideFormError() {
+        $('form-error').classList.add('hidden');
+    }
+
+    /* Valida dominios institucionales UDG (@udg.mx, @alumnos.udg.mx, @academicos.udg.mx, etc.) */
+    function isValidUdgEmail(email) {
+        if (!email || !email.includes('@')) return false;
+        const clean = email.trim().toLowerCase();
+        if (clean === MOCK_USER.email) return true;
+        return clean.endsWith('@udg.mx') || clean.endsWith('.udg.mx');
+    }
+
+    /* Limpiar errores al escribir */
+    emailInput.addEventListener('input', () => { clearFieldError(emailInput, $('email-error')); hideFormError(); });
+    passInput.addEventListener('input',  () => { clearFieldError(passInput,  $('password-error')); hideFormError(); });
+
+    /* ---------- Mostrar / Ocultar Contraseña ---------- */
+    $('toggle-password').addEventListener('click', e => {
+        const show = passInput.type === 'password';
+        passInput.type = show ? 'text' : 'password';
+        e.currentTarget.setAttribute('aria-label', show ? 'Ocultar contraseña' : 'Mostrar contraseña');
+        e.currentTarget.querySelector('i').className = show ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
+    });
+
+    /* ---------- 1. Validación y Envío del Formulario ---------- */
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        hideFormError();
+
+        const email = (emailInput.value || '').trim().toLowerCase();
+        const password = (passInput.value || '').trim();
+        let firstInvalid = null;
+
+        /* Validación de correo */
+        if (!email) {
+            setFieldError(emailInput, $('email-error'), 'Escribe tu correo institucional.');
+            firstInvalid = firstInvalid || emailInput;
+        } else if (!isValidUdgEmail(email)) {
+            setFieldError(emailInput, $('email-error'), 'Usa tu correo UDG (ej. prueba@alumnos.udg.mx).');
+            firstInvalid = firstInvalid || emailInput;
+        } else {
+            clearFieldError(emailInput, $('email-error'));
+        }
+
+        /* Validación de contraseña vacía */
+        if (!password) {
+            setFieldError(passInput, $('password-error'), 'Escribe tu contraseña.');
+            firstInvalid = firstInvalid || passInput;
+        } else {
+            clearFieldError(passInput, $('password-error'));
+        }
+
+        if (firstInvalid) {
+            firstInvalid.focus();
+            return;
+        }
+
+        /* Verificación contra credenciales Mock */
+        if (email !== MOCK_USER.email || password !== MOCK_USER.password) {
+            ERROR_INPUT.forEach(c => { emailInput.classList.add(c); passInput.classList.add(c); });
+            OK_INPUT.forEach(c => { emailInput.classList.remove(c); passInput.classList.remove(c); });
+            showFormError('Credenciales incorrectas. Usa prueba@alumnos.udg.mx y contraseña 123456.');
+            passInput.value = '';
+            passInput.focus();
+            return;
+        }
+
+        /* Login Exitoso: Guardar sesión en sessionStorage + localStorage y redirigir a index.html */
+        const btn = $('submit-btn');
+        btn.disabled = true;
+        $('submit-label').textContent = 'Entrando…';
+        $('submit-icon').className = 'fa-solid fa-spinner fa-spin text-xs';
+
+        saveUserSession(email, false);
+        window.location.href = getPostLoginTarget();
+    });
+</script>
+</body>
+</html>

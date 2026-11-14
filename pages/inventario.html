@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Mi inventario - UDG Market</title>
+  <script src="../js/auth.js"></script>
+  <!-- Tailwind CSS v3 + plugins -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              terracota: '#D04836',
+              'terracota-dark': '#B53B2B',
+              mint: '#228276',
+              'mint-light': '#E8F5F3',
+              navy: '#212930',
+              yellow: '#E9C46A',
+              cream: '#EFEAE4'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <!-- Custom CSS for Form Details and Micro-Interactions -->
+  <style data-purpose="custom-layout">
+    body {
+      -webkit-tap-highlight-color: transparent;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+  <style data-purpose="switch-styling">
+    .toggle-checkbox:checked {
+      right: 0;
+      border-color: #228276;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+      background-color: #228276;
+    }
+  </style>
+</head>
+<body class="bg-[#F8FAFC] text-[#1E293B] font-sans antialiased">
+
+  <!-- VISTA 1: MI INVENTARIO -->
+  <div id="view-inventario">
+    <header class="sticky top-0 z-40 bg-white border-b border-slate-100 pt-[env(safe-area-inset-top)]">
+      <div class="max-w-md mx-auto h-14 px-3 flex items-center justify-between">
+        <a href="../index.html#profile" aria-label="Volver al perfil" class="w-12 h-12 -ml-1 rounded-full flex items-center justify-center hover:bg-slate-100 active:bg-slate-200 transition"><i class="fa-solid fa-arrow-left text-lg"></i></a>
+        <h1 class="text-base font-bold">Mi inventario</h1>
+        <a href="../index.html#seller-orders" title="Ver pedidos activos" class="text-xs font-bold text-[#D04836] bg-[#FDF0ED] px-2.5 py-1.5 rounded-full hover:bg-[#D04836] hover:text-white transition flex items-center gap-1">
+          <i class="fa-solid fa-bag-shopping text-[11px]"></i> Ventas
+        </a>
+      </div>
+    </header>
+
+    <main class="max-w-md mx-auto px-4 pt-5 pb-12">
+      <p id="summary" class="mb-4 text-sm text-slate-500" aria-live="polite"></p>
+      <ul id="list" class="space-y-3"></ul>
+      <p class="mt-6 text-xs text-slate-400 text-center leading-relaxed">Pausar un producto lo oculta de las búsquedas sin borrarlo. Puedes reactivarlo cuando quieras.</p>
+    </main>
+  </div>
+
+  <!-- VISTA 2: EDITAR PRODUCTO (Oculta por defecto) -->
+  <section id="view-editar-producto" class="hidden min-h-screen py-0 sm:py-6 flex justify-center items-start bg-[#E6DFD7] text-brand-navy selection:bg-red-100 selection:text-brand-terracota">
+    <div class="w-full max-w-md bg-[#FBF9F7] sm:rounded-[36px] sm:shadow-2xl overflow-hidden sm:border-8 sm:border-stone-800/10 flex flex-col min-h-screen sm:min-h-[860px] relative" data-purpose="pwa-screen-frame">
+      <!-- BEGIN: TopBar -->
+      <header class="sticky top-0 z-30 bg-[#FBF9F7]/95 backdrop-blur-md px-5 pt-5 pb-3 border-b border-stone-200/70">
+        <!-- Status & Campus Tag -->
+        <div class="flex items-center justify-between text-xs text-stone-500 mb-2">
+          <span class="font-medium flex items-center gap-1 text-brand-navy">
+            <span class="inline-block w-2 h-2 rounded-full bg-brand-terracota"></span>
+            Campus CUCEI • Panel Vendedor
+          </span>
+          <span class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-brand-mint text-[11px] font-semibold border border-emerald-200" data-purpose="sync-indicator">
+            <svg class="w-3 h-3 text-brand-mint" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+            </svg>
+            Sincronizado
+          </span>
+        </div>
+        <!-- Navigation & Action Row -->
+        <div class="flex items-center justify-between">
+          <!-- Back Button -->
+          <button id="btn-back-inventory" aria-label="Volver al inventario" class="w-10 h-10 rounded-full bg-white border border-stone-200 shadow-sm flex items-center justify-center text-brand-navy hover:bg-stone-50 active:scale-95 transition-all" type="button">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+            </svg>
+          </button>
+          <!-- Centered Screen Title -->
+          <h1 class="text-lg font-bold tracking-tight text-brand-navy">Editar Producto</h1>
+          <!-- Header Quick Save Button -->
+          <button class="text-xs font-semibold px-3.5 py-2 rounded-xl bg-brand-terracota text-white hover:bg-brand-terracota-dark active:scale-95 transition-all shadow-sm flex items-center gap-1" form="edit-product-form" type="submit">
+            <span>Guardar</span>
+          </button>
+        </div>
+      </header>
+      <!-- END: TopBar -->
+
+      <!-- BEGIN: MainContentScrollable -->
+      <main class="flex-1 overflow-y-auto px-5 py-4 space-y-6 pb-28">
+        <form class="space-y-6" id="edit-product-form">
+          <input type="hidden" id="edit-prod-id" />
+
+          <!-- BEGIN: PhotoSection -->
+          <section class="bg-white p-4 rounded-3xl border border-stone-200/80 shadow-sm" data-purpose="product-image-uploader">
+            <label class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-2.5">Fotografía del Producto</label>
+            <div class="flex items-center gap-4">
+              <!-- Product Image Preview -->
+              <div class="relative w-24 h-24 rounded-2xl overflow-hidden bg-stone-100 border border-stone-200 flex-shrink-0 group shadow-inner">
+                <img id="edit-prod-img" alt="Vista previa del producto" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=300&q=70"/>
+                <div class="absolute inset-0 bg-black/25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                    <path d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                  </svg>
+                </div>
+              </div>
+              <!-- Upload Controls & Tip -->
+              <div class="flex-1 space-y-2">
+                <button class="w-full py-2.5 px-3 bg-stone-100 hover:bg-stone-200 text-brand-navy rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors border border-stone-200/60" type="button">
+                  <svg class="w-4 h-4 text-brand-terracota" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                  </svg>
+                  <span>Cambiar imagen</span>
+                </button>
+                <p class="text-[11px] text-stone-500 leading-tight">
+                  Tip: Toma fotos con buena luz natural en las áreas verdes o bancas del CUCEI.
+                </p>
+              </div>
+            </div>
+          </section>
+          <!-- END: PhotoSection -->
+
+          <!-- BEGIN: BasicInfoSection -->
+          <section class="bg-white p-4.5 p-4 rounded-3xl border border-stone-200/80 shadow-sm space-y-4" data-purpose="basic-info">
+            <label class="block text-xs font-bold uppercase tracking-wider text-stone-500">Datos Principales</label>
+            <!-- Product Name Input -->
+            <div>
+              <label class="block text-xs font-medium text-stone-700 mb-1" for="prod-name">Nombre del producto</label>
+              <input class="w-full rounded-2xl border-stone-300 focus:border-brand-terracota focus:ring-brand-terracota text-sm font-semibold text-brand-navy px-3.5 py-2.5 placeholder-stone-400" id="prod-name" required maxlength="60" type="text" value="Brownie Clásico con Nuez Pecana"/>
+            </div>
+            <!-- Category Selector (Pills) -->
+            <div>
+              <label class="block text-xs font-medium text-stone-700 mb-2">Categoría</label>
+              <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                <button class="px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-brand-navy text-white shadow-sm" type="button">
+                  Repostería (3)
+                </button>
+                <button class="px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-stone-100 text-stone-600 hover:bg-stone-200 transition-colors" type="button">
+                  Snacks &amp; Botanas
+                </button>
+                <button class="px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-stone-100 text-stone-600 hover:bg-stone-200 transition-colors" type="button">
+                  Bebidas Frías
+                </button>
+                <button class="px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap bg-stone-100 text-stone-600 hover:bg-stone-200 transition-colors" type="button">
+                  Comida Corrida
+                </button>
+              </div>
+            </div>
+            <!-- Price & Profit Insights -->
+            <div class="grid grid-cols-2 gap-3 pt-1">
+              <!-- Price Input -->
+              <div>
+                <label class="block text-xs font-medium text-stone-700 mb-1" for="prod-price">Precio al público</label>
+                <div class="relative rounded-2xl shadow-sm">
+                  <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <span class="text-stone-500 font-bold text-sm">$</span>
+                  </div>
+                  <input class="w-full rounded-2xl border-stone-300 pl-7 pr-12 focus:border-brand-terracota focus:ring-brand-terracota font-bold text-base text-brand-navy py-2.5" id="prod-price" min="1" max="9999" step="1" required type="number" value="35"/>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                    <span class="text-[11px] font-bold text-stone-400">MXN</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Cost / Profit Insight Micro-Card -->
+              <div class="bg-emerald-50/70 border border-emerald-100 rounded-2xl p-2.5 flex flex-col justify-center">
+                <span class="text-[10px] uppercase font-bold text-brand-mint tracking-wider">Margen Estudiante</span>
+                <span class="text-sm font-extrabold text-emerald-800">+$21.00 <span class="text-[10px] font-medium text-emerald-600">ganancia</span></span>
+                <span class="text-[10px] text-emerald-700">Costo elab.: ~$14.00</span>
+              </div>
+            </div>
+          </section>
+          <!-- END: BasicInfoSection -->
+
+          <!-- BEGIN: DescriptionSection -->
+          <section class="bg-white p-4.5 p-4 rounded-3xl border border-stone-200/80 shadow-sm space-y-2" data-purpose="product-description">
+            <div class="flex items-center justify-between">
+              <label class="block text-xs font-bold uppercase tracking-wider text-stone-500" for="prod-desc">Descripción &amp; Detalles</label>
+              <span id="prod-desc-count" class="text-[11px] font-medium text-stone-400">142/300 car.</span>
+            </div>
+            <textarea class="w-full rounded-2xl border-stone-300 focus:border-brand-terracota focus:ring-brand-terracota text-xs text-stone-700 leading-relaxed placeholder-stone-400 resize-none" id="prod-desc" maxlength="300" rows="3">Horneado artesanalmente hoy por la mañana. Relleno con nuez fresca y trozos de chocolate semi-amargo al 70%. Empaque térmico individual listo para comer.</textarea>
+          </section>
+          <!-- END: DescriptionSection -->
+
+          <!-- BEGIN: IngredientsAndAllergens -->
+          <section class="bg-white p-4.5 p-4 rounded-3xl border border-stone-200/80 shadow-sm space-y-4" data-purpose="dietary-and-allergens">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1">Ingredientes Principales</label>
+              <!-- Ingredients Tag Input -->
+              <div class="flex flex-wrap gap-1.5 p-2 bg-stone-50 rounded-2xl border border-stone-200">
+                <span class="inline-flex items-center gap-1 bg-white border border-stone-200 text-stone-700 px-2.5 py-1 rounded-xl text-xs font-medium">
+                  Cacao 70%
+                  <button class="text-stone-400 hover:text-stone-600" type="button">×</button>
+                </span>
+                <span class="inline-flex items-center gap-1 bg-white border border-stone-200 text-stone-700 px-2.5 py-1 rounded-xl text-xs font-medium">
+                  Harina de trigo
+                  <button class="text-stone-400 hover:text-stone-600" type="button">×</button>
+                </span>
+                <span class="inline-flex items-center gap-1 bg-white border border-stone-200 text-stone-700 px-2.5 py-1 rounded-xl text-xs font-medium">
+                  Nuez pecana
+                  <button class="text-stone-400 hover:text-stone-600" type="button">×</button>
+                </span>
+                <span class="inline-flex items-center gap-1 bg-white border border-stone-200 text-stone-700 px-2.5 py-1 rounded-xl text-xs font-medium">
+                  Mantequilla
+                  <button class="text-stone-400 hover:text-stone-600" type="button">×</button>
+                </span>
+                <button class="text-xs font-medium text-brand-terracota px-2 py-1 flex items-center gap-0.5 hover:underline" type="button">
+                  + Agregar
+                </button>
+              </div>
+            </div>
+            <!-- Allergen Pills (Critical for Campus Safety) -->
+            <div>
+              <div class="flex items-center gap-1.5 mb-2">
+                <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                </svg>
+                <label class="block text-xs font-semibold text-stone-700">Etiquetas de Alérgenos &amp; Dieta</label>
+              </div>
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 rounded-xl text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1 cursor-pointer">
+                  <span>• Contiene Nueces</span>
+                </span>
+                <span class="px-2.5 py-1 rounded-xl text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1 cursor-pointer">
+                  <span>• Contiene Gluten</span>
+                </span>
+                <span class="px-2.5 py-1 rounded-xl text-xs font-semibold bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1 cursor-pointer">
+                  <span>• Lácteos</span>
+                </span>
+                <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-stone-100 text-stone-500 hover:bg-stone-200 cursor-pointer">
+                  Vegano
+                </span>
+                <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-stone-100 text-stone-500 hover:bg-stone-200 cursor-pointer">
+                  Sin Azúcar Añadida
+                </span>
+                <span class="px-2.5 py-1 rounded-xl text-xs font-medium bg-stone-100 text-stone-500 hover:bg-stone-200 cursor-pointer">
+                  Keto
+                </span>
+              </div>
+            </div>
+          </section>
+          <!-- END: IngredientsAndAllergens -->
+
+          <!-- BEGIN: InventoryManagementSection -->
+          <section class="bg-white p-4.5 p-4 rounded-3xl border border-stone-200/80 shadow-sm space-y-4" data-purpose="inventory-stock-controls">
+            <!-- Availability Switch -->
+            <div class="flex items-center justify-between pb-3 border-b border-stone-100">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-stone-500 block">Disponibilidad en Catálogo</span>
+                <p class="text-[11px] text-stone-500">Pausar oculta el producto de las búsquedas sin borrarlo</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input id="edit-prod-active" checked class="sr-only peer" type="checkbox"/>
+                <div class="w-12 h-6 bg-stone-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-mint"></div>
+              </label>
+            </div>
+            <!-- Stock Stepper Control -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <label class="text-xs font-semibold text-stone-700" for="edit-prod-stock">Stock Actual Disponible</label>
+                <span id="edit-stock-badge" class="text-xs font-bold text-brand-mint bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">En existencia</span>
+              </div>
+              <div class="flex items-center justify-between bg-stone-50 p-2 rounded-2xl border border-stone-200">
+                <button aria-label="Disminuir stock" class="w-11 h-11 rounded-xl bg-white border border-stone-200 text-stone-800 font-bold text-lg flex items-center justify-center active:scale-90 transition-transform shadow-sm" type="button">
+                  -
+                </button>
+                <div class="text-center">
+                  <input id="edit-prod-stock" class="w-16 text-center border-0 bg-transparent font-black text-2xl text-brand-navy p-0 focus:ring-0" min="0" max="99" type="number" value="12"/>
+                  <span class="block text-[10px] text-stone-400 font-semibold tracking-wider">PIEZAS</span>
+                </div>
+                <button aria-label="Aumentar stock" class="w-11 h-11 rounded-xl bg-brand-mint text-white font-bold text-lg flex items-center justify-center active:scale-90 transition-transform shadow-sm" type="button">
+                  +
+                </button>
+              </div>
+              <!-- Quick Stock Adjuster Chips -->
+              <div class="flex items-center justify-between pt-2.5">
+                <span class="text-[11px] font-semibold text-stone-400 tracking-wider">RECARGA RÁPIDA:</span>
+                <div class="flex items-center gap-1.5">
+                  <button class="px-2.5 py-1 text-xs font-bold rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 transition-colors" type="button">+5</button>
+                  <button class="px-2.5 py-1 text-xs font-bold rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 transition-colors" type="button">+10</button>
+                  <button class="px-2.5 py-1 text-xs font-bold rounded-lg bg-red-50 hover:bg-red-100 text-brand-terracota transition-colors" type="button">Agotar</button>
+                </div>
+              </div>
+            </div>
+            <!-- Pickup Locations at Campus CUCEI -->
+            <div class="pt-2">
+              <label class="block text-xs font-medium text-stone-700 mb-1" for="pickup-spots">Puntos de entrega en CUCEI</label>
+              <div class="relative">
+                <input class="w-full text-xs font-medium rounded-2xl border-stone-300 focus:border-brand-terracota focus:ring-brand-terracota text-brand-navy pr-8" id="pickup-spots" type="text" value="Módulo O, Explanada Rectoría o Biblioteca Central"/>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                  <svg class="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                    <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- END: InventoryManagementSection -->
+
+          <!-- BEGIN: DangerZone -->
+          <section class="text-center pt-2" data-purpose="danger-actions">
+            <button class="text-xs font-semibold text-stone-400 hover:text-red-600 transition-colors inline-flex items-center gap-1.5 py-1" type="button">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+              </svg>
+              Eliminar producto definitivamente de CUCEI Market
+            </button>
+          </section>
+          <!-- END: DangerZone -->
+        </form>
+      </main>
+      <!-- END: MainContentScrollable -->
+
+      <!-- BEGIN: BottomStickyActionBar -->
+      <footer class="sticky sm:absolute bottom-0 left-0 right-0 bg-[#FBF9F7]/95 backdrop-blur-md border-t border-stone-200/80 p-4 px-5 z-40" data-purpose="save-actions-container">
+        <div class="flex items-center gap-3">
+          <!-- Discard / Cancel Button -->
+          <button id="btn-discard-edit" class="w-1/3 py-3 rounded-2xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-xs transition-all active:scale-95 text-center" type="button">
+            Descartar
+          </button>
+          <!-- Save Button -->
+          <button class="w-2/3 py-3 rounded-2xl bg-brand-terracota hover:bg-brand-terracota-dark text-white font-bold text-sm shadow-lg shadow-brand-terracota/30 transition-all active:scale-95 flex items-center justify-center gap-2" form="edit-product-form" type="submit">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+            </svg>
+            Guardar Cambios
+          </button>
+        </div>
+      </footer>
+      <!-- END: BottomStickyActionBar -->
+    </div>
+  </section>
+
+  <div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-8 z-50 hidden items-center gap-2 bg-[#1E293B] text-white text-sm font-semibold px-5 py-3 rounded-full shadow-lg max-w-[90vw]" role="status"></div>
+
+<script>
+  const KEY = 'udg-market-inventory';
+  const MAX = 99;
+  const DEFAULTS = [
+    { id: 1, title: 'Brownies de doble chocolate', price: 25, stock: 12, active: true,  auto: false, img: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=300&q=70' },
+    { id: 2, title: 'Sándwich de pollo',           price: 45, stock: 5,  active: true,  auto: false, img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=300&q=70' },
+    { id: 3, title: 'Galleta Red Velvet',          price: 20, stock: 0,  active: false, auto: true,  img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=300&q=70' },
+    { id: 5, title: 'Torta de jamón',              price: 35, stock: 6,  active: false, auto: false, img: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=300&q=70' },
+    { id: 4, title: 'Café frío',                   price: 30, stock: 8,  active: true,  auto: false, img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=300&q=70' }
+  ];
+  let items;
+  try { items = JSON.parse(localStorage.getItem(KEY)) || DEFAULTS; } catch { items = DEFAULTS; }
+  const save = () => localStorage.setItem(KEY, JSON.stringify(items));
+
+  let toastTimer;
+  function toast(msg) {
+    const t = document.getElementById('toast'); t.textContent = msg; t.classList.remove('hidden'); t.classList.add('flex');
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.classList.add('hidden'); t.classList.remove('flex'); }, 2400);
+  }
+
+  function card(p) {
+    const soldOut = p.stock === 0;
+    const paused = !p.active;
+    const on = p.active && !soldOut;
+    return `
+    <li data-id="${p.id}" class="bg-white rounded-2xl border ${soldOut ? 'border-red-100' : 'border-slate-100'} shadow-sm p-3 transition">
+      <div class="flex items-start gap-3">
+        <div class="relative w-[72px] h-[72px] shrink-0 rounded-xl overflow-hidden bg-slate-200">
+          <img src="${p.img}" alt="" class="w-full h-full object-cover transition ${paused ? 'grayscale opacity-60' : ''}" onerror="this.style.visibility='hidden'" />
+        </div>
+
+        <div class="flex-1 min-w-0">
+          <div class="flex items-start justify-between gap-2">
+            <div class="min-w-0">
+              <h2 class="font-bold leading-snug ${paused ? 'text-slate-500' : ''}">${p.title}</h2>
+              <p class="text-sm text-slate-500">$${p.price} MXN</p>
+            </div>
+            <!-- Switch Activo / Pausado -->
+            <div class="shrink-0 flex flex-col items-center gap-1">
+              <button type="button" role="switch" data-action="toggle" aria-checked="${on}" aria-label="${p.title}: ${on ? 'Activo' : 'Pausado'}" ${soldOut ? 'disabled title="Aumenta el stock para activarlo"' : ''}
+                class="relative w-16 h-9 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#34D399] focus-visible:ring-offset-2 ${on ? 'bg-[#34D399]' : 'bg-slate-300'} ${soldOut ? 'cursor-not-allowed opacity-70' : ''}">
+                <span class="absolute top-1 left-1 w-7 h-7 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-7' : ''}"></span>
+              </button>
+              <span class="text-[11px] font-bold ${on ? 'text-emerald-600' : 'text-slate-500'}">${on ? 'Activo' : 'Pausado'}</span>
+            </div>
+          </div>
+
+          <!-- Stock y botón Editar -->
+          <div class="mt-2 flex items-center justify-between gap-2 flex-wrap">
+            <div class="flex items-center gap-2 flex-wrap">
+              <div class="inline-flex items-center rounded-xl bg-slate-100 overflow-hidden" role="group" aria-label="Stock de ${p.title}">
+                <button type="button" data-action="dec" aria-label="Quitar uno" ${p.stock === 0 ? 'disabled' : ''} class="w-12 h-12 text-lg text-[#1E293B] hover:bg-slate-200 active:bg-slate-300 disabled:opacity-30 disabled:hover:bg-transparent transition"><i class="fa-solid fa-minus"></i></button>
+                <span class="w-12 text-center text-xl font-extrabold tabular-nums ${soldOut ? 'text-red-500' : ''}" aria-live="polite">${p.stock}</span>
+                <button type="button" data-action="inc" aria-label="Agregar uno" ${p.stock >= MAX ? 'disabled' : ''} class="w-12 h-12 text-lg text-[#1E293B] hover:bg-slate-200 active:bg-slate-300 disabled:opacity-30 disabled:hover:bg-transparent transition"><i class="fa-solid fa-plus"></i></button>
+              </div>
+              ${soldOut ? '<span class="inline-flex items-center gap-1 text-xs font-extrabold text-red-600 bg-red-50 rounded-full px-3 py-1.5"><i class="fa-solid fa-ban"></i>Agotado</span>' : '<span class="text-xs text-slate-400">disponibles</span>'}
+            </div>
+            <button type="button" data-action="edit" aria-label="Editar ${p.title}" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E293B] bg-slate-100 hover:bg-slate-200 active:scale-95 rounded-xl px-3.5 py-2.5 transition">
+              <i class="fa-solid fa-pen-to-square text-[#FF7A59]"></i> Editar
+            </button>
+          </div>
+        </div>
+      </div>
+    </li>`;
+  }
+
+  function render() {
+    document.getElementById('list').innerHTML = items.map(card).join('');
+    const active = items.filter(i => i.active && i.stock > 0).length;
+    const soldOut = items.filter(i => i.stock === 0).length;
+    const paused = items.length - active - soldOut;
+    document.getElementById('summary').innerHTML =
+      `<strong class="text-emerald-600">${active} activo${active === 1 ? '' : 's'}</strong> · ${paused} pausado${paused === 1 ? '' : 's'}` +
+      (soldOut ? ` · <strong class="text-red-500">${soldOut} agotado${soldOut === 1 ? '' : 's'}</strong>` : '');
+  }
+
+  // ---------- Navegación entre Mi Inventario y Editar Producto ----------
+  const inventoryView = document.getElementById('view-inventario');
+  const editProductView = document.getElementById('view-editar-producto');
+  const stockBadge = document.getElementById('edit-stock-badge');
+  const stockInput = document.getElementById('edit-prod-stock');
+  const descInput = document.getElementById('prod-desc');
+  const descCount = document.getElementById('prod-desc-count');
+
+  function updateStockBadge(val) {
+    if (!stockBadge) return;
+    if (val <= 0) {
+      stockBadge.textContent = 'Agotado';
+      stockBadge.className = 'text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full border border-red-200';
+    } else {
+      stockBadge.textContent = 'En existencia';
+      stockBadge.className = 'text-xs font-bold text-brand-mint bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200';
+    }
+  }
+
+  function updateDescCount() {
+    if (descInput && descCount) {
+      descCount.textContent = `${descInput.value.length}/300 car.`;
+    }
+  }
+
+  function openEditProductView(p) {
+    document.getElementById('edit-prod-id').value = p.id;
+    document.getElementById('prod-name').value = p.title;
+    document.getElementById('prod-price').value = p.price;
+    document.getElementById('edit-prod-img').src = p.img;
+    document.getElementById('edit-prod-active').checked = p.active && p.stock > 0;
+    stockInput.value = p.stock;
+    updateStockBadge(p.stock);
+    if (p.desc) descInput.value = p.desc;
+    if (p.pickupSpots) document.getElementById('pickup-spots').value = p.pickupSpots;
+    updateDescCount();
+
+    inventoryView.classList.add('hidden');
+    editProductView.classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  function closeEditProductView() {
+    editProductView.classList.add('hidden');
+    inventoryView.classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  document.getElementById('btn-back-inventory').addEventListener('click', closeEditProductView);
+  document.getElementById('btn-discard-edit').addEventListener('click', closeEditProductView);
+  if (descInput) descInput.addEventListener('input', updateDescCount);
+
+  // ---------- Stepper Controls (-, +, +5, +10, Agotar) ----------
+  (function initStepperControls() {
+    const stepperContainer = document.querySelector('[data-purpose="inventory-stock-controls"]');
+    if (!stepperContainer || !stockInput) return;
+
+    const minusBtn = stepperContainer.querySelector('button[aria-label="Disminuir stock"]');
+    const plusBtn = stepperContainer.querySelector('button[aria-label="Aumentar stock"]');
+
+    if (minusBtn && plusBtn) {
+      minusBtn.addEventListener('click', () => {
+        const val = parseInt(stockInput.value, 10) || 0;
+        if (val > 0) {
+          stockInput.value = val - 1;
+          updateStockBadge(val - 1);
+        }
+      });
+
+      plusBtn.addEventListener('click', () => {
+        const val = parseInt(stockInput.value, 10) || 0;
+        if (val < MAX) {
+          stockInput.value = val + 1;
+          updateStockBadge(val + 1);
+        }
+      });
+    }
+
+    stockInput.addEventListener('input', () => {
+      updateStockBadge(parseInt(stockInput.value, 10) || 0);
+    });
+
+    // Quick Chips (+5, +10, Agotar)
+    const chips = stepperContainer.querySelectorAll('.flex.items-center.gap-1\\.5 button');
+    chips.forEach((chip) => {
+      chip.addEventListener('click', (e) => {
+        const text = e.target.innerText.trim();
+        const current = parseInt(stockInput.value, 10) || 0;
+        let next = current;
+        if (text === '+5') next = Math.min(MAX, current + 5);
+        if (text === '+10') next = Math.min(MAX, current + 10);
+        if (text === 'Agotar') next = 0;
+        stockInput.value = next;
+        updateStockBadge(next);
+      });
+    });
+  })();
+
+  // ---------- Guardar Cambios del Producto ----------
+  document.getElementById('edit-product-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const id = +document.getElementById('edit-prod-id').value;
+    const p = items.find(i => i.id === id);
+    if (!p) return;
+
+    const newTitle = document.getElementById('prod-name').value.trim();
+    const newPrice = Math.max(1, parseInt(document.getElementById('prod-price').value, 10) || p.price);
+    const newStock = Math.min(MAX, Math.max(0, parseInt(stockInput.value, 10) || 0));
+    const newActive = document.getElementById('edit-prod-active').checked;
+
+    if (newTitle) p.title = newTitle;
+    p.price = newPrice;
+    p.stock = newStock;
+    p.desc = descInput.value.trim();
+    p.pickupSpots = document.getElementById('pickup-spots').value.trim();
+
+    if (p.stock === 0) {
+      p.active = false;
+      p.auto = true;
+    } else {
+      p.active = newActive;
+      p.auto = false;
+    }
+
+    save();
+    render();
+    closeEditProductView();
+    toast(`“${p.title}” actualizado correctamente`);
+  });
+
+  // ---------- Eventos de la Lista de Inventario ----------
+  document.getElementById('list').addEventListener('click', e => {
+    const btn = e.target.closest('[data-action]'); if (!btn || btn.disabled) return;
+    const p = items.find(i => i.id === +btn.closest('li').dataset.id);
+    if (!p) return;
+
+    if (btn.dataset.action === 'edit') {
+      openEditProductView(p);
+      return;
+    }
+    if (btn.dataset.action === 'dec') {
+      p.stock = Math.max(0, p.stock - 1);
+      if (p.stock === 0) { p.active = false; p.auto = true; toast(`“${p.title}” se agotó y pasó a Pausado`); }
+    } else if (btn.dataset.action === 'inc') {
+      p.stock = Math.min(MAX, p.stock + 1);
+      if (p.stock === 1 && p.auto) { p.active = true; p.auto = false; toast(`“${p.title}” volvió a estar Activo`); }
+    } else if (btn.dataset.action === 'toggle') {
+      p.active = !p.active; p.auto = false;
+      toast(`“${p.title}” ${p.active ? 'activo: visible en búsquedas' : 'pausado: oculto, no se borró'}`);
+    }
+    save(); render();
+  });
+
+  render();
+</script>
+</body>
+</html>

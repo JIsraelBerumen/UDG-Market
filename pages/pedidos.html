@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Mis Pedidos - UDG Market</title>
+  <script src="../js/auth.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary-container": "#d04836",
+            "surface-dim": "#dbdad8",
+            "on-primary": "#ffffff",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed-variant": "#8c170b",
+            "secondary-fixed": "#9bf2e4",
+            "background": "#fbf9f7",
+            "inverse-on-surface": "#f2f0ee",
+            "surface-variant": "#e4e2e0",
+            "surface-bright": "#fbf9f7",
+            "outline-variant": "#e1bfb9",
+            "on-tertiary-fixed": "#141c23",
+            "primary-fixed-dim": "#ffb4a8",
+            "secondary-fixed-dim": "#7fd6c8",
+            "surface-container-lowest": "#ffffff",
+            "tertiary": "#575f67",
+            "on-secondary-container": "#006f64",
+            "on-tertiary-container": "#01050b",
+            "surface-container": "#efedec",
+            "on-primary-fixed": "#410100",
+            "surface": "#fbf9f7",
+            "error-container": "#ffdad6",
+            "outline": "#8d706c",
+            "on-tertiary-fixed-variant": "#40484f",
+            "on-secondary-fixed": "#00201c",
+            "surface-container-highest": "#e4e2e0",
+            "secondary": "#006b60",
+            "on-error": "#ffffff",
+            "surface-container-low": "#f5f3f1",
+            "secondary-container": "#98f0e1",
+            "error": "#ba1a1a",
+            "surface-tint": "#ae3021",
+            "on-surface-variant": "#59413d",
+            "tertiary-fixed-dim": "#bfc7d1",
+            "inverse-primary": "#ffb4a8",
+            "surface-container-high": "#eae8e6",
+            "primary": "#ae3021",
+            "on-error-container": "#93000a",
+            "on-background": "#1b1c1b",
+            "on-surface": "#1b1c1b",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#ffffff",
+            "tertiary-fixed": "#dbe3ed",
+            "on-secondary-fixed-variant": "#005048",
+            "tertiary-container": "#707880",
+            "primary-fixed": "#ffdad4",
+            "inverse-surface": "#30302f"
+          },
+          fontFamily: {
+            sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+            "body-sm": ["Inter"],
+            "label-lg": ["Inter"],
+            "headline-md": ["Inter"],
+            "display-lg": ["Inter"],
+            "display-lg-mobile": ["Inter"],
+            "headline-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "label-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-sm": ["Inter"]
+          },
+          spacing: {
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "space-md": "1rem",
+            "margin-mobile": "1rem",
+            "gutter-mobile": "0.75rem",
+            "margin": "2rem",
+            "gutter": "1rem"
+          },
+          fontSize: {
+            "body-sm": ["13px", { lineHeight: "18px", letterSpacing: "-0.006em", fontWeight: "400" }],
+            "label-lg": ["15px", { lineHeight: "20px", letterSpacing: "-0.01em", fontWeight: "500" }],
+            "headline-md": ["20px", { lineHeight: "25px", letterSpacing: "-0.017em", fontWeight: "600" }],
+            "display-lg": ["34px", { lineHeight: "41px", letterSpacing: "-0.022em", fontWeight: "700" }],
+            "display-lg-mobile": ["28px", { lineHeight: "34px", letterSpacing: "-0.02em", fontWeight: "700" }],
+            "headline-lg": ["24px", { lineHeight: "30px", letterSpacing: "-0.019em", fontWeight: "600" }],
+            "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "600" }],
+            "body-lg": ["17px", { lineHeight: "22px", letterSpacing: "-0.012em", fontWeight: "400" }],
+            "label-sm": ["11px", { lineHeight: "13px", letterSpacing: "0.03em", fontWeight: "500" }],
+            "body-md": ["15px", { lineHeight: "20px", letterSpacing: "-0.009em", fontWeight: "400" }],
+            "headline-sm": ["17px", { lineHeight: "22px", letterSpacing: "-0.015em", fontWeight: "600" }]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    html, body {
+      overscroll-behavior-y: none;
+    }
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    #sheet-backdrop {
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #view-cancelar-reserva {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body class="bg-[#F8FAFC] text-[#1E293B] font-sans antialiased min-h-screen">
+
+  <div class="max-w-md mx-auto min-h-screen pb-32 relative">
+
+    <!-- Header principal -->
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md pt-[env(safe-area-inset-top)] border-b border-slate-100">
+      <div class="h-14 px-3 flex items-center justify-between">
+        <a href="../index.html#profile" onclick="window.location.href='../index.html#profile'; return false;" aria-label="Volver al perfil" class="w-12 h-12 -ml-1 rounded-full flex items-center justify-center hover:bg-slate-100 active:bg-slate-200 transition">
+          <i class="fa-solid fa-arrow-left text-lg text-[#1E293B]"></i>
+        </a>
+        <h1 class="text-base font-bold text-[#1E293B]">Mis Pedidos</h1>
+        <span class="w-12" aria-hidden="true"></span>
+      </div>
+
+      <!-- Pestañas (sticky) -->
+      <div role="tablist" aria-label="Pedidos" class="grid grid-cols-2 border-b border-slate-200 bg-white">
+        <button id="tab-active" role="tab" aria-selected="true" aria-controls="panel-active" class="tab relative h-14 text-sm font-bold transition flex items-center justify-center gap-1.5 text-[#1E293B]">
+          Activos
+          <span id="active-badge" class="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 rounded-full bg-[#FF7A59] text-[#1E293B] text-xs font-extrabold">3</span>
+          <span class="tab-bar absolute bottom-0 inset-x-6 h-[3px] rounded-t-full bg-[#FF7A59]"></span>
+        </button>
+        <button id="tab-history" role="tab" aria-selected="false" aria-controls="panel-history" class="tab relative h-14 text-sm font-bold transition flex items-center justify-center gap-1.5 text-slate-500 hover:text-[#1E293B]">
+          Historial
+          <span class="tab-bar absolute bottom-0 inset-x-6 h-[3px] rounded-t-full bg-[#FF7A59] hidden"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ===== Pestaña ACTIVOS (US-22) ===== -->
+    <section id="panel-active" role="tabpanel" aria-labelledby="tab-active" class="px-4 pt-5 space-y-4">
+
+      <!-- Pedido 1: confirmado -->
+      <article class="order-card bg-white rounded-3xl border border-slate-100 shadow-sm p-4 transition-all duration-300"
+        data-order-id="UDG-4821"
+        data-order-img="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&amp;fit=crop&amp;w=200&amp;q=70"
+        data-order-location="Canchas CUCEA"
+        data-order-price="$70"
+        data-order-seller="Sofía M. · CUCEA"
+        data-order-time="Hoy · 2:30 PM"
+        data-order-title="Brownies de Sofi (x2)">
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <span class="w-10 h-10 shrink-0 rounded-full bg-[#FFE9E1] text-[#E8552F] font-extrabold text-[13px] flex items-center justify-center">SM</span>
+            <div class="min-w-0">
+              <p class="font-bold truncate text-[#1E293B]">Sofía M. · CUCEA</p>
+              <p class="text-xs text-slate-500">Pedido #UDG-4821</p>
+            </div>
+          </div>
+          <span class="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-[#34D399]/20 text-emerald-800 text-xs font-extrabold px-3 py-1.5">
+            <i class="fa-solid fa-circle-check"></i>Confirmado
+          </span>
+        </div>
+
+        <div class="mt-4 flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&amp;fit=crop&amp;w=200&amp;q=70" alt="Brownies de Sofi" class="w-16 h-16 rounded-xl object-cover bg-slate-200 shrink-0" onerror="this.style.visibility='hidden'" />
+          <div class="flex-1 min-w-0">
+            <p class="font-bold leading-snug text-[#1E293B]">Brownies de Sofi (x2)</p>
+            <p class="text-sm text-slate-500">Pago en efectivo al recoger</p>
+          </div>
+          <p class="text-xl font-black text-[#1E293B]">$70</p>
+        </div>
+
+        <div class="mt-4 rounded-2xl bg-slate-50 border border-slate-100 p-3 grid grid-cols-2 gap-3">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wide text-slate-500">Hora de cita</p>
+            <p class="mt-0.5 flex items-center gap-1.5 font-extrabold text-sm text-[#1E293B]">
+              <i class="fa-regular fa-clock text-[#FF7A59]"></i>Hoy · 2:30 PM
+            </p>
+          </div>
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wide text-slate-500">Punto de encuentro</p>
+            <p class="mt-0.5 flex items-center gap-1.5 font-extrabold text-sm text-[#1E293B]">
+              <i class="fa-solid fa-location-dot text-[#FF7A59]"></i>Canchas CUCEA
+            </p>
+          </div>
+        </div>
+
+        <!-- Botones de Acción (Fitts + Cancelar secundario) -->
+        <div class="mt-4 flex items-center gap-2">
+          <button type="button" onclick="openCancelSheet('UDG-4821')" class="h-14 px-4 rounded-2xl border-2 border-slate-200 hover:border-red-200 hover:bg-red-50 text-slate-600 hover:text-[#D04836] font-bold text-sm flex items-center justify-center gap-1.5 active:scale-[0.98] transition shrink-0 min-w-[105px]">
+            <i class="fa-solid fa-xmark text-sm"></i> Cancelar
+          </button>
+          <a href="producto.html?id=0" class="flex-1 h-14 rounded-2xl bg-[#FF7A59] text-[#1E293B] font-extrabold flex items-center justify-center gap-2 shadow-[0_10px_20px_-10px_rgba(255,122,89,0.9)] hover:brightness-95 active:scale-[0.98] transition text-sm">
+            <i class="fa-regular fa-comment-dots"></i> Ver detalle y Contactar
+          </a>
+        </div>
+      </article>
+
+      <!-- Pedido 2: pendiente -->
+      <article class="order-card bg-white rounded-3xl border border-slate-100 shadow-sm p-4 transition-all duration-300"
+        data-order-id="UDG-4830"
+        data-order-img="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&amp;fit=crop&amp;w=200&amp;q=70"
+        data-order-location="Cafetería"
+        data-order-price="$55"
+        data-order-seller="Diego R. · CUCEI"
+        data-order-time="Hoy · 1:30 PM"
+        data-order-title="Entre panes">
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <span class="w-10 h-10 shrink-0 rounded-full bg-[#FFE9E1] text-[#E8552F] font-extrabold text-[13px] flex items-center justify-center">DR</span>
+            <div class="min-w-0">
+              <p class="font-bold truncate text-[#1E293B]">Diego R. · CUCEI</p>
+              <p class="text-xs text-slate-500">Pedido #UDG-4830</p>
+            </div>
+          </div>
+          <span class="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-[#FBBF24]/25 text-amber-800 text-xs font-extrabold px-3 py-1.5">
+            <i class="fa-regular fa-hourglass-half"></i>Pendiente
+          </span>
+        </div>
+
+        <div class="mt-4 flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&amp;fit=crop&amp;w=200&amp;q=70" alt="Entre panes" class="w-16 h-16 rounded-xl object-cover bg-slate-200 shrink-0" onerror="this.style.visibility='hidden'" />
+          <div class="flex-1 min-w-0">
+            <p class="font-bold leading-snug text-[#1E293B]">Entre panes</p>
+            <p class="text-sm text-slate-500">Esperando que el vendedor confirme</p>
+          </div>
+          <p class="text-xl font-black text-[#1E293B]">$55</p>
+        </div>
+
+        <div class="mt-4 rounded-2xl bg-slate-50 border border-slate-100 p-3 grid grid-cols-2 gap-3">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wide text-slate-500">Hora de cita</p>
+            <p class="mt-0.5 flex items-center gap-1.5 font-extrabold text-sm text-[#1E293B]">
+              <i class="fa-regular fa-clock text-[#FF7A59]"></i>Hoy · 1:30 PM
+            </p>
+          </div>
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wide text-slate-500">Punto de encuentro</p>
+            <p class="mt-0.5 flex items-center gap-1.5 font-extrabold text-sm text-[#1E293B]">
+              <i class="fa-solid fa-location-dot text-[#FF7A59]"></i>Cafetería
+            </p>
+          </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="mt-4 flex items-center gap-2">
+          <button type="button" onclick="openCancelSheet('UDG-4830')" class="h-14 px-4 rounded-2xl border-2 border-slate-200 hover:border-red-200 hover:bg-red-50 text-slate-600 hover:text-[#D04836] font-bold text-sm flex items-center justify-center gap-1.5 active:scale-[0.98] transition shrink-0 min-w-[105px]">
+            <i class="fa-solid fa-xmark text-sm"></i> Cancelar
+          </button>
+          <a href="producto.html?id=1" class="flex-1 h-14 rounded-2xl bg-[#FF7A59] text-[#1E293B] font-extrabold flex items-center justify-center gap-2 shadow-[0_10px_20px_-10px_rgba(255,122,89,0.9)] hover:brightness-95 active:scale-[0.98] transition text-sm">
+            <i class="fa-regular fa-comment-dots"></i> Ver detalle y Contactar
+          </a>
+        </div>
+      </article>
+
+      <!-- Pedido 3: confirmado, mañana -->
+      <article class="order-card bg-white rounded-3xl border border-slate-100 shadow-sm p-4 transition-all duration-300"
+        data-order-id="UDG-4795"
+        data-order-img="https://images.unsplash.com/photo-1587145820266-a5951ee6f620?auto=format&amp;fit=crop&amp;w=200&amp;q=70"
+        data-order-location="Biblioteca"
+        data-order-price="$180"
+        data-order-seller="Andrés L. · CUCEI"
+        data-order-time="Mañana · 11:00 AM"
+        data-order-title="Calculadora científica">
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <span class="w-10 h-10 shrink-0 rounded-full bg-[#FFE9E1] text-[#E8552F] font-extrabold text-[13px] flex items-center justify-center">AL</span>
+            <div class="min-w-0">
+              <p class="font-bold truncate text-[#1E293B]">Andrés L. · CUCEI</p>
+              <p class="text-xs text-slate-500">Pedido #UDG-4795</p>
+            </div>
+          </div>
+          <span class="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-[#34D399]/20 text-emerald-800 text-xs font-extrabold px-3 py-1.5">
+            <i class="fa-solid fa-circle-check"></i>Confirmado
+          </span>
+        </div>
+
+        <div class="mt-4 flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1587145820266-a5951ee6f620?auto=format&amp;fit=crop&amp;w=200&amp;q=70" alt="Calculadora científica" class="w-16 h-16 rounded-xl object-cover bg-slate-200 shrink-0" onerror="this.style.visibility='hidden'" />
+          <div class="flex-1 min-w-0">
+            <p class="font-bold leading-snug text-[#1E293B]">Calculadora científica</p>
+            <p class="text-sm text-slate-500">Pago en efectivo al recoger</p>
+          </div>
+          <p class="text-xl font-black text-[#1E293B]">$180</p>
+        </div>
+
+        <div class="mt-4 rounded-2xl bg-slate-50 border border-slate-100 p-3 grid grid-cols-2 gap-3">
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wide text-slate-500">Hora de cita</p>
+            <p class="mt-0.5 flex items-center gap-1.5 font-extrabold text-sm text-[#1E293B]">
+              <i class="fa-regular fa-clock text-[#FF7A59]"></i>Mañana · 11:00 AM
+            </p>
+          </div>
+          <div>
+            <p class="text-[11px] font-bold uppercase tracking-wide text-slate-500">Punto de encuentro</p>
+            <p class="mt-0.5 flex items-center gap-1.5 font-extrabold text-sm text-[#1E293B]">
+              <i class="fa-solid fa-location-dot text-[#FF7A59]"></i>Biblioteca
+            </p>
+          </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="mt-4 flex items-center gap-2">
+          <button type="button" onclick="openCancelSheet('UDG-4795')" class="h-14 px-4 rounded-2xl border-2 border-slate-200 hover:border-red-200 hover:bg-red-50 text-slate-600 hover:text-[#D04836] font-bold text-sm flex items-center justify-center gap-1.5 active:scale-[0.98] transition shrink-0 min-w-[105px]">
+            <i class="fa-solid fa-xmark text-sm"></i> Cancelar
+          </button>
+          <a href="producto.html?id=3" class="flex-1 h-14 rounded-2xl bg-[#FF7A59] text-[#1E293B] font-extrabold flex items-center justify-center gap-2 shadow-[0_10px_20px_-10px_rgba(255,122,89,0.9)] hover:brightness-95 active:scale-[0.98] transition text-sm">
+            <i class="fa-regular fa-comment-dots"></i> Ver detalle y Contactar
+          </a>
+        </div>
+      </article>
+
+      <!-- Estado vacío (oculto por defecto) -->
+      <div id="active-empty" class="hidden py-16 px-6 text-center">
+        <div class="w-20 h-20 mx-auto rounded-3xl bg-[#FFE9E1] text-[#E8552F] flex items-center justify-center text-3xl mb-4 shadow-sm">
+          <i class="fa-solid fa-bag-shopping"></i>
+        </div>
+        <h3 class="text-lg font-extrabold text-[#1E293B]">No tienes pedidos activos</h3>
+        <p class="text-sm text-slate-500 mt-1.5 max-w-xs mx-auto">Explora los productos disponibles en tu campus y realiza tu primer pedido.</p>
+        <a href="../index.html" class="inline-flex items-center gap-2 mt-5 px-6 h-12 rounded-2xl bg-[#FF7A59] text-[#1E293B] font-bold text-sm hover:brightness-95 transition shadow-sm">
+          <i class="fa-solid fa-store"></i> Explorar catálogo
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== Pestaña HISTORIAL (US-23) ===== -->
+    <section id="panel-history" role="tabpanel" aria-labelledby="tab-history" class="hidden px-4 pt-5 space-y-3">
+
+      <article class="bg-white rounded-2xl border border-slate-100 shadow-sm p-3">
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <p class="text-xs font-semibold text-slate-500">28 oct 2026</p>
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-[#34D399]/20 text-emerald-800 text-[11px] font-extrabold px-2.5 py-1">
+            <i class="fa-solid fa-circle-check"></i>Entregado
+          </span>
+        </div>
+        <div class="flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&amp;fit=crop&amp;w=200&amp;q=70" alt="Galletas de Marcos" class="w-14 h-14 rounded-xl object-cover bg-slate-200 shrink-0" onerror="this.style.visibility='hidden'" />
+          <div class="flex-1 min-w-0">
+            <p class="font-bold leading-snug truncate text-[#1E293B]">Galletas de Marcos (x3)</p>
+            <p class="text-xs text-slate-500">Total pagado</p>
+          </div>
+          <p class="text-lg font-black text-[#1E293B]">$60</p>
+        </div>
+        <a href="producto.html?id=2" class="mt-3 w-full h-12 rounded-xl border-2 border-slate-200 text-sm font-bold text-[#1E293B] flex items-center justify-center gap-2 hover:bg-slate-50 active:scale-[0.98] transition">
+          <i class="fa-solid fa-rotate-right"></i>Volver a pedir
+        </a>
+      </article>
+
+      <article class="bg-white rounded-2xl border border-slate-100 shadow-sm p-3">
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <p class="text-xs font-semibold text-slate-500">21 oct 2026</p>
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-slate-200 text-slate-600 text-[11px] font-extrabold px-2.5 py-1">
+            <i class="fa-solid fa-ban"></i>Cancelado
+          </span>
+        </div>
+        <div class="flex items-center gap-3">
+          <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&amp;fit=crop&amp;w=200&amp;q=70" alt="Sudadera Leones Negros" class="w-14 h-14 rounded-xl object-cover bg-slate-200 shrink-0 grayscale opacity-70" onerror="this.style.visibility='hidden'" />
+          <div class="flex-1 min-w-0">
+            <p class="font-bold leading-snug truncate text-slate-500 line-through">Sudadera Leones Negros</p>
+            <p class="text-xs text-slate-400">Reserva cancelada</p>
+          </div>
+          <p class="text-lg font-black text-slate-400 line-through">$350</p>
+        </div>
+        <a href="producto.html?id=4" class="mt-3 w-full h-12 rounded-xl border-2 border-slate-200 text-sm font-bold text-slate-600 flex items-center justify-center gap-2 hover:bg-slate-50 active:scale-[0.98] transition">
+          <i class="fa-solid fa-rotate-right"></i>Volver a pedir
+        </a>
+      </article>
+    </section>
+
+  </div>
+
+  <!-- Navegación inferior -->
+  <nav class="fixed bottom-0 inset-x-0 z-50 bg-white/95 backdrop-blur border-t border-slate-200 pb-[env(safe-area-inset-bottom)]" aria-label="Secciones">
+    <div class="grid grid-cols-5 max-w-md mx-auto">
+      <a href="../index.html#ubereats" class="flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold text-slate-400 hover:text-[#1E293B] transition"><i class="fa-solid fa-house text-lg"></i>Inicio</a>
+      <a href="../index.html#catalog"  class="flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold text-slate-400 hover:text-[#1E293B] transition"><i class="fa-solid fa-bag-shopping text-lg"></i>Catálogo</a>
+      <a href="../index.html#swipe"    class="flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold text-slate-400 hover:text-[#1E293B] transition"><i class="fa-solid fa-fire text-lg"></i>Match</a>
+      <a href="pedidos.html" aria-current="page" class="flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold text-[#FF7A59]"><i class="fa-solid fa-calendar-check text-lg"></i>Pedidos</a>
+      <a href="../index.html#profile"  class="flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold text-slate-400 hover:text-[#1E293B] transition"><i class="fa-solid fa-user text-lg"></i>Perfil</a>
+    </div>
+  </nav>
+
+  <!-- ===== MODAL: iOS Sheet Backdrop Layer (Oculto por defecto) ===== -->
+  <div id="sheet-backdrop" class="fixed inset-0 bg-inverse-surface/40 backdrop-blur-sm z-[60] transition-opacity duration-300 hidden opacity-0 pointer-events-none flex items-end justify-center">
+    <!-- Modal Sheet Container iOS Inset Style -->
+    <div id="view-cancelar-reserva" role="dialog" aria-modal="true" aria-labelledby="cancel-sheet-title"
+      class="relative w-full max-w-md mx-auto bg-background rounded-t-3xl md:rounded-3xl shadow-[0_24px_48px_-12px_rgba(33,41,48,0.18)] border border-surface-container-highest/60 flex flex-col overflow-hidden transition-all duration-300 max-h-[90vh] translate-y-full">
+      <!-- iOS Sheet Grabber Bar -->
+      <div id="sheet-grabber" class="pt-3 pb-1 w-full flex justify-center items-center shrink-0 cursor-grab active:cursor-grabbing">
+        <div class="w-12 h-1.5 bg-surface-variant rounded-full transition-transform duration-200"></div>
+      </div>
+
+      <!-- Header Minimalista iOS Sticky -->
+      <div class="sticky top-0 z-30 px-space-md py-space-sm bg-background/90 backdrop-blur-xl border-b border-surface-container/60 flex items-center justify-between shrink-0">
+        <button id="btn-back-sheet" type="button" aria-label="Cerrar modal y mantener reserva"
+          class="w-9 h-9 rounded-full bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface transition-all active:scale-95 duration-100 shadow-sm">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+        <div class="flex flex-col items-center text-center">
+          <h2 id="cancel-sheet-title" class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Cancelar Reserva</h2>
+          <span id="modal-order-tag" class="font-label-sm text-label-sm text-secondary font-medium px-2 py-0.5 mt-0.5 rounded-full bg-secondary-container/40">
+            Campus CUCEI • Pedido #UDG-0000
+          </span>
+        </div>
+        <div aria-hidden="true" class="w-9 h-9 opacity-0 pointer-events-none"></div>
+      </div>
+
+      <!-- Scrollable Content -->
+      <div class="p-margin-mobile space-y-space-lg overflow-y-auto max-h-[60vh] pb-36">
+        <!-- Inset Grouped Card: Resumen dinámico de la Reserva -->
+        <section class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm border border-surface-container-highest/80 space-y-space-sm transition-all">
+          <div class="flex items-start gap-space-md">
+            <img id="modal-item-img" src="" alt="Producto" class="w-16 h-16 rounded-xl object-cover shrink-0 shadow-sm bg-surface-container" onerror="this.style.visibility='hidden'" />
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-1 mb-1">
+                <h3 id="modal-item-title" class="font-headline-sm text-headline-sm text-on-surface truncate font-semibold">Producto</h3>
+              </div>
+              <p id="modal-item-price-unit" class="font-label-md text-label-md text-primary font-bold">$0</p>
+              <div class="flex items-center gap-1.5 mt-1 text-on-surface-variant">
+                <span class="material-symbols-outlined text-[16px] text-tertiary shrink-0">school</span>
+                <span id="modal-item-seller" class="font-body-sm text-body-sm truncate">Vendedor</span>
+              </div>
+            </div>
+          </div>
+          <div class="h-[1px] bg-surface-container w-full my-1"></div>
+          <div class="grid grid-cols-1 gap-2 pt-1">
+            <div class="flex items-center justify-between text-body-sm font-body-sm">
+              <span class="text-tertiary flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[17px]">location_on</span>
+                Punto de entrega:
+              </span>
+              <span id="modal-item-point" class="font-label-lg text-label-lg text-on-surface font-medium text-right">Módulo</span>
+            </div>
+            <div class="flex items-center justify-between text-body-sm font-body-sm">
+              <span class="text-tertiary flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[17px]">schedule</span>
+                Horario pactado:
+              </span>
+              <span id="modal-item-time" class="font-label-lg text-label-lg text-on-surface font-medium text-right">Horario</span>
+            </div>
+          </div>
+          <div class="pt-2 flex items-center justify-between">
+            <span class="font-label-sm text-label-sm text-tertiary uppercase tracking-wider font-semibold">Estado actual</span>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-secondary font-label-md text-label-md bg-secondary-container/40">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+              </span>
+              Pendiente de entrega
+            </span>
+          </div>
+        </section>
+
+        <!-- Selector de Motivo de Cancelación (Ley de Hick: 4 opciones claras) -->
+        <section class="space-y-space-xs">
+          <div class="px-1 flex items-center justify-between">
+            <span class="font-label-sm text-label-sm text-tertiary font-semibold tracking-wider uppercase">
+              Selecciona el motivo
+            </span>
+            <span class="font-label-sm text-label-sm text-outline font-medium">Requerido</span>
+          </div>
+          <div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-surface-container-highest/80 divide-y divide-surface-container overflow-hidden" role="radiogroup">
+            <!-- Opción 1 -->
+            <label class="reason-option flex items-center justify-between p-3.5 cursor-pointer hover:bg-surface-container-low transition-all active:scale-[0.99] group">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-tertiary group-hover:text-primary transition-colors text-[20px]">schedule_send</span>
+                <span class="font-body-md text-body-md text-on-surface font-medium">
+                  Surgió un imprevisto con mi clase / horario
+                </span>
+              </div>
+              <div class="radio-indicator relative w-5 h-5 rounded-full border-2 border-outline-variant flex items-center justify-center shrink-0 ml-2 transition-all">
+                <div class="radio-dot w-2.5 h-2.5 rounded-full bg-primary-container scale-0 transition-transform duration-150"></div>
+              </div>
+              <input class="hidden" name="cancel_reason" type="radio" value="horario" />
+            </label>
+            <!-- Opción 2 -->
+            <label class="reason-option flex items-center justify-between p-3.5 cursor-pointer hover:bg-surface-container-low transition-all active:scale-[0.99] group">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-tertiary group-hover:text-primary transition-colors text-[20px]">directions_walk</span>
+                <span class="font-body-md text-body-md text-on-surface font-medium">
+                  Ya no me encuentro en el campus
+                </span>
+              </div>
+              <div class="radio-indicator relative w-5 h-5 rounded-full border-2 border-outline-variant flex items-center justify-center shrink-0 ml-2 transition-all">
+                <div class="radio-dot w-2.5 h-2.5 rounded-full bg-primary-container scale-0 transition-transform duration-150"></div>
+              </div>
+              <input class="hidden" name="cancel_reason" type="radio" value="fuera_campus" />
+            </label>
+            <!-- Opción 3 -->
+            <label class="reason-option flex items-center justify-between p-3.5 cursor-pointer hover:bg-surface-container-low transition-all active:scale-[0.99] group">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-tertiary group-hover:text-primary transition-colors text-[20px]">handshake</span>
+                <span class="font-body-md text-body-md text-on-surface font-medium">
+                  Acordé otro horario o punto con el vendedor
+                </span>
+              </div>
+              <div class="radio-indicator relative w-5 h-5 rounded-full border-2 border-outline-variant flex items-center justify-center shrink-0 ml-2 transition-all">
+                <div class="radio-dot w-2.5 h-2.5 rounded-full bg-primary-container scale-0 transition-transform duration-150"></div>
+              </div>
+              <input class="hidden" name="cancel_reason" type="radio" value="acuerdo_previo" />
+            </label>
+            <!-- Opción 4 (Despliega textarea) -->
+            <div class="p-3.5 flex flex-col">
+              <label class="reason-option flex items-center justify-between cursor-pointer hover:bg-surface-container-low transition-all active:scale-[0.99] group -m-1 p-1 rounded-lg">
+                <div class="flex items-center gap-3">
+                  <span class="material-symbols-outlined text-tertiary group-hover:text-primary transition-colors text-[20px]">more_horiz</span>
+                  <span class="font-body-md text-body-md text-on-surface font-medium">
+                    Otro motivo
+                  </span>
+                </div>
+                <div class="radio-indicator relative w-5 h-5 rounded-full border-2 border-outline-variant flex items-center justify-center shrink-0 ml-2 transition-all">
+                  <div class="radio-dot w-2.5 h-2.5 rounded-full bg-primary-container scale-0 transition-transform duration-150"></div>
+                </div>
+                <input class="hidden" name="cancel_reason" type="radio" value="otro" />
+              </label>
+              <!-- Textarea contextual expandible -->
+              <div id="other-reason-container" class="hidden transition-all duration-300 ease-in-out pt-3">
+                <textarea id="other-reason-input" rows="2" maxlength="160" placeholder="Cuéntanos brevemente qué ocurrió (opcional)..."
+                  class="w-full p-3 rounded-xl border border-surface-container-highest text-body-sm font-body-sm text-on-surface bg-surface-container-low focus:bg-surface-container-lowest focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 transition-all outline-none resize-none"></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Aviso de Empatía / Regla de Comunidad (Callout Box HIG) -->
+        <section class="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-4 flex gap-3 items-start shadow-sm">
+          <div class="w-8 h-8 rounded-full bg-amber-100/90 text-amber-700 flex items-center justify-center shrink-0 mt-0.5">
+            <span class="material-symbols-outlined text-[19px]">schedule</span>
+          </div>
+          <div class="space-y-1">
+            <h4 class="font-headline-sm text-headline-sm text-amber-900 font-semibold leading-snug">
+              Cultura de Respeto CUCEI
+            </h4>
+            <p class="font-body-sm text-body-sm text-amber-800/90 leading-relaxed">
+              Cancelar con al menos 15 minutos de anticipación permite que los estudiantes vendedores reorganicen su stock y no pierdan sus ventas del día en el campus.
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <!-- Barra Inferior Fija (Bottom Sticky Action Bar) -->
+      <div class="absolute bottom-0 inset-x-0 bg-surface-container-lowest/90 backdrop-blur-xl border-t border-surface-container p-4 rounded-b-3xl space-y-2.5 shadow-[0_-8px_20px_-6px_rgba(0,0,0,0.06)] z-20">
+        <!-- Botón destructivo: Confirmar Cancelación -->
+        <button id="btn-confirm-cancel" type="button" disabled
+          class="w-full py-3.5 px-4 rounded-2xl bg-primary-container text-on-primary font-headline-sm text-headline-sm font-semibold shadow-md shadow-primary-container/20 opacity-50 cursor-not-allowed active:scale-95 transition-all duration-150 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-[20px]">event_busy</span>
+          Confirmar Cancelación
+        </button>
+        <!-- Botón seguro: Mantener Reserva -->
+        <button id="btn-keep-reservation" type="button"
+          class="w-full py-3 px-4 rounded-2xl bg-surface-container hover:bg-surface-container-high active:scale-95 text-on-surface font-headline-sm text-headline-sm font-semibold transition-all duration-150 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-[20px] text-secondary">check_circle</span>
+          Mantener Reserva
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast Flotante HIG -->
+  <div id="toast-notification" role="status" aria-live="polite"
+    class="fixed bottom-24 left-1/2 -translate-x-1/2 z-[70] px-4 py-3 rounded-full bg-inverse-surface text-inverse-on-surface font-label-lg text-label-lg shadow-xl flex items-center gap-2.5 opacity-0 translate-y-4 pointer-events-none transition-all duration-300 ease-out whitespace-nowrap">
+    <span id="toast-icon" class="material-symbols-outlined text-secondary-fixed text-[20px]">check_circle</span>
+    <span id="toast-message">Operación realizada con éxito</span>
+  </div>
+
+  <script>
+    // ---------- Tabs (Activos / Historial) + Swipe Táctil ----------
+    const tabActive = document.getElementById('tab-active');
+    const tabHistory = document.getElementById('tab-history');
+    const panelActive = document.getElementById('panel-active');
+    const panelHistory = document.getElementById('panel-history');
+
+    function switchTab(target) {
+      const isActive = target === 'active';
+      tabActive.setAttribute('aria-selected', String(isActive));
+      tabHistory.setAttribute('aria-selected', String(!isActive));
+
+      tabActive.classList.toggle('text-[#1E293B]', isActive);
+      tabActive.classList.toggle('text-slate-500', !isActive);
+      tabHistory.classList.toggle('text-[#1E293B]', !isActive);
+      tabHistory.classList.toggle('text-slate-500', isActive);
+
+      tabActive.querySelector('.tab-bar').classList.toggle('hidden', !isActive);
+      tabHistory.querySelector('.tab-bar').classList.toggle('hidden', isActive);
+
+      panelActive.classList.toggle('hidden', !isActive);
+      panelHistory.classList.toggle('hidden', isActive);
+      window.scrollTo({ top: 0 });
+    }
+
+    tabActive.addEventListener('click', () => switchTab('active'));
+    tabHistory.addEventListener('click', () => switchTab('history'));
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+    document.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+    document.addEventListener('touchend', e => {
+      const backdropEl = document.getElementById('sheet-backdrop');
+      if (backdropEl && !backdropEl.classList.contains('hidden')) return;
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      const dy = e.changedTouches[0].screenY - touchStartY;
+      if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      if (dx < 0) switchTab('history');
+      else switchTab('active');
+    }, { passive: true });
+
+    if (location.hash === '#historial') switchTab('history');
+
+    // ---------- Modal Bottom Sheet "Cancelar Reserva" ----------
+    (function initOrderCancelWorkflow() {
+      const backdrop = document.getElementById('sheet-backdrop');
+      const sheet = document.getElementById('view-cancelar-reserva');
+      const reasonOptions = sheet.querySelectorAll('.reason-option');
+      const confirmBtn = document.getElementById('btn-confirm-cancel');
+      const keepBtn = document.getElementById('btn-keep-reservation');
+      const backBtn = document.getElementById('btn-back-sheet');
+      const grabber = document.getElementById('sheet-grabber');
+      const otherContainer = document.getElementById('other-reason-container');
+      const otherTextarea = document.getElementById('other-reason-input');
+      const toast = document.getElementById('toast-notification');
+      const toastMessage = document.getElementById('toast-message');
+      const toastIcon = document.getElementById('toast-icon');
+
+      const modalOrderTag = document.getElementById('modal-order-tag');
+      const modalImg = document.getElementById('modal-item-img');
+      const modalTitle = document.getElementById('modal-item-title');
+      const modalPrice = document.getElementById('modal-item-price-unit');
+      const modalSeller = document.getElementById('modal-item-seller');
+      const modalPoint = document.getElementById('modal-item-point');
+      const modalTime = document.getElementById('modal-item-time');
+
+      let selectedOrderForCancel = null;
+      let toastTimer = null;
+      let isProcessing = false;
+
+      function showToast(message, iconName = 'check_circle', isDestructive = false) {
+        if (toastTimer) clearTimeout(toastTimer);
+        toastMessage.textContent = message;
+        toastIcon.textContent = iconName;
+        toastIcon.className = isDestructive
+          ? 'material-symbols-outlined text-primary-fixed text-[20px]'
+          : 'material-symbols-outlined text-secondary-fixed text-[20px]';
+
+        toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+        toast.classList.add('opacity-100', 'translate-y-0');
+        toastTimer = setTimeout(() => {
+          toast.classList.remove('opacity-100', 'translate-y-0');
+          toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+        }, 2800);
+      }
+
+      function resetModalForm() {
+        isProcessing = false;
+        reasonOptions.forEach((opt) => {
+          const indicator = opt.querySelector('.radio-indicator');
+          const dot = opt.querySelector('.radio-dot');
+          const rowText = opt.querySelector('.font-body-md');
+          const radio = opt.querySelector('input[type="radio"]');
+          if (radio) radio.checked = false;
+          if (indicator) {
+            indicator.classList.remove('border-primary-container');
+            indicator.classList.add('border-outline-variant');
+          }
+          if (dot) {
+            dot.classList.remove('scale-100');
+            dot.classList.add('scale-0');
+          }
+          if (rowText) {
+            rowText.classList.remove('text-primary-container', 'font-semibold');
+            rowText.classList.add('text-on-surface');
+          }
+        });
+        if (otherContainer) otherContainer.classList.add('hidden');
+        if (otherTextarea) otherTextarea.value = '';
+        confirmBtn.disabled = true;
+        confirmBtn.classList.remove('opacity-100', 'opacity-70', 'cursor-pointer');
+        confirmBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        confirmBtn.innerHTML = `
+          <span class="material-symbols-outlined text-[20px]">event_busy</span>
+          Confirmar Cancelación
+        `;
+      }
+
+      window.openCancelSheet = function openCancelSheet(orderId) {
+        const card = document.querySelector(`.order-card[data-order-id="${orderId}"]`);
+        if (!card) return;
+
+        selectedOrderForCancel = {
+          id: orderId,
+          title: card.dataset.orderTitle,
+          price: card.dataset.orderPrice,
+          seller: card.dataset.orderSeller,
+          time: card.dataset.orderTime,
+          location: card.dataset.orderLocation,
+          img: card.dataset.orderImg,
+          element: card
+        };
+
+        modalOrderTag.textContent = `Campus CUCEI • Pedido #${orderId}`;
+        modalTitle.textContent = selectedOrderForCancel.title;
+        modalPrice.innerHTML = `${selectedOrderForCancel.price} <span class="font-body-sm text-body-sm text-tertiary font-normal">• Pago en efectivo</span>`;
+        modalSeller.textContent = selectedOrderForCancel.seller;
+        modalPoint.textContent = selectedOrderForCancel.location;
+        modalTime.textContent = selectedOrderForCancel.time;
+        modalImg.style.visibility = 'visible';
+        modalImg.src = selectedOrderForCancel.img;
+
+        resetModalForm();
+        backdrop.classList.remove('hidden', 'pointer-events-none');
+        document.body.style.overflow = 'hidden';
+
+        requestAnimationFrame(() => {
+          backdrop.classList.remove('opacity-0');
+          backdrop.classList.add('opacity-100');
+          sheet.classList.remove('translate-y-full');
+          sheet.classList.add('translate-y-0');
+        });
+      };
+
+      function closeCancelSheet(keepToast = false) {
+        backdrop.classList.remove('opacity-100');
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+        sheet.classList.remove('translate-y-0');
+        sheet.classList.add('translate-y-full');
+
+        setTimeout(() => {
+          backdrop.classList.add('hidden');
+          document.body.style.overflow = '';
+          selectedOrderForCancel = null;
+        }, 300);
+
+        if (keepToast) {
+          showToast('Reserva mantenida en el campus', 'verified', false);
+        }
+      }
+
+      // Selección de motivo (Ley de Hick: 4 opciones + revelación progresiva)
+      reasonOptions.forEach((option) => {
+        option.addEventListener('click', () => {
+          const radio = option.querySelector('input[type="radio"]');
+          if (!radio || isProcessing) return;
+
+          reasonOptions.forEach((opt) => {
+            const indicator = opt.querySelector('.radio-indicator');
+            const dot = opt.querySelector('.radio-dot');
+            const rowText = opt.querySelector('.font-body-md');
+            if (indicator) {
+              indicator.classList.remove('border-primary-container');
+              indicator.classList.add('border-outline-variant');
+            }
+            if (dot) {
+              dot.classList.remove('scale-100');
+              dot.classList.add('scale-0');
+            }
+            if (rowText) {
+              rowText.classList.remove('text-primary-container', 'font-semibold');
+              rowText.classList.add('text-on-surface');
+            }
+          });
+
+          radio.checked = true;
+          const currentIndicator = option.querySelector('.radio-indicator');
+          const currentDot = option.querySelector('.radio-dot');
+          const currentRowText = option.querySelector('.font-body-md');
+          if (currentIndicator) {
+            currentIndicator.classList.remove('border-outline-variant');
+            currentIndicator.classList.add('border-primary-container');
+          }
+          if (currentDot) {
+            currentDot.classList.remove('scale-0');
+            currentDot.classList.add('scale-100');
+          }
+          if (currentRowText) {
+            currentRowText.classList.remove('text-on-surface');
+            currentRowText.classList.add('text-primary-container', 'font-semibold');
+          }
+
+          confirmBtn.disabled = false;
+          confirmBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+          confirmBtn.classList.add('opacity-100', 'cursor-pointer');
+
+          if (radio.value === 'otro') {
+            otherContainer.classList.remove('hidden');
+            setTimeout(() => otherTextarea.focus(), 120);
+          } else {
+            otherContainer.classList.add('hidden');
+          }
+        });
+      });
+
+      // Cierre manteniendo reserva ("Mantener Reserva", botón X, grabber, Escape, clic en backdrop)
+      keepBtn.addEventListener('click', () => { if (!isProcessing) closeCancelSheet(true); });
+      backBtn.addEventListener('click', () => { if (!isProcessing) closeCancelSheet(true); });
+      grabber.addEventListener('click', () => { if (!isProcessing) closeCancelSheet(true); });
+      backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop && !isProcessing) closeCancelSheet(true);
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !backdrop.classList.contains('hidden') && !isProcessing) {
+          closeCancelSheet(true);
+        }
+      });
+
+      // Confirmar Cancelación: spinner 800ms -> eliminar tarjeta, actualizar badge e insertar en Historial
+      confirmBtn.addEventListener('click', () => {
+        if (confirmBtn.disabled || !selectedOrderForCancel || isProcessing) return;
+
+        isProcessing = true;
+        const orderData = { ...selectedOrderForCancel };
+        const cardElement = orderData.element;
+
+        confirmBtn.disabled = true;
+        confirmBtn.classList.remove('opacity-100');
+        confirmBtn.classList.add('opacity-70', 'cursor-wait');
+        confirmBtn.innerHTML = `<span class="material-symbols-outlined animate-spin text-[20px]">progress_activity</span> Cancelando...`;
+
+        setTimeout(() => {
+          cardElement.style.transform = 'scale(0.95)';
+          cardElement.style.opacity = '0';
+
+          setTimeout(() => {
+            cardElement.remove();
+
+            // Descontar 1 al contador #active-badge y mostrar #active-empty si llega a 0
+            const remainingCards = document.querySelectorAll('#panel-active .order-card');
+            const count = remainingCards.length;
+            const badge = document.getElementById('active-badge');
+            badge.textContent = count;
+
+            if (count === 0) {
+              badge.classList.add('hidden');
+              document.getElementById('active-empty').classList.remove('hidden');
+            }
+
+            // Insertar dinámicamente al inicio de #panel-history
+            const historyArticle = document.createElement('article');
+            historyArticle.className = 'bg-white rounded-2xl border border-slate-100 shadow-sm p-3 transition-all duration-300';
+            historyArticle.innerHTML = `
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+                  <p class="text-xs font-semibold text-slate-500">Hoy · Pedido #${orderData.id}</p>
+                </div>
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-slate-200 text-slate-600 text-[11px] font-extrabold px-2.5 py-1">
+                  <i class="fa-solid fa-ban"></i>Cancelado
+                </span>
+              </div>
+              <div class="flex items-center gap-3">
+                <img src="${orderData.img}" alt="${orderData.title}" class="w-14 h-14 rounded-xl object-cover bg-slate-200 shrink-0 grayscale opacity-70" onerror="this.style.visibility='hidden'" />
+                <div class="flex-1 min-w-0">
+                  <p class="font-bold leading-snug truncate text-slate-500 line-through">${orderData.title}</p>
+                  <p class="text-xs text-slate-400">Reserva cancelada</p>
+                </div>
+                <p class="text-lg font-black text-slate-400 line-through">${orderData.price}</p>
+              </div>
+              <a href="../index.html" class="mt-3 w-full h-12 rounded-xl border-2 border-slate-200 text-sm font-bold text-slate-600 flex items-center justify-center gap-2 hover:bg-slate-50 active:scale-[0.98] transition">
+                <i class="fa-solid fa-rotate-right"></i>Buscar nuevamente
+              </a>
+            `;
+            panelHistory.prepend(historyArticle);
+
+            closeCancelSheet(false);
+            showToast(`Pedido #${orderData.id} cancelado • Notificando vendedor`, 'event_busy', true);
+          }, 200);
+        }, 800);
+      });
+    })();
+  </script>
+</body>
+</html>
