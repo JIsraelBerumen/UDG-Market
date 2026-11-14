@@ -1,0 +1,21 @@
+# macOS / Windows OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors & IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Dependencies & Build outputs
+node_modules/
+dist/
+build/
+
+# Logs & Temporary files
+*.log
+npm-debug.log*
+.env
+.env.local
