@@ -1,0 +1,38 @@
+/* Tema del Catálogo: fondo oscuro. Para modo claro usa:
+   --cat-bg:#ffffff; --cat-fg:#1E293B; --cat-muted:#64748B; */
+:root { --cat-bg:#0E1426; --cat-fg:#ffffff; --cat-muted:#9AA3B8; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+.card-in { animation: cardIn .35s cubic-bezier(.2,.8,.2,1); }
+@keyframes cardIn { from { opacity:0; transform: translateY(12px) scale(.97); } to { opacity:1; transform:none; } }
+.fav-on svg { fill: #FF7A59; stroke: #FF7A59; }
+@media (prefers-reduced-motion: reduce) { .card-in { animation: none; } }
+
+/* ---------- Módulo Match (Tinder) ---------- */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.card-swipe { transition: transform .3s ease, opacity .3s ease; }
+.card-swipe.swipe-left  { transform: translateX(-120%) rotate(-12deg); opacity: 0; }
+.card-swipe.swipe-right { transform: translateX(120%)  rotate(12deg);  opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .card-swipe { transition: none; } }
+
+/* Reserva confirmada: check animado */
+.ring-pulse { animation: ringPulse 1.8s ease-out .6s infinite; }
+@keyframes ringPulse { 0% { transform: scale(1); opacity: .45; } 100% { transform: scale(1.7); opacity: 0; } }
+.pop { animation: pop .55s cubic-bezier(.2,1.3,.4,1) both; }
+@keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.draw { stroke-dasharray: 60; stroke-dashoffset: 60; animation: draw .45s ease-out .45s forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.rise { animation: rise .5s ease-out both; }
+@keyframes rise { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .ring-pulse, .pop, .draw, .rise { animation: none; stroke-dashoffset: 0; } }
+
+/* Estilos para el switch iOS personalizado (Modo Vendedor) */
+.toggle-checkbox:checked {
+  right: 2px;
+  border-color: #228276;
+}
+.toggle-checkbox:checked + .toggle-label {
+  background-color: #228276;
+}
+
