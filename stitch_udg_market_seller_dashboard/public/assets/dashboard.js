@@ -208,6 +208,139 @@ function renderSellerReviews(doc, reviews) {
   }
 }
 
+function formatOrderDate(value) {
+  if (!value) return 'Fecha por definir';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return 'Fecha por definir';
+  return new Intl.DateTimeFormat('es-MX', {
+    dateStyle: 'medium',
+    timeStyle: 'short'
+  }).format(date);
+}
+
+function orderStatusLabel(status) {
+  return {
+    pending: 'Pendiente de confirmación',
+    confirmed: 'Confirmado',
+    ready: 'Listo para entregar',
+    delivered: 'Entregado',
+    cancelled: 'Cancelado'
+  }[status] || status;
+}
+
+function createOrderCard(doc, order, isSeller) {
+  const card = doc.createElement('article');
+  card.className = 'rounded-3xl border border-slate-100 bg-white p-4 shadow-sm space-y-3';
+
+  const heading = doc.createElement('div');
+  heading.className = 'flex items-start justify-between gap-3';
+  const identity = doc.createElement('div');
+  const counterpart = doc.createElement('p');
+  counterpart.className = 'font-bold text-slate-800';
+  counterpart.textContent = isSeller ? order.buyerName : order.sellerName;
+  const code = doc.createElement('p');
+  code.className = 'text-xs text-slate-500';
+  code.textContent = `Pedido ${order.orderCode}`;
+  identity.append(counterpart, code);
+
+  const status = doc.createElement('span');
+  status.className = 'rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-700';
+  status.textContent = orderStatusLabel(order.status);
+  heading.append(identity, status);
+
+  const items = doc.createElement('ul');
+  items.className = 'space-y-1 text-sm text-slate-600';
+  for (const item of order.items) {
+    const row = doc.createElement('li');
+    row.textContent = `${item.quantity} × ${item.productName}`;
+    items.append(row);
+  }
+
+  const details = doc.createElement('div');
+  details.className = 'flex flex-wrap justify-between gap-2 border-t border-slate-100 pt-3 text-xs text-slate-500';
+  const pickup = doc.createElement('span');
+  pickup.textContent = `${order.pickupLocation} · ${formatOrderDate(order.pickupAt)}`;
+  const total = doc.createElement('strong');
+  total.className = 'text-sm font-extrabold text-slate-900';
+  total.textContent = `$${Number(order.total).toFixed(2)} MXN`;
+  details.append(pickup, total);
+  card.append(heading, items, details);
+  return card;
+}
+
+function createEmptyOrdersMessage(doc, message) {
+  const empty = doc.createElement('div');
+  empty.className = 'rounded-3xl border border-slate-100 bg-white px-6 py-12 text-center text-sm text-slate-500';
+  empty.textContent = message;
+  return empty;
+}
+
+async function hydrateOrderModule(doc, moduleName) {
+  const isSeller = moduleName === 'seller-orders';
+  const { orders } = await requestJson(`/api/orders?as=${isSeller ? 'seller' : 'buyer'}`);
+  const activeStatuses = new Set(['pending', 'confirmed', 'ready']);
+  const activeOrders = orders.filter((order) => activeStatuses.has(order.status));
+  const historyOrders = orders.filter((order) => !activeStatuses.has(order.status));
+
+  if (isSeller) {
+    const list = doc.querySelector('main');
+    if (!list) return;
+    list.replaceChildren(...(activeOrders.length
+      ? activeOrders.map((order) => createOrderCard(doc, order, true))
+      : [createEmptyOrdersMessage(doc, 'Aún no tienes pedidos de clientes.')]));
+    const badge = doc.querySelector('h2 span');
+    if (badge) badge.textContent = String(activeOrders.length);
+    const navBadge = doc.getElementById('seller-orders-nav-badge');
+    if (navBadge) {
+      navBadge.textContent = String(activeOrders.length);
+      navBadge.classList.toggle('hidden', activeOrders.length === 0);
+    }
+    const itemCount = doc.getElementById('seller-orders-item-count');
+    if (itemCount) {
+      itemCount.textContent = String(activeOrders.reduce(
+        (sum, order) => sum + order.items.reduce((quantity, item) => quantity + item.quantity, 0),
+        0
+      ));
+    }
+    const total = doc.getElementById('seller-orders-total');
+    if (total) {
+      total.textContent = `$${activeOrders.reduce((sum, order) => sum + Number(order.total), 0).toFixed(2)}`;
+    }
+    const dateCampus = doc.getElementById('seller-orders-campus-date');
+    if (dateCampus) {
+      const date = new Intl.DateTimeFormat('es-MX', { dateStyle: 'full' }).format(new Date());
+      const campus = dashboardState.user.campusName || dashboardState.user.campusCode;
+      dateCampus.textContent = `${date}${campus ? ` · Campus ${campus}` : ''}`;
+    }
+    const title = doc.querySelector('h2');
+    if (title) title.firstChild.textContent = 'Pedidos Activos ';
+    return;
+  }
+
+  const activePanel = doc.getElementById('panel-active');
+  const historyPanel = doc.getElementById('panel-history');
+  if (!activePanel || !historyPanel) return;
+  activePanel.replaceChildren(...(activeOrders.length
+    ? activeOrders.map((order) => createOrderCard(doc, order, false))
+    : [createEmptyOrdersMessage(doc, 'Aún no tienes pedidos activos. Cuando hagas una compra, aparecerá aquí.')]));
+  historyPanel.replaceChildren(...(historyOrders.length
+    ? historyOrders.map((order) => createOrderCard(doc, order, false))
+    : [createEmptyOrdersMessage(doc, 'Todavía no tienes pedidos en el historial.')]));
+  const badge = doc.getElementById('active-badge');
+  if (badge) {
+    badge.textContent = String(activeOrders.length);
+    badge.classList.toggle('hidden', activeOrders.length === 0);
+  }
+}
+
+function clearUnconnectedOrderModule(doc) {
+  const main = doc.querySelector('main');
+  if (!main) return;
+  main.replaceChildren(
+    createEmptyOrdersMessage(doc, 'Aún no tienes pedidos para mostrar en esta pantalla.')
+  );
+}
+
 async function hydrateSellerProfile(doc) {
   const main = doc.querySelector('main');
   if (!main) return;
@@ -397,6 +530,13 @@ function prepareModuleLinks() {
 
     if (['my-profile', 'settings', 'inventory-stock'].includes(dashboardState.module)) {
       hydrateProfileModule(moduleDocument);
+    } else if (['buyer-orders', 'seller-orders'].includes(dashboardState.module)) {
+      hydrateOrderModule(moduleDocument, dashboardState.module).catch((error) => {
+        showNotice(error.message);
+        console.error(error);
+      });
+    } else if (['cancel-reservation', 'delivery-pass', 'post-delivery-review'].includes(dashboardState.module)) {
+      clearUnconnectedOrderModule(moduleDocument);
     } else if (dashboardState.module === 'seller-profile') {
       hydrateSellerProfile(moduleDocument).catch((error) =>
         showSellerProfileError(moduleDocument, error)

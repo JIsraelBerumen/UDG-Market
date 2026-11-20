@@ -99,7 +99,7 @@
           <h1 class="text-2xl font-black tracking-tight text-navy leading-tight">
             Mis Entregas Hoy
           </h1>
-          <p class="text-xs font-medium text-navy/60">Viernes, 24 de Mayo • Campus CUCEI</p>
+          <p class="text-xs font-medium text-navy/60" id="seller-orders-campus-date"></p>
         </div>
 
         <!-- Switch tipo iOS: Estado Tienda Activa -->
@@ -145,7 +145,7 @@
           <div>
             <span class="text-[11px] font-semibold text-navy/60 block uppercase tracking-wider">Por Entregar</span>
             <div class="flex items-baseline gap-1 mt-0.5">
-              <span class="text-xl font-extrabold text-navy">5</span>
+              <span class="text-xl font-extrabold text-navy" id="seller-orders-item-count">0</span>
               <span class="text-[11px] text-navy/50 font-bold">artículos</span>
             </div>
           </div>
@@ -157,9 +157,9 @@
             <i class="fa-solid fa-circle-dollar-to-slot"></i>
           </div>
           <div>
-            <span class="text-[11px] font-semibold text-navy/60 block uppercase tracking-wider">Ganancia Hoy</span>
+            <span class="text-[11px] font-semibold text-navy/60 block uppercase tracking-wider">Valor de pedidos</span>
             <div class="flex items-baseline gap-1 mt-0.5">
-              <span class="text-xl font-extrabold text-navy">$245</span>
+              <span class="text-xl font-extrabold text-navy" id="seller-orders-total">$0.00</span>
               <span class="text-[11px] text-mint font-bold font-mono">MXN</span>
             </div>
           </div>
@@ -171,7 +171,7 @@
     <div class="px-5 pt-3 pb-1 flex items-center justify-between">
       <div class="flex items-center gap-2">
         <h2 class="text-sm font-extrabold uppercase tracking-wider text-navy">
-          Pedidos Activos <span class="bg-terracota text-white text-[10px] px-1.5 py-0.5 rounded-full ml-1 font-black">3</span>
+          Pedidos Activos <span class="bg-terracota text-white text-[10px] px-1.5 py-0.5 rounded-full ml-1 font-black" id="seller-orders-badge">0</span>
         </h2>
       </div>
       <span class="text-[11px] text-navy/60 font-semibold flex items-center gap-1">
@@ -444,7 +444,7 @@
         <a href="/app/dashboard.html#orders" class="flex flex-col items-center justify-center py-1 text-terracota group relative" aria-label="Ventas">
           <div class="relative">
             <i class="fa-solid fa-bag-shopping text-xl transition-transform group-hover:scale-110"></i>
-            <span class="absolute -top-1 -right-2 bg-terracota text-white text-[9px] font-black rounded-full h-4 w-4 flex items-center justify-center border-2 border-white">3</span>
+            <span class="absolute -top-1 -right-2 bg-terracota text-white text-[9px] font-black rounded-full h-4 w-4 flex items-center justify-center border-2 border-white" id="seller-orders-nav-badge">0</span>
           </div>
           <span class="text-[11px] font-black tracking-tight mt-1">Ventas</span>
           <span class="w-1.5 h-1.5 rounded-full bg-terracota mt-0.5"></span>
