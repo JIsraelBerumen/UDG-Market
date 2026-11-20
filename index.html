@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <!-- Configuración Viewport para adaptarse a cualquier pantalla móvil -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>UDG-Market - Registro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <style>
+    /* ===================================================
+       1. PALETAS DE COLORES Y VARIABLES CSS
+       =================================================== */
+    :root, .palette-terracotta {
+      --bg-main: #E8DFD8;
+      --bg-card: #F8F4F0;
+      --brand-accent: #D04836;
+      --brand-text: #212930;
+      --border-card: #D3C7BC;
+      --bg-input: #EFE9E3;
+      --accent-glow: rgba(208, 72, 54, 0.2);
+      --scrollbar-thumb: rgba(208, 72, 54, 0.4);
+    }
+
+    .palette-matcha {
+      --bg-main: #DBE4DC;
+      --bg-card: #EFF4F0;
+      --brand-accent: #2B8A7E;
+      --brand-text: #16241B;
+      --border-card: #BCCEC0;
+      --bg-input: #E4ECE5;
+      --accent-glow: rgba(43, 138, 126, 0.2);
+      --scrollbar-thumb: rgba(43, 138, 126, 0.4);
+    }
+
+    .palette-moleskine {
+      --bg-main: #E2DDD5;
+      --bg-card: #F5F2EC;
+      --brand-accent: #C85A17;
+      --brand-text: #171C24;
+      --border-card: #C7C0B5;
+      --bg-input: #EBE5DC;
+      --accent-glow: rgba(200, 90, 23, 0.2);
+      --scrollbar-thumb: rgba(200, 90, 23, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Ocupa el 100% de la pantalla de cualquier dispositivo */
+    body {
+      background-color: var(--bg-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0;
+    }
+
+    /* Barra Superior para cambiar paletas */
+    .top-bar {
+      width: 100%;
+      max-width: 500px;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: transparent;
+    }
+
+    .palette-selector {
+      display: flex;
+      background: rgba(0, 0, 0, 0.06);
+      padding: 3px;
+      border-radius: 20px;
+      gap: 2px;
+    }
+
+    .palette-btn {
+      border: none;
+      background: transparent;
+      padding: 6px 10px;
+      border-radius: 14px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--brand-text);
+      cursor: pointer;
+      opacity: 0.6;
+    }
+
+    .palette-btn.active {
+      background-color: var(--bg-card);
+      opacity: 1;
+      color: var(--brand-accent);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Contenedor Adaptable Principal */
+    .main-container {
+      width: 100%;
+      max-width: 480px; /* Ancho cómodo en móviles y centrado en pantallas grandes */
+      padding: 10px 20px 40px 20px;
+      flex: 1;
+    }
+
+    /* Header & Logo */
+    .brand-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .logo-container {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 12px auto;
+      background-color: #FF5722;
+      border-radius: 50%;
+      padding: 4px;
+      box-shadow: 0 8px 20px var(--accent-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .app-title {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--brand-text);
+    }
+
+    .app-slogan {
+      font-size: 0.85rem;
+      color: var(--brand-accent);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    /* Tarjeta de Formulario */
+    .card-android {
+      background-color: var(--bg-card);
+      border-radius: 28px;
+      padding: 24px 20px;
+      border: 1px solid var(--border-card);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--brand-text);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .input-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--brand-text);
+      margin-bottom: 6px;
+      margin-left: 4px;
+      opacity: 0.85;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      color: var(--brand-text);
+      opacity: 0.5;
+      font-size: 20px;
+      pointer-events: none;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      color: var(--brand-text);
+      opacity: 0.5;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      border-radius: 50%;
+    }
+
+    .android-input {
+      width: 100%;
+      height: 52px;
+      background-color: var(--bg-input);
+      border: 1.5px solid transparent;
+      border-radius: 18px;
+      padding: 0 16px 0 44px;
+      font-size: 0.95rem;
+      color: var(--brand-text);
+      outline: none;
+    }
+
+    .android-input.has-right-icon {
+      padding-right: 44px;
+    }
+
+    .android-input:focus {
+      border-color: var(--brand-accent);
+      background-color: var(--bg-card);
+      box-shadow: 0 0 0 4px var(--accent-glow);
+    }
+
+    .password-hint {
+      font-size: 0.73rem;
+      color: #d32f2f;
+      margin-top: 4px;
+      margin-left: 6px;
+      display: none;
+    }
+
+    /* Botón */
+    .btn-submit {
+      width: 100%;
+      height: 54px;
+      background-color: var(--brand-accent);
+      color: #ffffff;
+      border: none;
+      border-radius: 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      margin-top: 24px;
+      box-shadow: 0 8px 18px var(--accent-glow);
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 0.85rem;
+      color: var(--brand-text);
+      opacity: 0.8;
+    }
+
+    .login-link {
+      color: var(--brand-accent);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    /* Toast */
+    .android-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background-color: #323232;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: 25px;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 100;
+      white-space: nowrap;
+    }
+
+    .android-toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body class="palette-terracotta">
+
+  <!-- Selector de Paleta de Colores en la parte superior -->
+  <div class="top-bar">
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <span class="material-symbols-rounded" style="color: var(--brand-text); font-size: 20px;">palette</span>
+      <span style="font-size: 0.8rem; font-weight: 700; color: var(--brand-text);">Paleta:</span>
+    </div>
+    <div class="palette-selector">
+      <button class="palette-btn active" onclick="setPalette('terracotta', this)">Terracotta</button>
+      <button class="palette-btn" onclick="setPalette('matcha', this)">Matcha</button>
+      <button class="palette-btn" onclick="setPalette('moleskine', this)">Moleskine</button>
+    </div>
+  </div>
+
+  <!-- Contenedor Responsivo Móvil -->
+  <div class="main-container">
+    
+    <!-- Header y Logo -->
+    <div class="brand-header">
+      <div class="logo-container">
+        <img src="C:\Users\WONDER\Desktop\RegistrarUsuarios\Gemini_Generated_Image_74l34374l34374l3.jpeg" alt="UDG-Market Logo" class="logo-img">
+      </div>
+      <h1 class="app-title">UDG-Market</h1>
+      <p class="app-slogan">Comercio ambulante universitario</p>
+    </div>
+
+    <!-- Tarjeta Formulario de Registro -->
+    <div class="card-android">
+      <div class="card-title">
+        <span class="material-symbols-rounded" style="color: var(--brand-accent);">person_add</span>
+        Crear Cuenta
+      </div>
+
+      <form id="register-form" onsubmit="handleRegister(event)">
+        
+        <!-- Nombre Completo -->
+        <div class="form-group">
+          <label class="input-label" for="fullname">Nombre completo</label>
+          <div class="input-wrapper">
+            <span class="material-symbols-rounded input-icon">badge</span>
+            <input type="text" id="fullname" class="android-input" placeholder="Ej. Ana María García" required>
+          </div>
+        </div>
+
+        <!-- Correo Institucional -->
+        <div class="form-group">
+          <label class="input-label" for="email">Correo institucional</label>
+          <div class="input-wrapper">
+            <span class="material-symbols-rounded input-icon">mail</span>
+            <input type="email" id="email" class="android-input" placeholder="alguien@alumnos.udg.mx" required>
+          </div>
+        </div>
+
+        <!-- Teléfono / WhatsApp -->
+        <div class="form-group">
+          <label class="input-label" for="phone">Teléfono / WhatsApp</label>
+          <div class="input-wrapper">
+            <span class="material-symbols-rounded input-icon">call</span>
+            <input type="tel" id="phone" class="android-input" placeholder="33 1234 5678" required>
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="form-group">
+          <label class="input-label" for="password">Contraseña</label>
+          <div class="input-wrapper">
+            <span class="material-symbols-rounded input-icon">lock</span>
+            <input type="password" id="password" class="android-input has-right-icon" placeholder="••••••••" required oninput="validatePasswords()">
+            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('password', this)">
+              <span class="material-symbols-rounded">visibility</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Confirmar Contraseña -->
+        <div class="form-group">
+          <label class="input-label" for="confirm-password">Confirmar contraseña</label>
+          <div class="input-wrapper">
+            <span class="material-symbols-rounded input-icon">lock_reset</span>
+            <input type="password" id="confirm-password" class="android-input has-right-icon" placeholder="••••••••" required oninput="validatePasswords()">
+            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirm-password', this)">
+              <span class="material-symbols-rounded">visibility</span>
+            </button>
+          </div>
+          <div id="password-error" class="password-hint">Las contraseñas no coinciden</div>
+        </div>
+
+        <!-- Botón de Registro -->
+        <button type="submit" class="btn-submit">
+          <span>Registrarme</span>
+          <span class="material-symbols-rounded">arrow_forward</span>
+        </button>
+      </form>
+
+      <div class="login-footer">
+        ¿Ya tienes cuenta? <a href="#" class="login-link" onclick="showToast('Iniciando sesión...')">Inicia sesión</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Toast Notificación -->
+  <div id="toast" class="android-toast">Registro exitoso</div>
+
+  <script>
+    function setPalette(name, element) {
+      document.body.className = `palette-${name}`;
+      document.querySelectorAll('.palette-btn').forEach(btn => btn.classList.remove('active'));
+      element.classList.add('active');
+    }
+
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const icon = btn.querySelector('.material-symbols-rounded');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = 'visibility_off';
+      } else {
+        input.type = 'password';
+        icon.textContent = 'visibility';
+      }
+    }
+
+    function validatePasswords() {
+      const pass = document.getElementById('password').value;
+      const confirmPass = document.getElementById('confirm-password').value;
+      const errorMsg = document.getElementById('password-error');
+      
+      if (confirmPass.length > 0 && pass !== confirmPass) {
+        errorMsg.style.display = 'block';
+        return false;
+      } else {
+        errorMsg.style.display = 'none';
+        return true;
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      if (!validatePasswords()) {
+        showToast('Las contraseñas no coinciden');
+        return;
+      }
+      showToast('¡Registro completado con éxito!');
+      document.getElementById('register-form').reset();
+    }
+  </script>
+</body>
+</html>
