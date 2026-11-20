@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UDG Market</title>
+  <link rel="stylesheet" href="/app/assets/app.css">
+  <script defer src="/app/assets/dashboard.js"></script>
+</head>
+<body class="app-shell">
+  <header class="topbar"><div class="shell topbar-inner">
+    <a class="brand" href="/">UDG <b>Market</b></a>
+    <div class="top-actions">
+      <span class="muted" id="user-name">Cargando perfil…</span>
+      <button class="button secondary small" id="logout-button" type="button">Cerrar sesión</button>
+    </div>
+  </div></header>
+  <main class="shell main app-main">
+    <div class="app-heading">
+      <div>
+        <h1 class="heading" id="screen-title">UDG Market</h1>
+        <p class="subheading" id="campus-label"></p>
+      </div>
+    </div>
+    <p class="notice" id="global-notice" role="status" aria-live="polite"></p>
+    <nav class="app-navigation" id="app-navigation" aria-label="Navegación principal">
+      <button type="button" data-module-nav="seller-orders" data-seller-only hidden>Ventas</button>
+      <button type="button" data-module-nav="inventory" data-seller-only hidden>Inventario</button>
+      <button type="button" data-module-nav="buyer-orders">Mis pedidos</button>
+      <button type="button" data-module-nav="my-profile">Mi perfil</button>
+      <label class="module-picker">Más pantallas
+        <select id="module-picker" aria-label="Abrir otra pantalla original">
+          <option value="">Seleccionar</option>
+          <optgroup label="Ventas">
+            <option value="seller-orders">Pedidos activos (vendedor)</option>
+            <option value="cancel-reservation">Cancelar reserva</option>
+          </optgroup>
+          <optgroup label="Inventario">
+            <option value="inventory">Mi inventario</option>
+            <option value="inventory-stock">Inventario y stock (perfil)</option>
+            <option value="inventory-stock-alt">Inventario y stock</option>
+            <option value="edit-product">Editar producto</option>
+          </optgroup>
+          <optgroup label="Compras">
+            <option value="buyer-orders">Mis pedidos y reservas</option>
+            <option value="delivery-pass">Pase de entrega</option>
+            <option value="post-delivery-review">Valorar una compra</option>
+          </optgroup>
+          <optgroup label="Perfil">
+            <option value="my-profile">Editar mi perfil</option>
+            <option value="settings">Perfil y ajustes</option>
+            <option value="seller-profile">Perfil público del vendedor</option>
+          </optgroup>
+        </select>
+      </label>
+    </nav>
+    <section class="original-view" aria-label="Pantalla de UDG Market">
+      <iframe id="module-frame" title="Pantalla de UDG Market" src="about:blank"></iframe>
+    </section>
+  </main>
+</body>
+</html>

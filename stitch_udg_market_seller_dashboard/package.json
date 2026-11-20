@@ -1,0 +1,25 @@
+{
+  "name": "udg-market",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend y pantallas de autenticacion para UDG Market",
+  "main": "backend/index.js",
+  "scripts": {
+    "start": "node backend/index.js",
+    "dev": "node --watch backend/index.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "express-session": "^1.18.1",
+    "helmet": "^8.1.0",
+    "multer": "^2.0.2",
+    "mysql2": "^3.14.1"
+  }
+}

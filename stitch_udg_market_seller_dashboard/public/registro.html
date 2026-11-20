@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crear cuenta · UDG Market</title>
+  <link rel="stylesheet" href="/app/assets/app.css">
+  <script defer src="/app/assets/auth.js"></script>
+</head>
+<body>
+  <header class="topbar"><div class="shell topbar-inner">
+    <a class="brand" href="/">UDG <b>Market</b></a>
+    <a class="button secondary" href="/app/login.html">Iniciar sesión</a>
+  </div></header>
+  <main class="shell main">
+    <section class="card" style="max-width:620px;margin:2vh auto;padding:clamp(22px,6vw,40px)">
+      <p class="pill">Únete a UDG Market</p>
+      <h1 class="heading" style="margin-top:14px">Crea tu cuenta</h1>
+      <p class="subheading">Compra en tu campus o crea un perfil para vender.</p>
+      <form class="form-grid" data-auth-form="register">
+        <label class="field">Nombre completo
+          <input name="fullName" autocomplete="name" required maxlength="120">
+        </label>
+        <label class="field">Correo electrónico
+          <input name="email" type="email" autocomplete="email" required maxlength="254">
+        </label>
+        <label class="field">Contraseña (mínimo 10 caracteres)
+          <input name="password" type="password" autocomplete="new-password" required minlength="10" maxlength="72">
+        </label>
+        <label class="field">Campus
+          <select name="campusCode" required><option value="">Cargando campus...</option></select>
+        </label>
+        <label class="field">Tipo de cuenta
+          <select name="accountType" required>
+            <option value="buyer">Quiero comprar</option>
+            <option value="seller">Quiero vender</option>
+          </select>
+        </label>
+        <label class="field" data-store-field hidden>Nombre de tu tienda
+          <input name="storeName" maxlength="120">
+        </label>
+        <label class="field">Carrera (opcional)
+          <input name="career" maxlength="120">
+        </label>
+        <label class="field">Código de estudiante (opcional)
+          <input name="studentCode" maxlength="20">
+        </label>
+        <p class="notice" role="status" aria-live="polite"></p>
+        <button class="button" type="submit">Crear cuenta</button>
+      </form>
+      <p class="muted" style="font-size:.9rem;text-align:center;margin:20px 0 0">
+        Al registrarte aceptas usar UDG Market de forma responsable.
+      </p>
+    </section>
+  </main>
+</body>
+</html>
