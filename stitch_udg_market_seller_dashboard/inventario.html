@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Mi inventario - UDG Market</title>
+  <script src="auth.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body class="bg-[#F8FAFC] text-[#1E293B] font-sans antialiased">
+
+  <header class="sticky top-0 z-40 bg-white border-b border-slate-100 pt-[env(safe-area-inset-top)]">
+    <div class="max-w-md mx-auto h-14 px-3 flex items-center justify-between">
+      <a href="index.html#profile" aria-label="Volver al perfil" class="w-12 h-12 -ml-1 rounded-full flex items-center justify-center hover:bg-slate-100 active:bg-slate-200 transition"><i class="fa-solid fa-arrow-left text-lg"></i></a>
+      <h1 class="text-base font-bold">Mi inventario</h1>
+      <a href="index.html#seller-orders" title="Ver pedidos activos" class="text-xs font-bold text-[#D04836] bg-[#FDF0ED] px-2.5 py-1.5 rounded-full hover:bg-[#D04836] hover:text-white transition flex items-center gap-1">
+        <i class="fa-solid fa-bag-shopping text-[11px]"></i> Ventas
+      </a>
+    </div>
+  </header>
+
+  <main class="max-w-md mx-auto px-4 pt-5 pb-12">
+    <p id="summary" class="mb-4 text-sm text-slate-500" aria-live="polite"></p>
+    <ul id="list" class="space-y-3"></ul>
+    <p class="mt-6 text-xs text-slate-400 text-center leading-relaxed">Pausar un producto lo oculta de las búsquedas sin borrarlo. Puedes reactivarlo cuando quieras.</p>
+  </main>
+
+  <div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-8 z-50 hidden items-center gap-2 bg-[#1E293B] text-white text-sm font-semibold px-5 py-3 rounded-full shadow-lg max-w-[90vw]" role="status"></div>
+
+  <!-- Modal para editar producto (oculto por defecto) -->
+  <div id="edit-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-[#1E293B]/60 backdrop-blur-sm p-4" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title">
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 space-y-5">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-xl bg-[#FDF0ED] text-[#D04836] flex items-center justify-center"><i class="fa-solid fa-pen-to-square"></i></span>
+          <h2 id="edit-modal-title" class="text-base font-extrabold text-[#1E293B]">Editar producto</h2>
+        </div>
+        <button type="button" id="edit-close" aria-label="Cerrar modal" class="w-9 h-9 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="edit-form" class="space-y-4">
+        <input type="hidden" id="edit-id" />
+
+        <div>
+          <label for="edit-title" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1">Nombre del producto</label>
+          <input id="edit-title" type="text" required maxlength="60" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold text-[#1E293B] focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="edit-price" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1">Precio (MXN)</label>
+            <input id="edit-price" type="number" min="1" max="9999" step="1" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold text-[#1E293B] focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20" />
+          </div>
+          <div>
+            <label for="edit-stock" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1">Stock</label>
+            <input id="edit-stock" type="number" min="0" max="99" step="1" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold text-[#1E293B] focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20" />
+          </div>
+        </div>
+
+        <div class="pt-2 flex items-center gap-3">
+          <button type="button" id="edit-cancel" class="w-1/3 py-3 rounded-xl border border-slate-200 text-slate-600 text-sm font-bold hover:bg-slate-100 transition">Cancelar</button>
+          <button type="submit" class="w-2/3 py-3 rounded-xl bg-[#FF7A59] text-[#1E293B] text-sm font-extrabold hover:brightness-95 active:scale-[0.98] transition flex items-center justify-center gap-2"><i class="fa-solid fa-check"></i> Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<script>
+  const KEY = 'udg-market-inventory';
+  const MAX = 99;
+  const DEFAULTS = [
+    { id: 1, title: 'Brownies de doble chocolate', price: 25, stock: 12, active: true,  auto: false, img: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=300&q=70' },
+    { id: 2, title: 'Sándwich de pollo',           price: 45, stock: 5,  active: true,  auto: false, img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=300&q=70' },
+    { id: 3, title: 'Galleta Red Velvet',          price: 20, stock: 0,  active: false, auto: true,  img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=300&q=70' },
+    { id: 5, title: 'Torta de jamón',              price: 35, stock: 6,  active: false, auto: false, img: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=300&q=70' },
+    { id: 4, title: 'Café frío',                   price: 30, stock: 8,  active: true,  auto: false, img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=300&q=70' }
+  ];
+  let items;
+  try { items = JSON.parse(localStorage.getItem(KEY)) || DEFAULTS; } catch { items = DEFAULTS; }
+  const save = () => localStorage.setItem(KEY, JSON.stringify(items));
+
+  let toastTimer;
+  function toast(msg) {
+    const t = document.getElementById('toast'); t.textContent = msg; t.classList.remove('hidden'); t.classList.add('flex');
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.classList.add('hidden'); t.classList.remove('flex'); }, 2400);
+  }
+
+  function card(p) {
+    const soldOut = p.stock === 0;
+    const paused = !p.active;
+    const on = p.active && !soldOut;
+    return `
+    <li data-id="${p.id}" class="bg-white rounded-2xl border ${soldOut ? 'border-red-100' : 'border-slate-100'} shadow-sm p-3 transition">
+      <div class="flex items-start gap-3">
+        <div class="relative w-[72px] h-[72px] shrink-0 rounded-xl overflow-hidden bg-slate-200">
+          <img src="${p.img}" alt="" class="w-full h-full object-cover transition ${paused ? 'grayscale opacity-60' : ''}" onerror="this.style.visibility='hidden'" />
+        </div>
+
+        <div class="flex-1 min-w-0">
+          <div class="flex items-start justify-between gap-2">
+            <div class="min-w-0">
+              <h2 class="font-bold leading-snug ${paused ? 'text-slate-500' : ''}">${p.title}</h2>
+              <p class="text-sm text-slate-500">$${p.price} MXN</p>
+            </div>
+            <!-- Switch Activo / Pausado -->
+            <div class="shrink-0 flex flex-col items-center gap-1">
+              <button type="button" role="switch" data-action="toggle" aria-checked="${on}" aria-label="${p.title}: ${on ? 'Activo' : 'Pausado'}" ${soldOut ? 'disabled title="Aumenta el stock para activarlo"' : ''}
+                class="relative w-16 h-9 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#34D399] focus-visible:ring-offset-2 ${on ? 'bg-[#34D399]' : 'bg-slate-300'} ${soldOut ? 'cursor-not-allowed opacity-70' : ''}">
+                <span class="absolute top-1 left-1 w-7 h-7 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-7' : ''}"></span>
+              </button>
+              <span class="text-[11px] font-bold ${on ? 'text-emerald-600' : 'text-slate-500'}">${on ? 'Activo' : 'Pausado'}</span>
+            </div>
+          </div>
+
+          <!-- Stock y botón Editar -->
+          <div class="mt-2 flex items-center justify-between gap-2 flex-wrap">
+            <div class="flex items-center gap-2 flex-wrap">
+              <div class="inline-flex items-center rounded-xl bg-slate-100 overflow-hidden" role="group" aria-label="Stock de ${p.title}">
+                <button type="button" data-action="dec" aria-label="Quitar uno" ${p.stock === 0 ? 'disabled' : ''} class="w-12 h-12 text-lg text-[#1E293B] hover:bg-slate-200 active:bg-slate-300 disabled:opacity-30 disabled:hover:bg-transparent transition"><i class="fa-solid fa-minus"></i></button>
+                <span class="w-12 text-center text-xl font-extrabold tabular-nums ${soldOut ? 'text-red-500' : ''}" aria-live="polite">${p.stock}</span>
+                <button type="button" data-action="inc" aria-label="Agregar uno" ${p.stock >= MAX ? 'disabled' : ''} class="w-12 h-12 text-lg text-[#1E293B] hover:bg-slate-200 active:bg-slate-300 disabled:opacity-30 disabled:hover:bg-transparent transition"><i class="fa-solid fa-plus"></i></button>
+              </div>
+              ${soldOut ? '<span class="inline-flex items-center gap-1 text-xs font-extrabold text-red-600 bg-red-50 rounded-full px-3 py-1.5"><i class="fa-solid fa-ban"></i>Agotado</span>' : '<span class="text-xs text-slate-400">disponibles</span>'}
+            </div>
+            <button type="button" data-action="edit" aria-label="Editar ${p.title}" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E293B] bg-slate-100 hover:bg-slate-200 active:scale-95 rounded-xl px-3.5 py-2.5 transition">
+              <i class="fa-solid fa-pen-to-square text-[#FF7A59]"></i> Editar
+            </button>
+          </div>
+        </div>
+      </div>
+    </li>`;
+  }
+
+  function render() {
+    document.getElementById('list').innerHTML = items.map(card).join('');
+    const active = items.filter(i => i.active && i.stock > 0).length;
+    const soldOut = items.filter(i => i.stock === 0).length;
+    const paused = items.length - active - soldOut;
+    document.getElementById('summary').innerHTML =
+      `<strong class="text-emerald-600">${active} activo${active === 1 ? '' : 's'}</strong> · ${paused} pausado${paused === 1 ? '' : 's'}` +
+      (soldOut ? ` · <strong class="text-red-500">${soldOut} agotado${soldOut === 1 ? '' : 's'}</strong>` : '');
+  }
+
+  const editModal = document.getElementById('edit-modal');
+
+  function openEditModal(p) {
+    document.getElementById('edit-id').value = p.id;
+    document.getElementById('edit-title').value = p.title;
+    document.getElementById('edit-price').value = p.price;
+    document.getElementById('edit-stock').value = p.stock;
+    editModal.classList.remove('hidden');
+    editModal.classList.add('flex');
+    document.getElementById('edit-title').focus();
+  }
+
+  function closeEditModal() {
+    editModal.classList.add('hidden');
+    editModal.classList.remove('flex');
+  }
+
+  document.getElementById('edit-close').addEventListener('click', closeEditModal);
+  document.getElementById('edit-cancel').addEventListener('click', closeEditModal);
+  editModal.addEventListener('click', e => { if (e.target === editModal) closeEditModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !editModal.classList.contains('hidden')) closeEditModal(); });
+
+  document.getElementById('edit-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const id = +document.getElementById('edit-id').value;
+    const p = items.find(i => i.id === id);
+    if (!p) return;
+
+    const newTitle = document.getElementById('edit-title').value.trim();
+    const newPrice = Math.max(1, parseInt(document.getElementById('edit-price').value, 10) || p.price);
+    const newStock = Math.min(MAX, Math.max(0, parseInt(document.getElementById('edit-stock').value, 10) || 0));
+
+    if (newTitle) p.title = newTitle;
+    p.price = newPrice;
+    p.stock = newStock;
+    if (p.stock === 0) {
+      p.active = false;
+      p.auto = true;
+    } else if (p.auto) {
+      p.active = true;
+      p.auto = false;
+    }
+
+    save();
+    render();
+    closeEditModal();
+    toast(`“${p.title}” actualizado correctamente`);
+  });
+
+  document.getElementById('list').addEventListener('click', e => {
+    const btn = e.target.closest('[data-action]'); if (!btn || btn.disabled) return;
+    const p = items.find(i => i.id === +btn.closest('li').dataset.id);
+    if (!p) return;
+
+    if (btn.dataset.action === 'edit') {
+      openEditModal(p);
+      return;
+    }
+    if (btn.dataset.action === 'dec') {
+      p.stock = Math.max(0, p.stock - 1);
+      if (p.stock === 0) { p.active = false; p.auto = true; toast(`“${p.title}” se agotó y pasó a Pausado`); }
+    } else if (btn.dataset.action === 'inc') {
+      p.stock = Math.min(MAX, p.stock + 1);
+      if (p.stock === 1 && p.auto) { p.active = true; p.auto = false; toast(`“${p.title}” volvió a estar Activo`); }
+    } else if (btn.dataset.action === 'toggle') {
+      p.active = !p.active; p.auto = false;
+      toast(`“${p.title}” ${p.active ? 'activo: visible en búsquedas' : 'pausado: oculto, no se borró'}`);
+    }
+    save(); render();
+  });
+
+  render();
+</script>
+</body>
+</html>

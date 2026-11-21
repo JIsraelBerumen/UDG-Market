@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Iniciar sesión · UDG Market</title>
+  <link rel="stylesheet" href="/app/assets/app.css">
+  <script defer src="/app/assets/auth.js"></script>
+</head>
+<body>
+  <header class="topbar"><div class="shell topbar-inner">
+    <a class="brand" href="/">UDG <b>Market</b></a>
+    <a class="button secondary" href="/app/registro.html">Crear cuenta</a>
+  </div></header>
+  <main class="shell main">
+    <section class="card" style="max-width:480px;margin:5vh auto;padding:clamp(22px,6vw,40px)">
+      <p class="pill">Comunidad universitaria</p>
+      <h1 class="heading" style="margin-top:14px">Qué gusto verte</h1>
+      <p class="subheading">Inicia sesión para administrar tu tienda o encontrar productos en tu campus.</p>
+      <form class="form-grid" data-auth-form="login">
+        <label class="field">Correo electrónico
+          <input name="email" type="email" autocomplete="email" required maxlength="254">
+        </label>
+        <label class="field">Contraseña
+          <input name="password" type="password" autocomplete="current-password" required>
+        </label>
+        <p class="notice" role="status" aria-live="polite"></p>
+        <button class="button" type="submit">Iniciar sesión</button>
+      </form>
+      <p class="muted" style="font-size:.9rem;text-align:center;margin:22px 0 0">
+        ¿Aún no tienes cuenta? <a href="/app/registro.html">Regístrate</a>
+      </p>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,656 @@
+<!DOCTYPE html><html class="h-full bg-slate-100" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>UDG Market - Mi Perfil / Ajustes</title>
+<!-- Tailwind CSS CDN with plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter / Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<!-- FontAwesome 6 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            sand: '#E8DFD8',
+            sandLight: '#FAF6F2',
+            navy: '#212930',
+            terracota: '#D04836',
+            'terracota-dark': '#B83B2B',
+            mint: '#228276',
+            'mint-dark': '#1A685E',
+            yellowAccent: '#E9C46A',
+          },
+          boxShadow: {
+            'soft': '0 4px 20px -2px rgba(33, 41, 48, 0.06), 0 2px 6px -1px rgba(33, 41, 48, 0.04)',
+            'card': '0 8px 30px -4px rgba(33, 41, 48, 0.08)',
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Custom scrollbar hiding for clean app feel */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Touch tap highlight */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+</head>
+<body class="h-full bg-[#EFECE8] flex justify-center text-navy font-sans antialiased selection:bg-terracota selection:text-white">
+<!-- Mobile Viewport Container (390px - 425px max phone frame) -->
+<div class="w-full max-w-[425px] min-h-screen bg-slate-50 flex flex-col relative shadow-2xl overflow-x-hidden pb-28 border-x border-slate-200/80">
+<!-- 1. HEADER FIJO / APP BAR -->
+<header class="sticky top-0 z-30 bg-slate-50/90 backdrop-blur-md px-4 py-3.5 border-b border-slate-200/70 flex items-center justify-between transition-all">
+<button aria-label="Regresar" class="w-10 h-10 rounded-full flex items-center justify-center text-navy hover:bg-slate-200/70 active:scale-95 transition-all" onclick="history.back()">
+<i class="fa-solid fa-arrow-left text-lg"></i>
+</button>
+<h1 class="text-base font-bold tracking-tight text-navy">Mi Perfil</h1>
+<button aria-label="Ajustes o Guardar" class="w-10 h-10 rounded-full flex items-center justify-center text-navy hover:bg-slate-200/70 active:scale-95 transition-all relative" id="btn-save" onclick="openEditModal()">
+<i class="fa-solid fa-user-pen text-lg text-slate-700"></i>
+<!-- Micro badge notification -->
+<span class="absolute top-2 right-2 w-2 h-2 bg-terracota rounded-full ring-2 ring-slate-50"></span>
+</button>
+</header>
+<!-- MAIN SCROLLABLE CONTENT -->
+<main class="flex-1 px-4 py-4 space-y-4">
+<!-- 2. TARJETA DE USUARIO (INFO BÁSICA) -->
+<section class="bg-white rounded-3xl p-5 shadow-soft border border-slate-100 flex items-center gap-4 relative overflow-hidden group">
+<!-- Background subtle decor pattern -->
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-sand/30 rounded-full blur-xl pointer-events-none"></div>
+<!-- Avatar con botón editar -->
+<div class="relative shrink-0">
+<div class="w-[72px] h-[72px] rounded-full ring-4 ring-slate-100 bg-[#E8DFD8] flex items-center justify-center text-navy font-bold text-xl overflow-hidden shadow-inner cursor-pointer" onclick="openEditModal()">
+<img alt="Foto de perfil" class="w-full h-full object-cover" id="profile-card-avatar" hidden>
+<span class="text-2xl font-black text-terracota" id="profile-card-initials"></span>
+</div>
+<button aria-label="Cambiar foto de perfil" class="absolute bottom-0 right-0 w-7 h-7 bg-terracota text-white rounded-full flex items-center justify-center text-xs shadow-md hover:bg-terracota-dark active:scale-90 transition-transform ring-2 ring-white" onclick="openEditModal()">
+<i class="fa-solid fa-camera"></i>
+</button>
+</div>
+<!-- Info personal y centro universitario -->
+<div class="flex-1 min-w-0 cursor-pointer" onclick="openEditModal()">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 min-w-0">
+<h2 class="text-lg font-extrabold text-navy truncate tracking-tight" id="profile-card-name"></h2>
+</div>
+<span class="text-[11px] font-bold text-terracota hover:underline flex items-center gap-1 shrink-0 ml-1">
+<i class="fa-solid fa-pen text-[10px]"></i> Editar
+    </span>
+</div>
+<p class="text-xs font-semibold text-slate-500 truncate mt-0.5" id="profile-card-academic">
+  </p>
+<p class="text-[11px] font-medium text-slate-400 truncate" id="profile-card-email"></p>
+<div class="flex items-center gap-2 mt-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-sand/60 text-navy border border-sand">
+<span class="w-1.5 h-1.5 rounded-full bg-mint mr-1.5"></span> Código: <span class="ml-1" id="profile-card-code"></span>
+</span>
+</div>
+</div>
+</section>
+<!-- 3. BLOQUE PRINCIPAL: SWITCH MODO VENDEDOR -->
+<section class="bg-white rounded-3xl p-5 shadow-soft border-2 border-slate-100 hover:border-terracota/30 transition-colors relative">
+<div class="flex items-center justify-between gap-3">
+<div class="flex items-start gap-3.5">
+<div class="w-11 h-11 rounded-2xl bg-terracota/10 flex items-center justify-center text-terracota shrink-0 mt-0.5">
+<i class="fa-solid fa-store text-lg"></i>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="text-base font-bold text-navy">Modo Vendedor</h3>
+<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wide bg-slate-100 text-slate-500" id="seller-status-badge">
+                  Inactivo
+                </span>
+</div>
+<p class="text-xs text-slate-500 leading-relaxed mt-1 pr-1">
+                Actívalo para ofrecer tus productos en el campus, gestionar pedidos y sincronizar stock.
+              </p>
+</div>
+</div>
+<!-- Switch estilo iOS -->
+<div class="shrink-0 flex items-center pl-1">
+<label class="relative inline-flex items-center cursor-pointer select-none">
+<input class="sr-only peer" id="seller-mode-switch" onchange="toggleSellerMode(this)" type="checkbox">
+<!-- Track -->
+<div class="w-14 h-8 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-6 peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-[26px] after:w-[26px] after:transition-all after:shadow-sm peer-checked:bg-mint transition-colors duration-300"></div>
+</label>
+</div>
+</div>
+<!-- Tip rápido para vendedores cuando está inactivo -->
+<div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400" id="seller-hint">
+<span><i class="fa-regular fa-clock mr-1"></i> Horarios de entrega recomendados: recesos</span>
+<span class="text-terracota font-semibold" id="seller-hint-campus"></span>
+</div>
+</section>
+<!-- 4. CONTENEDOR CONDICIONAL (OPCIONES DE VENDEDOR) -->
+<!-- Oculto por defecto con class="hidden", animado con transition-all duration-300 -->
+<div class="hidden transition-all duration-300 ease-in-out opacity-0 translate-y-2 space-y-2.5" id="seller-menu">
+<div class="flex items-center justify-between px-1">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+<i class="fa-solid fa-bolt text-yellowAccent"></i> Panel de Vendedor Activo
+          </span>
+<span class="text-[11px] font-bold text-mint bg-mint/10 px-2 py-0.5 rounded-full">
+            En línea
+          </span>
+</div>
+<div class="bg-white rounded-3xl shadow-soft border border-slate-100 overflow-hidden divide-y divide-slate-100"><a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group cursor-pointer" href="index.html#seller-orders" title="Pedidos Activos (Ventas)"><div class="flex items-center gap-3.5"><div class="w-10 h-10 rounded-2xl bg-red-50 text-terracota flex items-center justify-center text-base group-hover:scale-105 transition-transform"><i class="fa-solid fa-bag-shopping"></i></div><div class="text-left"><p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Pedidos Activos</p><p class="text-xs text-slate-400">Gestión de entregas y órdenes en curso</p></div></div><div class="flex items-center gap-2"><span class="text-xs font-bold text-white bg-terracota px-2 py-0.5 rounded-full">3 nuevos</span><i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i></div></a>
+<!-- Opción: Mi Inventario (Ley de Fitts: fila ancha completa) -->
+<a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group" href="#inventory">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+<i class="fa-solid fa-boxes-stacked"></i>
+</div>
+<div class="text-left">
+<p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Mi Inventario</p>
+<p class="text-xs text-slate-400">Edición rápida de stock y precios (4 productos)</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-yellowAccent" title="Stock bajo en algunos ítems"></span>
+<i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+</div>
+</a>
+<!-- Opción: Puntos de Encuentro Activos -->
+<a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-emerald-50 text-mint flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+<i class="fa-solid fa-location-dot"></i>
+</div>
+<div class="text-left">
+<p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Puntos de Encuentro Activos</p>
+<p class="text-xs text-slate-400" id="seller-points-sub">Módulo O, Entrada Biblioteca Central</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">2 puntos</span>
+<i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+</div>
+</a>
+<!-- Opción: Mis Ganancias / Finanzas -->
+<a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+<i class="fa-solid fa-wallet"></i>
+</div>
+<div class="text-left">
+<p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Mis Ganancias</p>
+<p class="text-xs text-slate-400">Balance del día y transferencias SPEI</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold text-mint font-mono">$245.00</span>
+<i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+</div>
+</a>
+</div>
+</div>
+<!-- 5. OPCIONES GENERALES (COMPRADOR / CUENTA) -->
+<section class="space-y-2.5">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-500 px-1">
+          Mi Cuenta &amp; Compras
+        </span>
+<div class="bg-white rounded-3xl shadow-soft border border-slate-100 overflow-hidden divide-y divide-slate-100">
+<!-- Mis Compras -->
+<a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+<i class="fa-solid fa-bag-shopping"></i>
+</div>
+<div class="text-left">
+<p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Mis Compras</p>
+<p class="text-xs text-slate-400">Historial y pedidos en curso</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">3 pedidos</span>
+<i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+</div>
+</a>
+<!-- Métodos de Pago -->
+<a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+<i class="fa-regular fa-credit-card"></i>
+</div>
+<div class="text-left">
+<p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Métodos de Pago</p>
+<p class="text-xs text-slate-400">SPEI, Tarjetas y Efectivo en mano</p>
+</div>
+</div>
+<i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+</a>
+<!-- Notificaciones del Campus -->
+<a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+<i class="fa-regular fa-bell"></i>
+</div>
+<div class="text-left">
+<p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Notificaciones</p>
+<p class="text-xs text-slate-400">Alertas de pedidos y avisos de clase</p>
+</div>
+</div>
+<span class="text-xs font-bold text-white bg-terracota px-2 py-0.5 rounded-full">2 nuevas</span>
+</a>
+<!-- Soporte / Ayuda Estudiantil -->
+<a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+<i class="fa-regular fa-circle-question"></i>
+</div>
+<div class="text-left">
+<p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Soporte &amp; Preguntas Frecuentes</p>
+<p class="text-xs text-slate-400">Guía de convivencia y entregas UDG</p>
+</div>
+</div>
+<i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+</a>
+<!-- Cerrar Sesión (Color de advertencia Terracota / Rojo) -->
+<button class="w-full px-5 py-4 flex items-center justify-between hover:bg-red-50/50 active:bg-red-50 transition-colors group text-left" onclick="handleLogout()">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-red-50 text-terracota flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+<i class="fa-solid fa-arrow-right-from-bracket"></i>
+</div>
+<div>
+<p class="text-sm font-bold text-terracota">Cerrar Sesión</p>
+<p class="text-xs text-slate-400">Desvincular cuenta en este dispositivo</p>
+</div>
+</div>
+<i class="fa-solid fa-chevron-right text-xs text-terracota/60 group-hover:translate-x-0.5 transition-transform"></i>
+</button>
+</div>
+</section>
+<!-- App version & branding footer micro-copy -->
+<div class="pt-3 pb-2 text-center text-xs text-slate-400 space-y-1">
+<p class="font-bold text-slate-500" id="footer-campus-text">UDG Market</p>
+<p class="text-[11px]">Versión 1.4.2 PWA • Hecho por y para la comunidad</p>
+</div>
+</main>
+<!-- 6. BARRA DE NAVEGACIÓN INFERIOR (PWA PERSISTENTE) -->
+<nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[425px] bg-white/95 backdrop-blur-md border-t border-slate-200/80 py-2.5 px-6 z-40 flex items-center justify-around shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
+<!-- Pestaña Ventas -->
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-navy transition-colors group relative cursor-pointer" href="index.html#seller-orders" title="Pedidos Activos (Ventas)">
+<div class="relative">
+<i class="fa-solid fa-bag-shopping text-xl group-hover:scale-110 transition-transform"></i>
+<span class="absolute -top-1 -right-2 bg-terracota text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center ring-2 ring-white">
+            3
+          </span>
+</div>
+<span class="text-[11px] font-medium tracking-tight">Ventas</span>
+</a>
+<!-- Pestaña Inventario -->
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-navy transition-colors group" href="#inventory">
+<i class="fa-solid fa-boxes-stacked text-xl group-hover:scale-110 transition-transform"></i>
+<span class="text-[11px] font-medium tracking-tight">Inventario</span>
+</a>
+<!-- Pestaña Perfil (Activa en Terracota) -->
+<a class="flex flex-col items-center gap-1 text-terracota transition-colors group" href="#">
+<div class="relative">
+<i class="fa-solid fa-user-gear text-xl"></i>
+<!-- Active dot indicator -->
+<span class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-terracota rounded-full"></span>
+</div>
+<span class="text-[11px] font-bold tracking-tight text-navy">Perfil</span>
+</a>
+</nav>
+<!-- MODAL / BOTTOM SHEET DE EDICIÓN DE PERFIL Y CENTRO UNIVERSITARIO -->
+<div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center hidden opacity-0 transition-opacity duration-300" id="edit-profile-modal">
+<!-- Fondo oscurecido con desenfoque -->
+<div class="absolute inset-0 bg-navy/60 backdrop-blur-sm" onclick="closeEditModal()"></div>
+<!-- Contenido modal tipo bottom sheet -->
+<div class="relative w-full max-w-[425px] bg-white rounded-t-[32px] sm:rounded-3xl shadow-2xl max-h-[90vh] flex flex-col z-10 transform translate-y-full transition-transform duration-300 ease-out overflow-hidden" id="modal-content-card">
+<!-- Pestaña de arrastre táctil superior -->
+<div class="pt-3 pb-1 flex justify-center cursor-pointer" onclick="closeEditModal()">
+<div class="w-12 h-1.5 rounded-full bg-slate-300"></div>
+</div>
+<!-- Encabezado del modal -->
+<div class="px-6 py-3 border-b border-slate-100 flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-xl bg-terracota/10 text-terracota flex items-center justify-center text-sm font-bold">
+<i class="fa-solid fa-user-pen"></i>
+</div>
+<h3 class="text-base font-extrabold text-navy">Editar Información</h3>
+</div>
+<button class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition-colors" onclick="closeEditModal()">
+<i class="fa-solid fa-xmark text-sm"></i>
+</button>
+</div>
+<!-- Cuerpo con scroll -->
+<div class="p-6 overflow-y-auto space-y-5 no-scrollbar flex-1">
+<!-- 1. SELECCIÓN DE FOTO DE PERFIL / AVATAR -->
+<div class="flex flex-col items-center text-center">
+<div class="relative">
+<div class="w-24 h-24 rounded-full ring-4 ring-terracota/20 overflow-hidden shadow-md bg-slate-100 flex items-center justify-center">
+<img alt="Vista previa avatar" class="w-full h-full object-cover" id="modal-avatar-preview" hidden>
+</div>
+<label class="absolute bottom-0 right-0 w-8 h-8 bg-terracota text-white rounded-full flex items-center justify-center text-xs shadow-lg cursor-pointer hover:bg-terracota-dark active:scale-95 transition-all ring-2 ring-white" for="avatar-file-input" title="Subir foto">
+<i class="fa-solid fa-camera"></i>
+</label>
+<input accept="image/jpeg,image/png,image/webp" class="hidden" id="avatar-file-input" onchange="handleAvatarFileSelect(this)" type="file">
+</div>
+<p class="text-xs font-bold text-navy mt-2.5">Fotografía de Estudiante</p>
+<p class="text-[11px] text-slate-400">Elige un avatar representativo o sube una foto tuya</p>
+<!-- Avatares rápidos predeterminados -->
+<div class="flex items-center justify-center gap-2.5 mt-3">
+<button class="w-8 h-8 rounded-full overflow-hidden border-2 border-transparent hover:border-terracota focus:border-terracota transition-all ring-1 ring-slate-200" onclick="selectPresetAvatar('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&amp;fit=crop&amp;w=300&amp;q=80')" type="button">
+<img alt="Preset 1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJQTPe8bNadRXyCx-mRR4joSBeX2Ad_TUcwBW3IYlAFlEck0oEF2z2iD0DsA16VIcNie4kRixBVTsBjOIRBa1S0liwPeCB4BLxkgxv9C85j7YNSyIYnFTTHNAiy7f5WqCKWMVywvtChlH9KIAWXz83KPNFUahxlZ2frsGshS_iZ5XfgO8wVSN-36wyeBTkP4saC4En09IHcDIPRhjXBK2mMeGMdEluCvd3oceMfWQf">
+</button>
+<button class="w-8 h-8 rounded-full overflow-hidden border-2 border-transparent hover:border-terracota focus:border-terracota transition-all ring-1 ring-slate-200" onclick="selectPresetAvatar('https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&amp;fit=crop&amp;w=300&amp;q=80')" type="button">
+<img alt="Preset 2" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxtCP7ivkzGHRt0n-egIL-iRpf5i98EqM3X_yesSy98yRXsUyZa7IfpmC__8KyEASPanYfzps4Ci8if5U676LHZmiBCNFxiAo4zOEAzt9mxZWhDi0GqRJZ1gelfaAdbXahBRJPdyZAMRrnyhCZdIZNs94H81qp3YZwJwoNjktT46b5-EDVey65zVpXW0ge9wf3FP9ST0R44j9ZZTeUDqM4ru8tUfSmjKE20ctuTDD_">
+</button>
+<button class="w-8 h-8 rounded-full overflow-hidden border-2 border-transparent hover:border-terracota focus:border-terracota transition-all ring-1 ring-slate-200" onclick="selectPresetAvatar('https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&amp;fit=crop&amp;w=300&amp;q=80')" type="button">
+<img alt="Preset 3" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuKFKjGJAHWLP43R-yQAJ26v9DMNm_sVoV_L33shhOhtcaccZ8d0fsOfnTSOWnxXP8rig3KDB8jqpTfIuJiQ89MYEGYTOqq4uKWfyFBq7zWM_8abpfkxnFrgfVSVztUjfO2G4MXWYO2uxfT2ouK9fhqxxFUkJGRvPPZcz3GjPFLHnmNoxtfhD99gB0BxP4WyHW7_GUMuwe4lyhNQA-V0GWtJUY-ONoyyHwbrPf1y3f">
+</button>
+<button class="w-8 h-8 rounded-full overflow-hidden border-2 border-transparent hover:border-terracota focus:border-terracota transition-all ring-1 ring-slate-200" onclick="selectPresetAvatar('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&amp;fit=crop&amp;w=300&amp;q=80')" type="button">
+<img alt="Preset 4" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC62kS_rmUSzcfFzb9cFjurKTB7Kv71oXbYSpTW3MeirECxwc_TA_BbzfOqSstjMKhFB1B2DeSzfJOJIN6bL_GoHIil35QzhtC3SYYyhwLO8F_fpaFKpUQ_MqS0W7e46YFDJ5fQoFGPk4QLu2an30hH6NrYnLKbb0f3IJRNKzQ3aTrybnbtODx9XKNpKgmOWcJOJU4XTg3EXd0gYh5tZjCXoK1gBZ19evLnWQldQioP">
+</button>
+<button class="px-2.5 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-bold flex items-center gap-1 transition-colors" onclick="triggerFileUpload()" type="button">
+<i class="fa-solid fa-cloud-arrow-up text-xs"></i> Subir
+          </button>
+</div>
+</div>
+<!-- FORMULARIO DE DATOS ACADÉMICOS -->
+<form class="space-y-3.5" id="edit-profile-form" onsubmit="saveProfileChanges(event)">
+<!-- Nombre completo -->
+<div>
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1" for="input-name">
+            Nombre Completo
+          </label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+<i class="fa-regular fa-user text-sm"></i>
+</span>
+<input class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-semibold text-navy focus:bg-white focus:border-terracota focus:ring-2 focus:ring-terracota/20 focus:outline-none transition-all" id="input-name" required="" type="text">
+</div>
+</div>
+<!-- Selector Centro Universitario UDG -->
+<div>
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1" for="select-campus">
+            Centro Universitario (Red UDG)
+          </label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+<i class="fa-solid fa-building-columns text-sm"></i>
+</span>
+<select class="w-full pl-10 pr-9 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-semibold text-navy focus:bg-white focus:border-terracota focus:ring-2 focus:ring-terracota/20 focus:outline-none appearance-none transition-all cursor-pointer" id="select-campus">
+<option value="">Selecciona un campus</option>
+<option value="CUCEI">CUCEI - Ciencias Exactas e Ingenierías</option>
+<option value="CUCEA">CUCEA - Ciencias Económico-Administrativas</option>
+<option value="CUAAD">CUAAD - Arte, Arquitectura y Diseño</option>
+<option value="CUCS">CUCS - Ciencias de la Salud</option>
+<option value="CUCSH">CUCSH - Ciencias Sociales y Humanidades</option>
+<option value="CUCBA">CUCBA - Ciencias Biológicas y Agropecuarias</option>
+<option value="CUTONALA">CUTONALÁ - Centro Universitario Tonalá</option>
+<option value="CUTLAJOMULCO">CUTLAJOMULCO - Tlajomulco</option>
+<option value="CUALTOS">CUALTOS - Los Altos (Tepatitlán)</option>
+<option value="CUVALLES">CUVALLES - Valles (Ameca)</option>
+<option value="CUCOSTA">CUCOSTA - Costa (Puerto Vallarta)</option>
+<option value="SUV">SUV - Sistema de Universidad Virtual</option>
+</select>
+<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+<i class="fa-solid fa-chevron-down text-xs"></i>
+</div>
+</div>
+<p class="text-[10px] text-slate-400 mt-1 pl-1">Permite a compradores saber en qué campus recoger entregas.</p>
+</div>
+<!-- Carrera / Licenciatura -->
+<div>
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1" for="input-career">
+            Carrera o Licenciatura
+          </label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+<i class="fa-solid fa-graduation-cap text-sm"></i>
+</span>
+<input class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-semibold text-navy focus:bg-white focus:border-terracota focus:ring-2 focus:ring-terracota/20 focus:outline-none transition-all" id="input-career" placeholder="Ej. Lic. en Administración" type="text">
+</div>
+</div>
+<!-- Código de Estudiante -->
+<div>
+<label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-1" for="input-code">
+            Código de Estudiante (Siiau)
+          </label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+<i class="fa-solid fa-id-card text-sm"></i>
+</span>
+<input class="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-mono font-bold text-navy focus:bg-white focus:border-terracota focus:ring-2 focus:ring-terracota/20 focus:outline-none transition-all tracking-wider" id="input-code" maxlength="20" placeholder="Código de estudiante" type="text">
+</div>
+<span class="inline-flex items-center text-[10px] text-mint font-semibold mt-1 pl-1 gap-1">
+<i class="fa-solid fa-shield-halved"></i> El código de estudiante se guarda en tu perfil.
+          </span>
+</div>
+<!-- Botones de Acción -->
+<div class="pt-3 flex items-center gap-3">
+<button class="w-1/3 py-3 px-4 rounded-2xl border border-slate-200 text-slate-600 font-bold text-xs hover:bg-slate-100 active:scale-95 transition-all text-center" onclick="closeEditModal()" type="button">
+            Cancelar
+          </button>
+<button class="w-2/3 py-3 px-4 rounded-2xl bg-terracota hover:bg-terracota-dark text-white font-extrabold text-xs shadow-md shadow-terracota/30 active:scale-95 transition-all flex items-center justify-center gap-2" type="submit">
+<i class="fa-solid fa-check"></i>
+<span>Guardar Cambios</span>
+</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+<!-- TOAST NOTIFICATION CONTAINER (FOR INTERACTIVITY FEEDBACK) -->
+<div class="fixed top-16 left-1/2 -translate-x-1/2 w-11/12 max-w-sm bg-navy text-white text-xs font-semibold px-4 py-3 rounded-2xl shadow-xl z-50 flex items-center gap-3 transition-all duration-300 opacity-0 pointer-events-none -translate-y-4" id="toast-notification">
+<div class="w-6 h-6 rounded-full bg-mint flex items-center justify-center text-white shrink-0" id="toast-icon-box">
+<i class="fa-solid fa-check text-xs" id="toast-icon"></i>
+</div>
+<p class="flex-1" id="toast-message">Modo vendedor actualizado</p>
+</div>
+</div>
+<!-- JAVASCRIPT PURO -->
+<script>
+    /**
+     * Gestión del modal de Edición de Perfil y Centro Universitario
+     */
+    const editModal = document.getElementById('edit-profile-modal');
+    const modalContent = document.getElementById('modal-content-card');
+
+    function openEditModal() {
+      if (!editModal) return;
+      if (window.parent !== window && typeof window.parent.hydrateProfileModule === 'function') {
+        window.parent.hydrateProfileModule(document);
+      }
+      editModal.classList.remove('hidden');
+      // Forzar reflujo para activar transición fluida
+      requestAnimationFrame(() => {
+        editModal.classList.remove('opacity-0');
+        editModal.classList.add('opacity-100');
+        if (modalContent) {
+          modalContent.classList.remove('translate-y-full');
+          modalContent.classList.add('translate-y-0');
+        }
+      });
+    }
+
+    function closeEditModal() {
+      if (!editModal) return;
+      if (modalContent) {
+        modalContent.classList.remove('translate-y-0');
+        modalContent.classList.add('translate-y-full');
+      }
+      editModal.classList.remove('opacity-100');
+      editModal.classList.add('opacity-0');
+      setTimeout(() => {
+        editModal.classList.add('hidden');
+      }, 300);
+    }
+
+    // Selección rápida de avatares preset
+    function selectPresetAvatar(url) {
+      const modalPreview = document.getElementById('modal-avatar-preview');
+      if (modalPreview) {
+        modalPreview.src = url;
+        modalPreview.hidden = false;
+      }
+    }
+
+    function triggerFileUpload() {
+      const fileInput = document.getElementById('avatar-file-input');
+      if (fileInput) fileInput.click();
+    }
+
+    function handleAvatarFileSelect(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const modalPreview = document.getElementById('modal-avatar-preview');
+          if (modalPreview) {
+            modalPreview.src = e.target.result;
+            modalPreview.hidden = false;
+          }
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    function saveProfileChanges(e) {
+      e.preventDefault();
+      if (window.parent !== window && typeof window.parent.saveProfileFromModule === 'function') {
+        window.parent.saveProfileFromModule(document).catch((error) =>
+          showToast(error.message, 'terracota', 'fa-triangle-exclamation')
+        );
+        return;
+      }
+      showToast('Abre este perfil desde la aplicación para guardar cambios.', 'terracota');
+    }
+
+    /**
+     * Alterna la visibilidad y transición del menú de vendedor
+     * según el estado del switch estilo iOS.
+     * @param {HTMLInputElement} checkbox - Elemento switch
+     */
+    function toggleSellerMode(checkbox) {
+      const sellerMenu = document.getElementById('seller-menu');
+      const statusBadge = document.getElementById('seller-status-badge');
+      const sellerHint = document.getElementById('seller-hint');
+
+      if (!sellerMenu) return;
+
+      if (checkbox.checked) {
+        // 1. Mostrar contenedor quitando hidden
+        sellerMenu.classList.remove('hidden');
+
+        // 2. Transición suave con requestAnimationFrame
+        requestAnimationFrame(() => {
+          sellerMenu.classList.remove('opacity-0', 'translate-y-2');
+          sellerMenu.classList.add('opacity-100', 'translate-y-0');
+        });
+
+        // 3. Actualizar badges y estados visuales
+        if (statusBadge) {
+          statusBadge.textContent = 'Activo';
+          statusBadge.classList.remove('bg-slate-100', 'text-slate-500');
+          statusBadge.classList.add('bg-mint/15', 'text-mint');
+        }
+
+        if (sellerHint) {
+          sellerHint.classList.add('hidden');
+        }
+
+        showToast('Modo Vendedor Activado: Opciones disponibles', 'mint', 'fa-store');
+      } else {
+        // 1. Iniciar desvanecimiento
+        sellerMenu.classList.remove('opacity-100', 'translate-y-0');
+        sellerMenu.classList.add('opacity-0', 'translate-y-2');
+
+        // 2. Esperar fin de la transición (300ms) para colocar 'hidden'
+        setTimeout(() => {
+          if (!checkbox.checked) {
+            sellerMenu.classList.add('hidden');
+          }
+        }, 300);
+
+        // 3. Restaurar badge
+        if (statusBadge) {
+          statusBadge.textContent = 'Inactivo';
+          statusBadge.classList.remove('bg-mint/15', 'text-mint');
+          statusBadge.classList.add('bg-slate-100', 'text-slate-500');
+        }
+
+        if (sellerHint) {
+          sellerHint.classList.remove('hidden');
+        }
+
+        showToast('Modo Vendedor Pausado: Catálogo en modo comprador', 'navy', 'fa-eye-slash');
+      }
+    }
+
+    /**
+     * Muestra un toast interactivo ergonómico
+     */
+    let toastTimeout = null;
+    function showToast(message, colorType = 'mint', iconClass = 'fa-check') {
+      const toast = document.getElementById('toast-notification');
+      const msg = document.getElementById('toast-message');
+      const iconBox = document.getElementById('toast-icon-box');
+      const icon = document.getElementById('toast-icon');
+
+      if (!toast || !msg) return;
+
+      msg.textContent = message;
+      icon.className = `fa-solid ${iconClass} text-xs`;
+
+      if (colorType === 'mint') {
+        iconBox.className = 'w-6 h-6 rounded-full bg-mint flex items-center justify-center text-white shrink-0';
+      } else if (colorType === 'terracota') {
+        iconBox.className = 'w-6 h-6 rounded-full bg-terracota flex items-center justify-center text-white shrink-0';
+      } else {
+        iconBox.className = 'w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-white shrink-0';
+      }
+
+      toast.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
+      }, 2600);
+    }
+
+    function handleSaveNotification() {
+      openEditModal();
+    }
+
+    async function handleLogout() {
+      if (!confirm('¿Deseas cerrar tu sesión de estudiante en UDG Market?')) return;
+      try {
+        if (window.parent !== window && typeof window.parent.logoutFromDashboard === 'function') {
+          await window.parent.logoutFromDashboard();
+          return;
+        }
+        const response = await fetch('/api/auth/logout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: '{}',
+          credentials: 'same-origin'
+        });
+        if (!response.ok) throw new Error('No se pudo cerrar sesión. Inténtalo otra vez.');
+        window.location.replace('/app/login.html');
+      } catch (error) {
+        showToast(error.message, 'terracota', 'fa-triangle-exclamation');
+        console.error(error);
+      }
+    }
+  </script>
+
+
+</body></html>
