@@ -96,4 +96,4 @@ El inventario del vendedor usa la API para mostrar, publicar, editar, pausar/rea
 
 Desde los detalles de Explorar, un comprador puede enviar un pedido con cantidad, punto de entrega, horario futuro y método de pago. El pedido queda pendiente de confirmación del vendedor; no se cobra en línea. Al publicar o editar productos se pueden cargar imágenes JPG, PNG o WebP mediante el endpoint de carga.
 
-El vendedor confirma los pedidos pendientes desde **Ventas**. Tras la confirmación, el comprador puede generar un pase QR de uso único; el vendedor lo escanea desde el pedido para validar el pase y marcar la entrega. Si la cámara no está disponible, se puede copiar el código de respaldo para validarlo manualmente.
+El vendedor confirma los pedidos pendientes desde **Ventas**. Tras la confirmación, el pase QR aparece en **Mis pedidos** del comprador y también puede abrirse en grande. El vendedor lo escanea desde el pedido para validar el pase y marcar la entrega. Si la cámara no está disponible, se puede copiar el código de respaldo para validarlo manualmente.

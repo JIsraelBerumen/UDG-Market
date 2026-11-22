@@ -343,6 +343,7 @@ function createOrderCard(doc, order, isSeller) {
 
   const actions = doc.createElement('div');
   actions.className = 'flex flex-wrap gap-2 border-t border-slate-100 pt-3';
+  let passPanel = null;
   if (isSeller && order.status === 'pending') {
     actions.append(createOrderAction(doc, order, 'confirm', 'Confirmar venta', 'bg-[#FF7A59] text-[#1E293B]'));
   } else if (isSeller && order.status === 'confirmed') {
@@ -352,6 +353,13 @@ function createOrderCard(doc, order, isSeller) {
     actions.append(createOrderAction(doc, order, 'deliver', 'Validar QR y entregar', 'bg-emerald-600 text-white'));
   } else if (!isSeller && ['confirmed', 'ready'].includes(order.status)) {
     actions.append(createOrderAction(doc, order, 'pass', 'Mostrar pase QR', 'bg-[#FF7A59] text-[#1E293B]'));
+    passPanel = doc.createElement('section');
+    passPanel.className = 'rounded-2xl border border-orange-100 bg-orange-50 p-4 text-center';
+    passPanel.setAttribute('aria-live', 'polite');
+    const loading = doc.createElement('p');
+    loading.className = 'text-sm font-semibold text-slate-600';
+    loading.textContent = 'Cargando QR de entrega...';
+    passPanel.append(loading);
   } else if (!isSeller && order.status === 'pending') {
     const waiting = doc.createElement('p');
     waiting.className = 'text-xs font-semibold text-slate-500';
@@ -359,6 +367,10 @@ function createOrderCard(doc, order, isSeller) {
     actions.append(waiting);
   }
   card.append(heading, items, details, actions);
+  if (passPanel) {
+    card.append(passPanel);
+    loadOrderPassIntoPanel(doc, order, passPanel);
+  }
   return card;
 }
 
@@ -380,20 +392,7 @@ function createEmptyOrdersMessage(doc, message) {
 }
 
 async function openOrderPass(doc, order) {
-  const key = String(order.id);
-  let pass = issuedOrderPasses.get(key);
-  if (!pass) {
-    const result = await requestJson(`/api/wallet/orders/${encodeURIComponent(order.id)}/pass`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: '{}'
-    });
-    if (!result.pass || !result.pass.qrCodeDataUrl || !result.pass.qrToken) {
-      throw new Error('El servidor no pudo emitir el pase QR.');
-    }
-    pass = result.pass;
-    issuedOrderPasses.set(key, pass);
-  }
+  const pass = await getOrderPass(order);
 
   const modal = doc.createElement('div');
   modal.className = 'fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/70 p-4';
@@ -415,7 +414,7 @@ async function openOrderPass(doc, order) {
   qr.alt = `Código QR para entregar el pedido ${pass.orderCode}`;
   const instructions = doc.createElement('p');
   instructions.className = 'mt-3 text-xs leading-relaxed text-slate-500';
-  instructions.textContent = 'Muestra este código al vendedor en persona. No lo compartas por chat. Si vuelves a solicitar el pase en otro dispositivo, el código anterior dejará de funcionar.';
+  instructions.textContent = 'Muestra este código al vendedor en persona. No lo compartas por chat.';
   const copy = doc.createElement('button');
   copy.type = 'button';
   copy.className = 'mt-4 min-h-11 w-full rounded-xl border border-slate-200 px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50';
@@ -441,6 +440,44 @@ async function openOrderPass(doc, order) {
   modal.append(panel);
   doc.body.append(modal);
   close.focus();
+}
+
+async function getOrderPass(order) {
+  const key = String(order.id);
+  let pass = issuedOrderPasses.get(key);
+  if (!pass) {
+    const result = await requestJson(`/api/wallet/orders/${encodeURIComponent(order.id)}/pass`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{}'
+    });
+    if (!result.pass || !result.pass.qrCodeDataUrl || !result.pass.qrToken) {
+      throw new Error('El servidor no pudo emitir el pase QR.');
+    }
+    pass = result.pass;
+    issuedOrderPasses.set(key, pass);
+  }
+  return pass;
+}
+
+async function loadOrderPassIntoPanel(doc, order, panel) {
+  try {
+    const pass = await getOrderPass(order);
+    const title = doc.createElement('p');
+    title.className = 'text-sm font-extrabold text-slate-800';
+    title.textContent = 'Tu QR para recoger este pedido';
+    const qr = doc.createElement('img');
+    qr.className = 'mx-auto mt-3 h-44 w-44 rounded-xl border border-orange-100 bg-white p-2';
+    qr.src = pass.qrCodeDataUrl;
+    qr.alt = `Código QR para entregar el pedido ${pass.orderCode}`;
+    panel.replaceChildren(title, qr);
+  } catch (error) {
+    const message = doc.createElement('p');
+    message.className = 'text-sm font-semibold text-red-700';
+    message.textContent = 'No se pudo cargar el QR. Pulsa “Mostrar pase QR” para volver a intentarlo.';
+    panel.replaceChildren(message);
+    console.error(error);
+  }
 }
 
 function openOrderQrScanner(doc, order) {

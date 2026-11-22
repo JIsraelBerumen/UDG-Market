@@ -3,6 +3,8 @@ const crypto = require('node:crypto');
 const QRCode = require('qrcode');
 const { pool, withTransaction } = require('../db');
 const { parseId } = require('../lib/validation');
+const { createQrToken } = require('../lib/wallet-pass');
+const { sessionSecret } = require('../config');
 const { requireAuth, requireSeller } = require('../middleware/auth');
 
 const router = Router();
@@ -21,9 +23,27 @@ router.post('/orders/:orderId/pass', requireAuth, async (req, res) => {
     const order = orders[0];
     if (!['confirmed', 'ready'].includes(order.status)) return { error: 'not_ready' };
 
-    const serialNumber = `UDG-${order.id}-${crypto.randomBytes(6).toString('hex').toUpperCase()}`;
-    const qrToken = crypto.randomBytes(32).toString('base64url');
-    const tokenHash = crypto.createHash('sha256').update(qrToken).digest('hex');
+    const [existingPasses] = await connection.execute(
+      `SELECT serial_number AS serialNumber, qr_token_hash AS qrTokenHash, status
+       FROM wallet_passes WHERE order_id = ? FOR UPDATE`,
+      [orderId]
+    );
+    let serialNumber = existingPasses[0] && existingPasses[0].status === 'issued'
+      ? existingPasses[0].serialNumber
+      : null;
+    let qrToken = serialNumber
+      ? createQrToken(order.id, serialNumber, sessionSecret)
+      : null;
+    let tokenHash = qrToken
+      ? crypto.createHash('sha256').update(qrToken).digest('hex')
+      : null;
+
+    if (!serialNumber || existingPasses[0].qrTokenHash !== tokenHash) {
+      serialNumber = `UDG-${order.id}-${crypto.randomBytes(6).toString('hex').toUpperCase()}`;
+      qrToken = createQrToken(order.id, serialNumber, sessionSecret);
+      tokenHash = crypto.createHash('sha256').update(qrToken).digest('hex');
+    }
+
     const qrCodeDataUrl = await QRCode.toDataURL(qrToken, {
       errorCorrectionLevel: 'M',
       margin: 2,
@@ -52,7 +72,7 @@ router.post('/orders/:orderId/pass', requireAuth, async (req, res) => {
       qrCodeDataUrl: pass.qrCodeDataUrl,
       orderStatus: pass.status
     },
-    note: 'El QR es de un solo uso por emisión; solicitarlo de nuevo invalida el anterior. El archivo Apple Wallet requiere certificados del comercio.'
+    note: 'El QR permanece igual mientras el pase siga vigente y se revoca al cancelar el pedido. El archivo Apple Wallet requiere certificados del comercio.'
   });
 });
 
