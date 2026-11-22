@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Mi inventario - UDG Market</title>
+  <script src="auth.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body class="bg-[#F8FAFC] text-[#1E293B] font-sans antialiased">
+
+  <header class="sticky top-0 z-40 bg-white border-b border-slate-100 pt-[env(safe-area-inset-top)]">
+    <div class="max-w-md mx-auto h-14 px-3 flex items-center justify-between">
+      <a href="index.html#profile" aria-label="Volver al perfil" class="w-12 h-12 -ml-1 rounded-full flex items-center justify-center hover:bg-slate-100 active:bg-slate-200 transition"><i class="fa-solid fa-arrow-left text-lg"></i></a>
+      <h1 class="text-base font-bold">Mi inventario</h1>
+      <nav class="flex items-center gap-2" aria-label="Navegación de vendedor">
+        <a href="/app/dashboard.html#catalog" title="Explorar productos" class="text-xs font-bold text-[#1E293B] bg-slate-100 px-2.5 py-1.5 rounded-full hover:bg-slate-200 transition flex items-center gap-1">
+          <i class="fa-solid fa-compass text-[11px]"></i> Explorar
+        </a>
+        <a href="/app/dashboard.html#seller-orders" title="Ver pedidos activos" class="text-xs font-bold text-[#D04836] bg-[#FDF0ED] px-2.5 py-1.5 rounded-full hover:bg-[#D04836] hover:text-white transition flex items-center gap-1">
+          <i class="fa-solid fa-bag-shopping text-[11px]"></i> Ventas
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-md mx-auto px-4 pt-5 pb-12">
+    <div class="mb-4 flex items-center justify-between gap-3">
+      <h2 class="text-lg font-extrabold">Mis productos</h2>
+      <button id="open-create" type="button" class="inline-flex items-center gap-2 rounded-xl bg-[#FF7A59] px-3.5 py-2.5 text-xs font-extrabold text-[#1E293B] hover:brightness-95">
+        <i class="fa-solid fa-plus"></i> Publicar
+      </button>
+    </div>
+    <p id="summary" class="mb-4 text-sm text-slate-500" aria-live="polite"></p>
+    <ul id="list" class="space-y-3"></ul>
+    <p class="mt-6 text-xs text-slate-400 text-center leading-relaxed">Pausar un producto lo oculta de las búsquedas sin borrarlo. Puedes reactivarlo cuando quieras.</p>
+  </main>
+
+  <div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-8 z-50 hidden items-center gap-2 bg-[#1E293B] text-white text-sm font-semibold px-5 py-3 rounded-full shadow-lg max-w-[90vw]" role="status"></div>
+
+  <!-- Modal para editar producto (oculto por defecto) -->
+  <div id="edit-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-[#1E293B]/60 backdrop-blur-sm p-4" role="dialog" aria-modal="true" aria-labelledby="edit-modal-title">
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 space-y-5">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-xl bg-[#FDF0ED] text-[#D04836] flex items-center justify-center"><i class="fa-solid fa-pen-to-square"></i></span>
+          <h2 id="edit-modal-title" class="text-base font-extrabold text-[#1E293B]">Editar producto</h2>
+        </div>
+        <button type="button" id="edit-close" aria-label="Cerrar modal" class="w-9 h-9 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="edit-form" class="space-y-4">
+        <input type="hidden" id="edit-id" />
+
+        <div>
+          <label for="edit-image" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1">Fotografía del producto</label>
+          <div class="flex items-center gap-3">
+            <img id="edit-image-preview" alt="Vista previa del producto" class="hidden h-16 w-16 rounded-xl border border-slate-200 bg-slate-50 object-cover" />
+            <input id="edit-image" type="file" accept="image/jpeg,image/png,image/webp" class="min-w-0 flex-1 text-xs text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-2 file:text-xs file:font-bold file:text-slate-700 hover:file:bg-slate-200" />
+          </div>
+          <p class="mt-1 text-[11px] text-slate-400">JPG, PNG o WebP. Selecciona una imagen nueva para reemplazarla.</p>
+        </div>
+
+        <div>
+          <label for="edit-title" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1">Nombre del producto</label>
+          <input id="edit-title" type="text" required maxlength="120" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold text-[#1E293B] focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="edit-price" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1">Precio (MXN)</label>
+            <input id="edit-price" type="number" min="0.01" max="99999999.99" step="0.01" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold text-[#1E293B] focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20" />
+          </div>
+          <div>
+            <label for="edit-stock" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1">Stock</label>
+            <input id="edit-stock" type="number" min="0" max="100000" step="1" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold text-[#1E293B] focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20" />
+          </div>
+        </div>
+
+        <div class="pt-2 flex items-center gap-3">
+          <button type="button" id="edit-cancel" class="w-1/3 py-3 rounded-xl border border-slate-200 text-slate-600 text-sm font-bold hover:bg-slate-100 transition">Cancelar</button>
+          <button type="submit" class="w-2/3 py-3 rounded-xl bg-[#FF7A59] text-[#1E293B] text-sm font-extrabold hover:brightness-95 active:scale-[0.98] transition flex items-center justify-center gap-2"><i class="fa-solid fa-check"></i> Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="create-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-[#1E293B]/60 backdrop-blur-sm p-4" role="dialog" aria-modal="true" aria-labelledby="create-modal-title">
+    <div class="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl">
+      <div class="mb-4 flex items-center justify-between border-b border-slate-100 pb-3">
+        <h2 id="create-modal-title" class="text-base font-extrabold">Publicar producto</h2>
+        <button id="create-close" type="button" aria-label="Cerrar" class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <form id="create-form" class="space-y-3">
+        <label class="block text-xs font-bold text-slate-600" for="create-name">Nombre del producto
+          <input id="create-name" type="text" required maxlength="120" class="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm font-semibold text-[#1E293B] focus:border-[#FF7A59] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20" />
+        </label>
+        <div>
+          <label class="block text-xs font-bold text-slate-600" for="create-image">Fotografía del producto</label>
+          <div class="mt-1 flex items-center gap-3">
+            <img id="create-image-preview" alt="Vista previa del producto" class="hidden h-16 w-16 rounded-xl border border-slate-200 bg-slate-50 object-cover" />
+            <input id="create-image" type="file" accept="image/jpeg,image/png,image/webp" class="min-w-0 flex-1 text-xs text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-2 file:text-xs file:font-bold file:text-slate-700 hover:file:bg-slate-200" />
+          </div>
+          <p class="mt-1 text-[11px] text-slate-400">JPG, PNG o WebP.</p>
+        </div>
+        <label class="block text-xs font-bold text-slate-600" for="create-description">Descripción
+          <textarea id="create-description" maxlength="5000" rows="2" class="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm font-semibold text-[#1E293B] focus:border-[#FF7A59] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20"></textarea>
+        </label>
+        <label class="block text-xs font-bold text-slate-600" for="create-category">Categoría
+          <select id="create-category" class="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm font-semibold text-[#1E293B] focus:border-[#FF7A59] focus:bg-white focus:outline-none">
+            <option value="">Sin categoría</option>
+          </select>
+        </label>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="block text-xs font-bold text-slate-600" for="create-price">Precio (MXN)
+            <input id="create-price" type="number" min="0.01" max="99999999.99" step="0.01" required class="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm font-semibold text-[#1E293B] focus:border-[#FF7A59] focus:bg-white focus:outline-none" />
+          </label>
+          <label class="block text-xs font-bold text-slate-600" for="create-stock">Existencias
+            <input id="create-stock" type="number" min="1" max="100000" step="1" required class="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm font-semibold text-[#1E293B] focus:border-[#FF7A59] focus:bg-white focus:outline-none" />
+          </label>
+        </div>
+        <div id="existing-location-group">
+          <label class="block text-xs font-bold text-slate-600" for="create-location">Punto de entrega
+            <select id="create-location" required class="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm font-semibold text-[#1E293B] focus:border-[#FF7A59] focus:bg-white focus:outline-none">
+              <option value="">Selecciona un punto</option>
+            </select>
+          </label>
+        </div>
+        <div id="new-location-group" class="hidden space-y-3 rounded-xl bg-slate-50 p-3">
+          <p class="text-xs font-bold text-slate-600">Crea tu primer punto de entrega</p>
+          <label class="block text-xs font-bold text-slate-600" for="create-location-name">Nombre del punto
+            <input id="create-location-name" type="text" maxlength="120" class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-[#1E293B] focus:border-[#FF7A59] focus:outline-none" />
+          </label>
+          <label class="block text-xs font-bold text-slate-600" for="create-location-details">Referencia (opcional)
+            <input id="create-location-details" type="text" maxlength="255" class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-[#1E293B] focus:border-[#FF7A59] focus:outline-none" />
+          </label>
+        </div>
+        <p id="create-error" class="hidden text-sm font-semibold text-red-600" role="alert"></p>
+        <div class="flex gap-3 pt-1">
+          <button id="create-cancel" type="button" class="w-1/3 rounded-xl border border-slate-200 py-3 text-sm font-bold text-slate-600 hover:bg-slate-100">Cancelar</button>
+          <button id="create-submit" type="submit" class="flex w-2/3 items-center justify-center gap-2 rounded-xl bg-[#FF7A59] py-3 text-sm font-extrabold text-[#1E293B] hover:brightness-95">
+            <i class="fa-solid fa-check"></i> Publicar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<script src="/app/assets/inventory.js"></script>
+</body>
+</html>

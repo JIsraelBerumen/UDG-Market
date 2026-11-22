@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Mis Pedidos - UDG Market</title>
+<script src="auth.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+<style>
+    /* Transiciones suaves estilo iOS */
+    #sheet-backdrop {
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #sheet-panel {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .custom-radio {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border: 2px solid #CBD5E1;
+      border-radius: 9999px;
+      outline: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      display: grid;
+      place-content: center;
+    }
+    .custom-radio:checked {
+      border-color: #D04836;
+      background-color: #D04836;
+    }
+    .custom-radio:checked::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background-color: white;
+      border-radius: 9999px;
+    }
+    .custom-radio-row:has(.custom-radio:checked) {
+      background-color: #FEF2F0;
+      border-color: #F87171;
+    }
+  </style>
+</head>
+<body class="bg-[#F8FAFC] text-[#1E293B] font-sans antialiased min-h-screen">
+<div class="max-w-md mx-auto min-h-screen pb-32 relative">
+<!-- Header principal -->
+<header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md pt-[env(safe-area-inset-top)] border-b border-slate-100">
+<div class="h-14 px-3 flex items-center justify-between">
+<a aria-label="Volver al perfil" class="w-12 h-12 -ml-1 rounded-full flex items-center justify-center hover:bg-slate-100 active:bg-slate-200 transition" href="index.html#profile" onclick="window.location.href='index.html#profile'; return false;">
+<i class="fa-solid fa-arrow-left text-lg text-[#1E293B]"></i>
+</a>
+<h1 class="text-base font-bold text-[#1E293B]">Mis Pedidos</h1>
+<span aria-hidden="true" class="w-12"></span>
+</div>
+<!-- Pestañas (sticky) -->
+<div aria-label="Pedidos" class="grid grid-cols-2 border-b border-slate-200 bg-white" role="tablist">
+<button aria-controls="panel-active" aria-selected="true" class="tab relative h-14 text-sm font-bold transition flex items-center justify-center gap-1.5 text-[#1E293B]" id="tab-active" role="tab">
+          Activos 
+          <span class="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 rounded-full bg-[#FF7A59] text-[#1E293B] text-xs font-extrabold" id="active-badge">3</span>
+<span class="tab-bar absolute bottom-0 inset-x-6 h-[3px] rounded-t-full bg-[#FF7A59]"></span>
+</button>
+<button aria-controls="panel-history" aria-selected="false" class="tab relative h-14 text-sm font-bold transition flex items-center justify-center gap-1.5 text-slate-500 hover:text-[#1E293B]" id="tab-history" role="tab">
+          Historial
+          <span class="tab-bar absolute bottom-0 inset-x-6 h-[3px] rounded-t-full bg-[#FF7A59] hidden"></span>
+</button>
+</div>
+</header>
+<!-- ===== Pestaña ACTIVOS (US-22) ===== -->
+<section aria-labelledby="tab-active" class="px-4 pt-5 space-y-4" id="panel-active" role="tabpanel">
+<!-- Pedido 1: confirmado -->
+<article class="order-card bg-white rounded-3xl border border-slate-100 shadow-sm p-4 transition-all duration-300" data-order-id="UDG-4821" data-order-img="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&amp;fit=crop&amp;w=200&amp;q=70" data-order-location="Canchas CUCEA" data-order-price="$70" data-order-seller="Sofía M. · CUCEA" data-order-time="Hoy · 2:30 PM" data-order-title="Brownies de Sofi (x2)">
+<div class="flex items-center justify-between gap-3">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="w-10 h-10 shrink-0 rounded-full bg-[#FFE9E1] text-[#E8552F] font-extrabold text-[13px] flex items-center justify-center">SM</span>
+<div class="min-w-0">
+<p class="font-bold truncate text-[#1E293B]">Sofía M. · CUCEA</p>
+<p class="text-xs text-slate-500">Pedido #UDG-4821</p>
+</div>
+</div>
+<span class="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-[#34D399]/20 text-emerald-800 text-xs font-extrabold px-3 py-1.5">
+<i class="fa-solid fa-circle-check"></i>Confirmado
+          </span>
+</div>
+<div class="mt-4 flex items-center gap-3">
+<img alt="Brownies" class="w-16 h-16 rounded-xl object-cover bg-slate-200 shrink-0" onerror="this.style.visibility='hidden'" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+<div class="flex-1 min-w-0">
+<p class="font-bold leading-snug text-[#1E293B]">Brownies de Sofi (x2)</p>
+<p class="text-sm text-slate-500">Pago en efectivo al recoger</p>
+</div>
+<p class="text-xl font-black text-[#1E293B]">$70</p>
+</div>
+<div class="mt-4 rounded-2xl bg-slate-50 border border-slate-100 p-3 grid grid-cols-2 gap-3">
+<div>
+<p class="text-[11px] font-bold uppercase tracking-wide text-slate-500">Hora de cita</p>
+<p class="mt-0.5 flex items-center gap-1.5 font-extrabold text-sm text-[#1E293B]">
+<i class="fa-regular fa-clock text-[#FF7A59]"></i>Hoy · 2:30 PM
+            </p>
+</div>
+<div>
+<p class="text-[11px] font-bold uppercase tracking-wide text-slate-500">Punto de encuentro</p>
+<p class="mt-0.5 flex items-center gap-1.5 font-extrabold text-sm text-[#1E293B]">
+<i class="fa-solid fa-location-dot text-[#FF7A59]"></i>Canchas CUCEA
+            </p>
+</div>
+</div>
+<!-- Botones de Acción (Fitts + Cancelar secundario) -->
+<div class="mt-4 flex items-center gap-2">
+<button class="h-14 px-4 rounded-2xl border-2 border-slate-200 hover:border-red-200 hover:bg-red-50 text-slate-600 hover:text-[#D04836] font-bold text-sm flex items-center justify-center gap-1.5 active:scale-[0.98] transition shrink-0 min-w-[105px]" onclick="openCancelSheet('UDG-4821')" type="button">
+<i class="fa-solid fa-xmark text-sm"></i> Cancelar
+          </button>
+<a class="flex-1 h-14 rounded-2xl bg-[#FF7A59] text-[#1E293B] font-extrabold flex items-center justify-center gap-2 shadow-[0_10px_20px_-10px_rgba(255,122,89,0.9)] hover:brightness-95 active:scale-[0.98] transition text-sm" href="producto.html?id=0">
+<i class="fa-regular fa-comment-dots"></i> Ver detalle y Contactar
+          </a>
+</div>
+</article>
+<!-- Pedido 2: pendiente -->
+<article class="order-card bg-white rounded-3xl border border-slate-100 shadow-sm p-4 transition-all duration-300" data-order-id="UDG-4830" data-order-img="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&amp;fit=crop&amp;w=200&amp;q=70" data-order-location="Cafetería" data-order-price="$55" data-order-seller="Diego R. · CUCEI" data-order-time="Hoy · 1:30 PM" data-order-title="Entre panes">
+<div class="flex items-center justify-between gap-3">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="w-10 h-10 shrink-0 rounded-full bg-[#FFE9E1] text-[#E8552F] font-extrabold text-[13px] flex items-center justify-center">DR</span>
+<div class="min-w-0">
+<p class="font-bold truncate text-[#1E293B]">Diego R. · CUCEI</p>
+<p class="text-xs text-slate-500">Pedido #UDG-4830</p>
+</div>
+</div>
+<span class="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-[#FBBF24]/25 text-amber-800 text-xs font-extrabold px-3 py-1.5">
+<i class="fa-regular fa-hourglass-half"></i>Pendiente
+          </span>
+</div>
+<div class="mt-4 flex items-center gap-3">
+<img alt="Sandwich" class="w-16 h-16 rounded-xl object-cover bg-slate-200 shrink-0" onerror="this.style.visibility='hidden'" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+<div class="flex-1 min-w-0">
+<p class="font-bold leading-snug text-[#1E293B]">Entre panes</p>
+<p class="text-sm text-slate-500">Esperando que el vendedor confirme</p>
+</div>
+<p class="text-xl font-black text-[#1E293B]">$55</p>
+</div>
+<div class="mt-4 rounded-2xl bg-slate-50 border border-slate-100 p-3 grid grid-cols-2 gap-3">
+<div>
+<p class="text-[11px] font-bold uppercase tracking-wide text-slate-500">Hora de cita</p>
+<p class="mt-0.5 flex items-center gap-1.5 font-extrabold text-sm text-[#1E293B]">
+<i class="fa-regular fa-clock text-[#FF7A59]"></i>Hoy · 1:30 PM
+            </p>
+</div>
+<div>
+<p class="text-[11px] font-bold uppercase tracking-wide text-slate-500">Punto de encuentro</p>
+<p class="mt-0.5 flex items-center gap-1.5 font-extrabold text-sm text-[#1E293B]">
+<i class="fa-solid fa-location-dot text-[#FF7A59]"></i>Cafetería
+            </p>
+</div>
+</div>
+<!-- Botones de Acción -->
+<div class="mt-4 flex items-center gap-2">
+<button class="h-14 px-4 rounded-2xl border-2 border-slate-200 hover:border-red-200 hover:bg-red-50 text-slate-600 hover:text-[#D04836] font-bold text-sm flex items-center justify-center gap-1.5 active:scale-[0.98] transition shrink-0 min-w-[105px]" onclick="openCancelSheet('UDG-4830')" type="button">
+<i class="fa-solid fa-xmark text-sm"></i> Cancelar
+          </button>
+<a class="flex-1 h-14 rounded-2xl bg-[#FF7A59] text-[#1E293B] font-extrabold flex items-center justify-center gap-2 shadow-[0_10px_20px_-10px_rgba(255,122,89,0.9)] hover:brightness-95 active:scale-[0.98] transition text-sm" href="producto.html?id=1">
+<i class="fa-regular fa-comment-dots"></i> Ver detalle y Contactar
+          </a>
+</div>
+</article>
+<!-- Pedido 3: confirmado, mañana -->
+<article class="order-card bg-white rounded-3xl border border-slate-100 shadow-sm p-4 transition-all duration-300" data-order-id="UDG-4795" data-order-img="https://images.unsplash.com/photo-1587145820266-a5951ee6f620?auto=format&amp;fit=crop&amp;w=200&amp;q=70" data-order-location="Biblioteca" data-order-price="$180" data-order-seller="Andrés L. · CUCEI" data-order-time="Mañana · 11:00 AM" data-order-title="Calculadora científica">
+<div class="flex items-center justify-between gap-3">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="w-10 h-10 shrink-0 rounded-full bg-[#FFE9E1] text-[#E8552F] font-extrabold text-[13px] flex items-center justify-center">AL</span>
+<div class="min-w-0">
+<p class="font-bold truncate text-[#1E293B]">Andrés L. · CUCEI</p>
+<p class="text-xs text-slate-500">Pedido #UDG-4795</p>
+</div>
+</div>
+<span class="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-[#34D399]/20 text-emerald-800 text-xs font-extrabold px-3 py-1.5">
+<i class="fa-solid fa-circle-check"></i>Confirmado
+          </span>
+</div>
+<div class="mt-4 flex items-center gap-3">
+<img alt="Calculadora" class="w-16 h-16 rounded-xl object-cover bg-slate-200 shrink-0" onerror="this.style.visibility='hidden'" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+<div class="flex-1 min-w-0">
+<p class="font-bold leading-snug text-[#1E293B]">Calculadora científica</p>
+<p class="text-sm text-slate-500">Pago en efectivo al recoger</p>
+</div>
+<p class="text-xl font-black text-[#1E293B]">$180</p>
+</div>
+<div class="mt-4 rounded-2xl bg-slate-50 border border-slate-100 p-3 grid grid-cols-2 gap-3">
+<div>
+<p class="text-[11px] font-bold uppercase tracking-wide text-slate-500">Hora de cita</p>
+<p class="mt-0.5 flex items-center gap-1.5 font-extrabold text-sm text-[#1E293B]">
+<i class="fa-regular fa-clock text-[#FF7A59]"></i>Mañana · 11:00 AM
+            </p>
+</div>
+<div>
+<p class="text-[11px] font-bold uppercase tracking-wide text-slate-500">Punto de encuentro</p>
+<p class="mt-0.5 flex items-center gap-1.5 font-extrabold text-sm text-[#1E293B]">
+<i class="fa-solid fa-location-dot text-[#FF7A59]"></i>Biblioteca
+            </p>
+</div>
+</div>
+<!-- Botones de Acción -->
+<div class="mt-4 flex items-center gap-2">
+<button class="h-14 px-4 rounded-2xl border-2 border-slate-200 hover:border-red-200 hover:bg-red-50 text-slate-600 hover:text-[#D04836] font-bold text-sm flex items-center justify-center gap-1.5 active:scale-[0.98] transition shrink-0 min-w-[105px]" onclick="openCancelSheet('UDG-4795')" type="button">
+<i class="fa-solid fa-xmark text-sm"></i> Cancelar
+          </button>
+<a class="flex-1 h-14 rounded-2xl bg-[#FF7A59] text-[#1E293B] font-extrabold flex items-center justify-center gap-2 shadow-[0_10px_20px_-10px_rgba(255,122,89,0.9)] hover:brightness-95 active:scale-[0.98] transition text-sm" href="producto.html?id=3">
+<i class="fa-regular fa-comment-dots"></i> Ver detalle y Contactar
+          </a>
+</div>
+</article>
+<!-- Estado vacío (oculto por defecto) -->
+<div class="hidden py-16 px-6 text-center" id="active-empty">
+<div class="w-20 h-20 mx-auto rounded-3xl bg-[#FFE9E1] text-[#E8552F] flex items-center justify-center text-3xl mb-4 shadow-sm">
+<i class="fa-solid fa-bag-shopping"></i>
+</div>
+<h3 class="text-lg font-extrabold text-[#1E293B]">No tienes pedidos activos</h3>
+<p class="text-sm text-slate-500 mt-1.5 max-w-xs mx-auto">Explora los productos disponibles en tu campus y realiza tu primer pedido.</p>
+<a class="inline-flex items-center gap-2 mt-5 px-6 h-12 rounded-2xl bg-[#FF7A59] text-[#1E293B] font-bold text-sm hover:brightness-95 transition shadow-sm" href="index.html">
+<i class="fa-solid fa-store"></i> Explorar catálogo
+        </a>
+</div>
+</section>
+<!-- ===== Pestaña HISTORIAL (US-23) ===== -->
+<section aria-labelledby="tab-history" class="hidden px-4 pt-5 space-y-3" id="panel-history" role="tabpanel">
+<article class="bg-white rounded-2xl border border-slate-100 shadow-sm p-3">
+<div class="flex items-center justify-between gap-2 mb-3">
+<p class="text-xs font-semibold text-slate-500">28 oct 2026</p>
+<span class="inline-flex items-center gap-1.5 rounded-full bg-[#34D399]/20 text-emerald-800 text-[11px] font-extrabold px-2.5 py-1">
+<i class="fa-solid fa-circle-check"></i>Entregado
+          </span>
+</div>
+<div class="flex items-center gap-3">
+<img alt="Galletas" class="w-14 h-14 rounded-xl object-cover bg-slate-200 shrink-0" onerror="this.style.visibility='hidden'" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+<div class="flex-1 min-w-0">
+<p class="font-bold leading-snug truncate text-[#1E293B]">Galletas de Marcos (x3)</p>
+<p class="text-xs text-slate-500">Total pagado</p>
+</div>
+<p class="text-lg font-black text-[#1E293B]">$60</p>
+</div>
+<a class="mt-3 w-full h-12 rounded-xl border-2 border-slate-200 text-sm font-bold text-[#1E293B] flex items-center justify-center gap-2 hover:bg-slate-50 active:scale-[0.98] transition" href="producto.html?id=2">
+<i class="fa-solid fa-rotate-right"></i>Volver a pedir
+        </a>
+</article>
+<article class="bg-white rounded-2xl border border-slate-100 shadow-sm p-3">
+<div class="flex items-center justify-between gap-2 mb-3">
+<p class="text-xs font-semibold text-slate-500">21 oct 2026</p>
+<span class="inline-flex items-center gap-1.5 rounded-full bg-slate-200 text-slate-600 text-[11px] font-extrabold px-2.5 py-1">
+<i class="fa-solid fa-ban"></i>Cancelado
+          </span>
+</div>
+<div class="flex items-center gap-3">
+<img alt="Prenda" class="w-14 h-14 rounded-xl object-cover bg-slate-200 shrink-0 grayscale opacity-70" onerror="this.style.visibility='hidden'" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+<div class="flex-1 min-w-0">
+<p class="font-bold leading-snug truncate text-slate-500 line-through">Sudadera Leones Negros</p>
+<p class="text-xs text-slate-400">Reserva cancelada</p>
+</div>
+<p class="text-lg font-black text-slate-400 line-through">$350</p>
+</div>
+<a class="mt-3 w-full h-12 rounded-xl border-2 border-slate-200 text-sm font-bold text-slate-600 flex items-center justify-center gap-2 hover:bg-slate-50 active:scale-[0.98] transition" href="producto.html?id=4">
+<i class="fa-solid fa-rotate-right"></i>Volver a pedir
+        </a>
+</article>
+</section>
+<!-- ===== MODAL: iOS BOTTOM SHEET "Cancelar Reserva" (view-cancelar-reserva) ===== -->
+<div aria-labelledby="cancel-sheet-title" aria-modal="true" class="fixed inset-0 z-50 hidden flex-col justify-end" id="view-cancelar-reserva" role="dialog">
+<!-- Backdrop translúcido con desenfoque Apple HIG -->
+<div class="absolute inset-0 bg-[#212930]/60 backdrop-blur-sm opacity-0 transition-opacity" id="sheet-backdrop" onclick="closeCancelSheet()"></div>
+<!-- Panel Bottom Sheet -->
+<div class="relative w-full max-w-md mx-auto bg-[#FBF9F7]/95 backdrop-blur-xl rounded-t-[36px] shadow-2xl border-t border-white/60 flex flex-col max-h-[92vh] transform translate-y-full transition-transform duration-300" id="sheet-panel">
+<!-- Grabber pill de Apple HIG -->
+<div class="w-full pt-3 pb-2 flex justify-center cursor-grab active:cursor-grabbing" onclick="closeCancelSheet()">
+<span aria-hidden="true" class="w-10 h-1.5 bg-slate-300 rounded-full"></span>
+</div>
+<!-- Header del Sheet -->
+<div class="px-5 pb-3 pt-1 flex items-center justify-between border-b border-slate-200/60 shrink-0">
+<div>
+<h2 class="text-base font-extrabold text-[#1E293B]" id="cancel-sheet-title">Cancelar Reserva</h2>
+<p class="text-xs font-semibold text-[#D04836]" id="cancel-sheet-code">Pedido #UDG-0000</p>
+</div>
+<button aria-label="Cerrar modal" class="w-9 h-9 rounded-full bg-slate-200/80 hover:bg-slate-300/80 text-slate-600 flex items-center justify-center active:scale-95 transition" onclick="closeCancelSheet()" type="button">
+<i class="fa-solid fa-xmark text-sm"></i>
+</button>
+</div>
+<!-- Contenido scrolleable del Sheet -->
+<div class="px-5 py-4 overflow-y-auto space-y-4 text-[#1E293B]">
+<!-- Visibilidad del estado (Jakob Nielsen): Tarjeta Resumen Inset del Pedido -->
+<div class="bg-white rounded-2xl p-3 border border-slate-200/80 shadow-xs flex items-center gap-3">
+<img alt="Producto" class="w-14 h-14 rounded-xl object-cover bg-slate-100 shrink-0 border border-slate-100" id="cancel-modal-img" src=""/>
+<div class="flex-1 min-w-0">
+<h3 class="font-bold text-sm text-[#1E293B] truncate" id="cancel-modal-title">Producto</h3>
+<p class="text-xs text-slate-500 truncate" id="cancel-modal-seller">Vendedor</p>
+<div class="flex items-center gap-2 mt-1 text-[11px] font-semibold text-slate-500">
+<span class="flex items-center gap-1" id="cancel-modal-time"><i class="fa-regular fa-clock text-[#FF7A59]"></i> 1:30 PM</span>
+<span>•</span>
+<span class="flex items-center gap-1 truncate" id="cancel-modal-location"><i class="fa-solid fa-location-dot text-[#FF7A59]"></i> Módulo</span>
+</div>
+</div>
+<p class="text-base font-black text-[#1E293B] shrink-0" id="cancel-modal-price">$0</p>
+</div>
+<!-- Selector de Motivo (Hick: 4 opciones claras estilo Inset Grouped) -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<label class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Selecciona el motivo</label>
+<span class="text-[11px] font-bold text-red-500">Requerido</span>
+</div>
+<div class="bg-white rounded-2xl border border-slate-200/80 shadow-xs divide-y divide-slate-100 overflow-hidden" role="radiogroup">
+<!-- Opción 1: Imprevisto -->
+<label class="custom-radio-row flex items-center justify-between p-3.5 min-h-[52px] cursor-pointer hover:bg-slate-50 active:bg-slate-100 transition gap-3">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-xl bg-orange-50 text-[#FF7A59] flex items-center justify-center shrink-0 text-sm">
+<i class="fa-regular fa-clock"></i>
+</span>
+<span class="text-xs font-bold text-[#1E293B]">Imprevisto con mi clase u horario</span>
+</div>
+<input class="custom-radio shrink-0" name="cancel_reason" onchange="handleReasonChange(this)" type="radio" value="Imprevisto con mi clase u horario"/>
+</label>
+<!-- Opción 2: Fuera de campus -->
+<label class="custom-radio-row flex items-center justify-between p-3.5 min-h-[52px] cursor-pointer hover:bg-slate-50 active:bg-slate-100 transition gap-3">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 text-sm">
+<i class="fa-solid fa-person-walking-arrow-right"></i>
+</span>
+<span class="text-xs font-bold text-[#1E293B]">Ya no me encuentro en el campus</span>
+</div>
+<input class="custom-radio shrink-0" name="cancel_reason" onchange="handleReasonChange(this)" type="radio" value="Ya no me encuentro en el campus"/>
+</label>
+<!-- Opción 3: Acordé otro horario -->
+<label class="custom-radio-row flex items-center justify-between p-3.5 min-h-[52px] cursor-pointer hover:bg-slate-50 active:bg-slate-100 transition gap-3">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 text-sm">
+<i class="fa-regular fa-handshake"></i>
+</span>
+<span class="text-xs font-bold text-[#1E293B]">Acordé otro horario con el vendedor</span>
+</div>
+<input class="custom-radio shrink-0" name="cancel_reason" onchange="handleReasonChange(this)" type="radio" value="Acordé otro horario con el vendedor"/>
+</label>
+<!-- Opción 4: Otro motivo (Progressive Disclosure) -->
+<label class="custom-radio-row flex items-center justify-between p-3.5 min-h-[52px] cursor-pointer hover:bg-slate-50 active:bg-slate-100 transition gap-3">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 text-sm">
+<i class="fa-solid fa-ellipsis"></i>
+</span>
+<span class="text-xs font-bold text-[#1E293B]">Otro motivo</span>
+</div>
+<input class="custom-radio shrink-0" name="cancel_reason" onchange="handleReasonChange(this)" type="radio" value="otro"/>
+</label>
+</div>
+</div>
+<!-- Progressive Disclosure: Textarea dinámico para "Otro motivo" -->
+<div class="hidden transition-all duration-300" id="other-reason-container">
+<label class="block text-xs font-extrabold text-slate-600 mb-1.5" for="other-reason-text">Detalla el motivo (opcional):</label>
+<textarea class="w-full p-3 rounded-2xl bg-white border border-slate-200 text-xs font-medium text-[#1E293B] focus:border-[#D04836] focus:ring-2 focus:ring-[#D04836]/20 focus:outline-none transition" id="other-reason-text" maxlength="160" placeholder="Explica brevemente para que el compañero vendedor esté enterado..." rows="2"></textarea>
+</div>
+<!-- Callout de Empatía Comunitaria CUCEI / UDG -->
+<div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-start gap-2.5">
+<i class="fa-solid fa-heart-circle-check text-amber-600 text-base mt-0.5 shrink-0"></i>
+<p class="text-[11px] leading-relaxed text-amber-900 font-medium">
+<strong class="font-bold text-amber-950">Comunidad UDG:</strong> Cancelar con anticipación le permite a tu compañero reasignar su producto y evitar mermas en su emprendimiento estudiantil.
+            </p>
+</div>
+</div>
+<!-- Footer fijo en Thumb Zone (Ley de Fitts + Prevención de Errores) -->
+<div class="p-4 bg-white/90 backdrop-blur-md border-t border-slate-200/80 rounded-b-none space-y-2.5 shrink-0">
+<!-- Botón Destructivo: Inicia deshabilitado hasta seleccionar motivo -->
+<button class="w-full h-14 rounded-2xl bg-[#D04836] text-white font-extrabold text-sm flex items-center justify-center gap-2 opacity-50 cursor-not-allowed shadow-md shadow-[#D04836]/20 active:scale-[0.98] transition" disabled="" id="btn-confirm-cancel" onclick="confirmOrderCancellation()" type="button">
+<i class="fa-solid fa-ban"></i> Confirmar Cancelación
+          </button>
+<!-- Botón Seguro / Salida de emergencia (Jakob Nielsen) -->
+<button class="w-full h-12 rounded-2xl bg-slate-100 hover:bg-slate-200 text-[#1E293B] font-bold text-sm flex items-center justify-center active:scale-[0.98] transition" onclick="closeCancelSheet()" type="button">
+            Mantener Reserva
+          </button>
+</div>
+</div>
+</div>
+<!-- Toast flotante estilo iOS -->
+<div aria-live="polite" class="fixed left-1/2 -translate-x-1/2 bottom-8 z-50 hidden items-center gap-2.5 bg-[#1E293B]/95 backdrop-blur-md text-white text-xs font-bold px-5 py-3.5 rounded-full shadow-2xl max-w-[90vw] border border-white/10" id="toast" role="status">
+<i class="fa-solid fa-circle-check text-[#34D399]"></i>
+<span id="toast-msg">Reserva cancelada correctamente</span>
+</div>
+</div>
+<script>
+    // Variables de estado
+    let selectedOrderForCancel = null;
+    let toastTimeout = null;
+
+    // Tabs logic (Activos / Historial) y Swipe táctil original
+    const tabActive = document.getElementById('tab-active');
+    const tabHistory = document.getElementById('tab-history');
+    const panelActive = document.getElementById('panel-active');
+    const panelHistory = document.getElementById('panel-history');
+
+    function switchTab(target) {
+      if (target === 'active') {
+        tabActive.setAttribute('aria-selected', 'true');
+        tabHistory.setAttribute('aria-selected', 'false');
+        tabActive.classList.add('text-[#1E293B]');
+        tabActive.classList.remove('text-slate-500');
+        tabHistory.classList.remove('text-[#1E293B]');
+        tabHistory.classList.add('text-slate-500');
+        tabActive.querySelector('.tab-bar').classList.remove('hidden');
+        tabHistory.querySelector('.tab-bar').classList.add('hidden');
+        panelActive.classList.remove('hidden');
+        panelHistory.classList.add('hidden');
+      } else {
+        tabActive.setAttribute('aria-selected', 'false');
+        tabHistory.setAttribute('aria-selected', 'true');
+        tabActive.classList.remove('text-[#1E293B]');
+        tabActive.classList.add('text-slate-500');
+        tabHistory.classList.add('text-[#1E293B]');
+        tabHistory.classList.remove('text-slate-500');
+        tabActive.querySelector('.tab-bar').classList.add('hidden');
+        tabHistory.querySelector('.tab-bar').classList.remove('hidden');
+        panelActive.classList.add('hidden');
+        panelHistory.classList.remove('hidden');
+      }
+    }
+
+    tabActive.addEventListener('click', () => switchTab('active'));
+    tabHistory.addEventListener('click', () => switchTab('history'));
+
+    // Soporte táctil básico (Swipe entre tabs)
+    let touchStartX = 0;
+    let touchEndX = 0;
+    document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+    document.addEventListener('touchend', e => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchEndX - touchStartX;
+      if (Math.abs(diff) > 70 && !document.getElementById('view-cancelar-reserva').classList.contains('flex')) {
+        if (diff < 0) switchTab('history');
+        else switchTab('active');
+      }
+    }, { passive: true });
+
+    // Toast flotante estilo iOS
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      toastMsg.textContent = message;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('flex');
+      }, 3000);
+    }
+
+    // Modal iOS Bottom Sheet Lógica
+    const sheetModal = document.getElementById('view-cancelar-reserva');
+    const sheetBackdrop = document.getElementById('sheet-backdrop');
+    const sheetPanel = document.getElementById('sheet-panel');
+    const btnConfirm = document.getElementById('btn-confirm-cancel');
+    const otherContainer = document.getElementById('other-reason-container');
+    const otherText = document.getElementById('other-reason-text');
+
+    function openCancelSheet(orderId) {
+      const card = document.querySelector(`.order-card[data-order-id="${orderId}"]`);
+      if (!card) return;
+
+      selectedOrderForCancel = {
+        id: orderId,
+        title: card.dataset.orderTitle,
+        price: card.dataset.orderPrice,
+        seller: card.dataset.orderSeller,
+        time: card.dataset.orderTime,
+        location: card.dataset.orderLocation,
+        img: card.dataset.orderImg,
+        element: card
+      };
+
+      // Inyectar datos en el Bottom Sheet
+      document.getElementById('cancel-sheet-code').textContent = `Pedido #${orderId}`;
+      document.getElementById('cancel-modal-title').textContent = selectedOrderForCancel.title;
+      document.getElementById('cancel-modal-price').textContent = selectedOrderForCancel.price;
+      document.getElementById('cancel-modal-seller').textContent = selectedOrderForCancel.seller;
+      document.getElementById('cancel-modal-time').innerHTML = `<i class="fa-regular fa-clock text-[#FF7A59]"></i> ${selectedOrderForCancel.time}`;
+      document.getElementById('cancel-modal-location').innerHTML = `<i class="fa-solid fa-location-dot text-[#FF7A59]"></i> ${selectedOrderForCancel.location}`;
+      document.getElementById('cancel-modal-img').src = selectedOrderForCancel.img;
+
+      // Resetear formulario
+      document.querySelectorAll('input[name="cancel_reason"]').forEach(r => r.checked = false);
+      otherContainer.classList.add('hidden');
+      otherText.value = '';
+      btnConfirm.disabled = true;
+      btnConfirm.classList.add('opacity-50', 'cursor-not-allowed');
+
+      // Animación de entrada iOS
+      sheetModal.classList.remove('hidden');
+      sheetModal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+
+      setTimeout(() => {
+        sheetBackdrop.classList.remove('opacity-0');
+        sheetBackdrop.classList.add('opacity-100');
+        sheetPanel.classList.remove('translate-y-full');
+        sheetPanel.classList.add('translate-y-0');
+      }, 10);
+    }
+
+    function closeCancelSheet() {
+      sheetBackdrop.classList.remove('opacity-100');
+      sheetBackdrop.classList.add('opacity-0');
+      sheetPanel.classList.remove('translate-y-0');
+      sheetPanel.classList.add('translate-y-full');
+
+      setTimeout(() => {
+        sheetModal.classList.add('hidden');
+        sheetModal.classList.remove('flex');
+        document.body.style.overflow = '';
+        selectedOrderForCancel = null;
+      }, 300);
+    }
+
+    // Escape key para cerrar
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && !sheetModal.classList.contains('hidden')) {
+        closeCancelSheet();
+      }
+    });
+
+    // Control de selección de radio button (Hick + Progressive disclosure)
+    function handleReasonChange(input) {
+      if (input.value === 'otro') {
+        otherContainer.classList.remove('hidden');
+        setTimeout(() => otherText.focus(), 150);
+      } else {
+        otherContainer.classList.add('hidden');
+      }
+
+      // Habilitar botón de confirmación (Prevención de errores Nielsen)
+      btnConfirm.disabled = false;
+      btnConfirm.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+
+    // Confirmación y actualización dinámica
+    function confirmOrderCancellation() {
+      if (!selectedOrderForCancel) return;
+
+      const orderData = { ...selectedOrderForCancel };
+      const cardElement = orderData.element;
+
+      // 1. Animación y eliminación de la pestaña Activos
+      cardElement.style.transform = 'scale(0.95)';
+      cardElement.style.opacity = '0';
+      
+      setTimeout(() => {
+        cardElement.remove();
+
+        // 2. Actualizar contador numérico de pedidos activos
+        const remainingCards = document.querySelectorAll('#panel-active .order-card');
+        const count = remainingCards.length;
+        const badge = document.getElementById('active-badge');
+        badge.textContent = count;
+
+        if (count === 0) {
+          badge.classList.add('hidden');
+          document.getElementById('active-empty').classList.remove('hidden');
+        }
+
+        // 3. Insertar dinámicamente al inicio del Historial
+        const todayStr = 'Hoy';
+        const historyArticle = document.createElement('article');
+        historyArticle.className = 'bg-white rounded-2xl border border-slate-100 shadow-sm p-3 transition-all duration-300';
+        historyArticle.innerHTML = `
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+              <p class="text-xs font-semibold text-slate-500">${todayStr} · Pedido #${orderData.id}</p>
+            </div>
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-slate-200 text-slate-600 text-[11px] font-extrabold px-2.5 py-1">
+              <i class="fa-solid fa-ban"></i>Cancelado
+            </span>
+          </div>
+          <div class="flex items-center gap-3">
+            <img src="${orderData.img}" alt="${orderData.title}" class="w-14 h-14 rounded-xl object-cover bg-slate-200 shrink-0 grayscale opacity-70" onerror="this.style.visibility='hidden'" />
+            <div class="flex-1 min-w-0">
+              <p class="font-bold leading-snug truncate text-slate-500 line-through">${orderData.title}</p>
+              <p class="text-xs text-slate-400">Reserva cancelada</p>
+            </div>
+            <p class="text-lg font-black text-slate-400 line-through">${orderData.price}</p>
+          </div>
+          <a href="index.html" class="mt-3 w-full h-12 rounded-xl border-2 border-slate-200 text-sm font-bold text-slate-600 flex items-center justify-center gap-2 hover:bg-slate-50 active:scale-[0.98] transition">
+            <i class="fa-solid fa-rotate-right"></i>Buscar nuevamente
+          </a>
+        `;
+
+        panelHistory.prepend(historyArticle);
+
+        // 4. Cerrar sheet y mostrar Toast
+        closeCancelSheet();
+        showToast(`Pedido #${orderData.id} cancelado correctamente`);
+      }, 250);
+    }
+  </script>
+</body>
+</html>
