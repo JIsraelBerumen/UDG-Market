@@ -50,10 +50,11 @@ button { cursor: pointer; }
 .inline-form { display: flex; flex-wrap: wrap; align-items: end; gap: 8px; }
 .inline-form input { width: 100px; padding: 8px; border: 1px solid var(--line); border-radius: 10px; }
 .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0; }
-.app-navigation { display: flex; gap: 8px; padding: 8px; margin: 0 0 22px; background: white; border: 1px solid var(--line); border-radius: 16px; }
-.app-navigation button { flex: 1; min-height: 42px; border: 0; border-radius: 11px; background: transparent; color: var(--muted); font-weight: 800; }
+.app-navigation { display: flex; align-items: stretch; gap: 8px; padding: 8px; margin: 0 0 22px; background: white; border: 1px solid var(--line); border-radius: 16px; }
+.app-navigation button { flex: 1; min-height: 48px; display: flex; align-items: center; justify-content: center; gap: 7px; border: 0; border-radius: 11px; background: transparent; color: var(--muted); font-weight: 800; }
 .app-navigation button:hover { background: var(--background); color: var(--ink); }
 .app-navigation button[aria-current="page"] { background: #ffede7; color: var(--accent-dark); }
+.nav-icon { width: 20px; height: 20px; flex: 0 0 auto; fill: currentColor; }
 .screen { min-height: 240px; }
 .app-main { padding-top: 20px; }
 .app-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
@@ -80,10 +81,12 @@ button { cursor: pointer; }
   .item { flex-direction: column; }
   .item-actions { justify-content: flex-start; }
   .app-main { padding-top: 14px; }
-  .app-navigation { overflow-x: auto; flex-wrap: nowrap; }
-  .app-navigation button { flex: 0 0 auto; min-width: 84px; min-height: 42px; padding: 0 10px; font-size: .78rem; }
-  .module-picker { flex: 0 0 auto; margin: 0; }
-  .module-picker select { max-width: 145px; }
+  .app-main { padding-bottom: 90px; }
+  .app-navigation { position: fixed; z-index: 40; left: 50%; bottom: max(8px, env(safe-area-inset-bottom)); transform: translateX(-50%); width: min(600px, calc(100% - 24px)); justify-content: space-around; gap: 2px; margin: 0; padding: 6px; border-radius: 20px; box-shadow: 0 8px 28px #1e293b24; }
+  .app-navigation button { flex: 1 1 0; min-width: 0; min-height: 54px; flex-direction: column; gap: 3px; padding: 4px 2px; font-size: .67rem; white-space: nowrap; }
+  .app-navigation button span { overflow: hidden; max-width: 100%; text-overflow: ellipsis; }
+  .nav-icon { width: 21px; height: 21px; }
+  .module-picker { display: none; }
   .original-view { min-height: 620px; border-radius: 14px; }
   .original-view iframe { height: calc(100dvh - 205px); min-height: 620px; }
 }

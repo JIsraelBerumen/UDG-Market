@@ -20,6 +20,7 @@
     "express-session": "^1.18.1",
     "helmet": "^8.1.0",
     "multer": "^2.0.2",
-    "mysql2": "^3.14.1"
+    "mysql2": "^3.14.1",
+    "qrcode": "^1.5.4"
   }
 }

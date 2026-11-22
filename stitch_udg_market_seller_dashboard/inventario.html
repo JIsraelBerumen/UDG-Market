@@ -14,13 +14,24 @@
     <div class="max-w-md mx-auto h-14 px-3 flex items-center justify-between">
       <a href="index.html#profile" aria-label="Volver al perfil" class="w-12 h-12 -ml-1 rounded-full flex items-center justify-center hover:bg-slate-100 active:bg-slate-200 transition"><i class="fa-solid fa-arrow-left text-lg"></i></a>
       <h1 class="text-base font-bold">Mi inventario</h1>
-      <a href="index.html#seller-orders" title="Ver pedidos activos" class="text-xs font-bold text-[#D04836] bg-[#FDF0ED] px-2.5 py-1.5 rounded-full hover:bg-[#D04836] hover:text-white transition flex items-center gap-1">
-        <i class="fa-solid fa-bag-shopping text-[11px]"></i> Ventas
-      </a>
+      <nav class="flex items-center gap-2" aria-label="Navegación de vendedor">
+        <a href="/app/dashboard.html#catalog" title="Explorar productos" class="text-xs font-bold text-[#1E293B] bg-slate-100 px-2.5 py-1.5 rounded-full hover:bg-slate-200 transition flex items-center gap-1">
+          <i class="fa-solid fa-compass text-[11px]"></i> Explorar
+        </a>
+        <a href="/app/dashboard.html#seller-orders" title="Ver pedidos activos" class="text-xs font-bold text-[#D04836] bg-[#FDF0ED] px-2.5 py-1.5 rounded-full hover:bg-[#D04836] hover:text-white transition flex items-center gap-1">
+          <i class="fa-solid fa-bag-shopping text-[11px]"></i> Ventas
+        </a>
+      </nav>
     </div>
   </header>
 
   <main class="max-w-md mx-auto px-4 pt-5 pb-12">
+    <div class="mb-4 flex items-center justify-between gap-3">
+      <h2 class="text-lg font-extrabold">Mis productos</h2>
+      <button id="open-create" type="button" class="inline-flex items-center gap-2 rounded-xl bg-[#FF7A59] px-3.5 py-2.5 text-xs font-extrabold text-[#1E293B] hover:brightness-95">
+        <i class="fa-solid fa-plus"></i> Publicar
+      </button>
+    </div>
     <p id="summary" class="mb-4 text-sm text-slate-500" aria-live="polite"></p>
     <ul id="list" class="space-y-3"></ul>
     <p class="mt-6 text-xs text-slate-400 text-center leading-relaxed">Pausar un producto lo oculta de las búsquedas sin borrarlo. Puedes reactivarlo cuando quieras.</p>
@@ -43,18 +54,27 @@
         <input type="hidden" id="edit-id" />
 
         <div>
+          <label for="edit-image" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1">Fotografía del producto</label>
+          <div class="flex items-center gap-3">
+            <img id="edit-image-preview" alt="Vista previa del producto" class="hidden h-16 w-16 rounded-xl border border-slate-200 bg-slate-50 object-cover" />
+            <input id="edit-image" type="file" accept="image/jpeg,image/png,image/webp" class="min-w-0 flex-1 text-xs text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-2 file:text-xs file:font-bold file:text-slate-700 hover:file:bg-slate-200" />
+          </div>
+          <p class="mt-1 text-[11px] text-slate-400">JPG, PNG o WebP. Selecciona una imagen nueva para reemplazarla.</p>
+        </div>
+
+        <div>
           <label for="edit-title" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1">Nombre del producto</label>
-          <input id="edit-title" type="text" required maxlength="60" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold text-[#1E293B] focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20" />
+          <input id="edit-title" type="text" required maxlength="120" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold text-[#1E293B] focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20" />
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label for="edit-price" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1">Precio (MXN)</label>
-            <input id="edit-price" type="number" min="1" max="9999" step="1" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold text-[#1E293B] focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20" />
+            <input id="edit-price" type="number" min="0.01" max="99999999.99" step="0.01" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold text-[#1E293B] focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20" />
           </div>
           <div>
             <label for="edit-stock" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1">Stock</label>
-            <input id="edit-stock" type="number" min="0" max="99" step="1" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold text-[#1E293B] focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20" />
+            <input id="edit-stock" type="number" min="0" max="100000" step="1" required class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm font-semibold text-[#1E293B] focus:bg-white focus:border-[#FF7A59] focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20" />
           </div>
         </div>
 
@@ -66,154 +86,69 @@
     </div>
   </div>
 
-<script>
-  const KEY = 'udg-market-inventory';
-  const MAX = 99;
-  const DEFAULTS = [
-    { id: 1, title: 'Brownies de doble chocolate', price: 25, stock: 12, active: true,  auto: false, img: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=300&q=70' },
-    { id: 2, title: 'Sándwich de pollo',           price: 45, stock: 5,  active: true,  auto: false, img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=300&q=70' },
-    { id: 3, title: 'Galleta Red Velvet',          price: 20, stock: 0,  active: false, auto: true,  img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=300&q=70' },
-    { id: 5, title: 'Torta de jamón',              price: 35, stock: 6,  active: false, auto: false, img: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=300&q=70' },
-    { id: 4, title: 'Café frío',                   price: 30, stock: 8,  active: true,  auto: false, img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=300&q=70' }
-  ];
-  let items;
-  try { items = JSON.parse(localStorage.getItem(KEY)) || DEFAULTS; } catch { items = DEFAULTS; }
-  const save = () => localStorage.setItem(KEY, JSON.stringify(items));
-
-  let toastTimer;
-  function toast(msg) {
-    const t = document.getElementById('toast'); t.textContent = msg; t.classList.remove('hidden'); t.classList.add('flex');
-    clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.classList.add('hidden'); t.classList.remove('flex'); }, 2400);
-  }
-
-  function card(p) {
-    const soldOut = p.stock === 0;
-    const paused = !p.active;
-    const on = p.active && !soldOut;
-    return `
-    <li data-id="${p.id}" class="bg-white rounded-2xl border ${soldOut ? 'border-red-100' : 'border-slate-100'} shadow-sm p-3 transition">
-      <div class="flex items-start gap-3">
-        <div class="relative w-[72px] h-[72px] shrink-0 rounded-xl overflow-hidden bg-slate-200">
-          <img src="${p.img}" alt="" class="w-full h-full object-cover transition ${paused ? 'grayscale opacity-60' : ''}" onerror="this.style.visibility='hidden'" />
-        </div>
-
-        <div class="flex-1 min-w-0">
-          <div class="flex items-start justify-between gap-2">
-            <div class="min-w-0">
-              <h2 class="font-bold leading-snug ${paused ? 'text-slate-500' : ''}">${p.title}</h2>
-              <p class="text-sm text-slate-500">$${p.price} MXN</p>
-            </div>
-            <!-- Switch Activo / Pausado -->
-            <div class="shrink-0 flex flex-col items-center gap-1">
-              <button type="button" role="switch" data-action="toggle" aria-checked="${on}" aria-label="${p.title}: ${on ? 'Activo' : 'Pausado'}" ${soldOut ? 'disabled title="Aumenta el stock para activarlo"' : ''}
-                class="relative w-16 h-9 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#34D399] focus-visible:ring-offset-2 ${on ? 'bg-[#34D399]' : 'bg-slate-300'} ${soldOut ? 'cursor-not-allowed opacity-70' : ''}">
-                <span class="absolute top-1 left-1 w-7 h-7 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-7' : ''}"></span>
-              </button>
-              <span class="text-[11px] font-bold ${on ? 'text-emerald-600' : 'text-slate-500'}">${on ? 'Activo' : 'Pausado'}</span>
-            </div>
-          </div>
-
-          <!-- Stock y botón Editar -->
-          <div class="mt-2 flex items-center justify-between gap-2 flex-wrap">
-            <div class="flex items-center gap-2 flex-wrap">
-              <div class="inline-flex items-center rounded-xl bg-slate-100 overflow-hidden" role="group" aria-label="Stock de ${p.title}">
-                <button type="button" data-action="dec" aria-label="Quitar uno" ${p.stock === 0 ? 'disabled' : ''} class="w-12 h-12 text-lg text-[#1E293B] hover:bg-slate-200 active:bg-slate-300 disabled:opacity-30 disabled:hover:bg-transparent transition"><i class="fa-solid fa-minus"></i></button>
-                <span class="w-12 text-center text-xl font-extrabold tabular-nums ${soldOut ? 'text-red-500' : ''}" aria-live="polite">${p.stock}</span>
-                <button type="button" data-action="inc" aria-label="Agregar uno" ${p.stock >= MAX ? 'disabled' : ''} class="w-12 h-12 text-lg text-[#1E293B] hover:bg-slate-200 active:bg-slate-300 disabled:opacity-30 disabled:hover:bg-transparent transition"><i class="fa-solid fa-plus"></i></button>
-              </div>
-              ${soldOut ? '<span class="inline-flex items-center gap-1 text-xs font-extrabold text-red-600 bg-red-50 rounded-full px-3 py-1.5"><i class="fa-solid fa-ban"></i>Agotado</span>' : '<span class="text-xs text-slate-400">disponibles</span>'}
-            </div>
-            <button type="button" data-action="edit" aria-label="Editar ${p.title}" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#1E293B] bg-slate-100 hover:bg-slate-200 active:scale-95 rounded-xl px-3.5 py-2.5 transition">
-              <i class="fa-solid fa-pen-to-square text-[#FF7A59]"></i> Editar
-            </button>
-          </div>
-        </div>
+  <div id="create-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-[#1E293B]/60 backdrop-blur-sm p-4" role="dialog" aria-modal="true" aria-labelledby="create-modal-title">
+    <div class="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl">
+      <div class="mb-4 flex items-center justify-between border-b border-slate-100 pb-3">
+        <h2 id="create-modal-title" class="text-base font-extrabold">Publicar producto</h2>
+        <button id="create-close" type="button" aria-label="Cerrar" class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
-    </li>`;
-  }
+      <form id="create-form" class="space-y-3">
+        <label class="block text-xs font-bold text-slate-600" for="create-name">Nombre del producto
+          <input id="create-name" type="text" required maxlength="120" class="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm font-semibold text-[#1E293B] focus:border-[#FF7A59] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20" />
+        </label>
+        <div>
+          <label class="block text-xs font-bold text-slate-600" for="create-image">Fotografía del producto</label>
+          <div class="mt-1 flex items-center gap-3">
+            <img id="create-image-preview" alt="Vista previa del producto" class="hidden h-16 w-16 rounded-xl border border-slate-200 bg-slate-50 object-cover" />
+            <input id="create-image" type="file" accept="image/jpeg,image/png,image/webp" class="min-w-0 flex-1 text-xs text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-2 file:text-xs file:font-bold file:text-slate-700 hover:file:bg-slate-200" />
+          </div>
+          <p class="mt-1 text-[11px] text-slate-400">JPG, PNG o WebP.</p>
+        </div>
+        <label class="block text-xs font-bold text-slate-600" for="create-description">Descripción
+          <textarea id="create-description" maxlength="5000" rows="2" class="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm font-semibold text-[#1E293B] focus:border-[#FF7A59] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#FF7A59]/20"></textarea>
+        </label>
+        <label class="block text-xs font-bold text-slate-600" for="create-category">Categoría
+          <select id="create-category" class="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm font-semibold text-[#1E293B] focus:border-[#FF7A59] focus:bg-white focus:outline-none">
+            <option value="">Sin categoría</option>
+          </select>
+        </label>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="block text-xs font-bold text-slate-600" for="create-price">Precio (MXN)
+            <input id="create-price" type="number" min="0.01" max="99999999.99" step="0.01" required class="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm font-semibold text-[#1E293B] focus:border-[#FF7A59] focus:bg-white focus:outline-none" />
+          </label>
+          <label class="block text-xs font-bold text-slate-600" for="create-stock">Existencias
+            <input id="create-stock" type="number" min="1" max="100000" step="1" required class="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm font-semibold text-[#1E293B] focus:border-[#FF7A59] focus:bg-white focus:outline-none" />
+          </label>
+        </div>
+        <div id="existing-location-group">
+          <label class="block text-xs font-bold text-slate-600" for="create-location">Punto de entrega
+            <select id="create-location" required class="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm font-semibold text-[#1E293B] focus:border-[#FF7A59] focus:bg-white focus:outline-none">
+              <option value="">Selecciona un punto</option>
+            </select>
+          </label>
+        </div>
+        <div id="new-location-group" class="hidden space-y-3 rounded-xl bg-slate-50 p-3">
+          <p class="text-xs font-bold text-slate-600">Crea tu primer punto de entrega</p>
+          <label class="block text-xs font-bold text-slate-600" for="create-location-name">Nombre del punto
+            <input id="create-location-name" type="text" maxlength="120" class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-[#1E293B] focus:border-[#FF7A59] focus:outline-none" />
+          </label>
+          <label class="block text-xs font-bold text-slate-600" for="create-location-details">Referencia (opcional)
+            <input id="create-location-details" type="text" maxlength="255" class="mt-1 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-[#1E293B] focus:border-[#FF7A59] focus:outline-none" />
+          </label>
+        </div>
+        <p id="create-error" class="hidden text-sm font-semibold text-red-600" role="alert"></p>
+        <div class="flex gap-3 pt-1">
+          <button id="create-cancel" type="button" class="w-1/3 rounded-xl border border-slate-200 py-3 text-sm font-bold text-slate-600 hover:bg-slate-100">Cancelar</button>
+          <button id="create-submit" type="submit" class="flex w-2/3 items-center justify-center gap-2 rounded-xl bg-[#FF7A59] py-3 text-sm font-extrabold text-[#1E293B] hover:brightness-95">
+            <i class="fa-solid fa-check"></i> Publicar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-  function render() {
-    document.getElementById('list').innerHTML = items.map(card).join('');
-    const active = items.filter(i => i.active && i.stock > 0).length;
-    const soldOut = items.filter(i => i.stock === 0).length;
-    const paused = items.length - active - soldOut;
-    document.getElementById('summary').innerHTML =
-      `<strong class="text-emerald-600">${active} activo${active === 1 ? '' : 's'}</strong> · ${paused} pausado${paused === 1 ? '' : 's'}` +
-      (soldOut ? ` · <strong class="text-red-500">${soldOut} agotado${soldOut === 1 ? '' : 's'}</strong>` : '');
-  }
-
-  const editModal = document.getElementById('edit-modal');
-
-  function openEditModal(p) {
-    document.getElementById('edit-id').value = p.id;
-    document.getElementById('edit-title').value = p.title;
-    document.getElementById('edit-price').value = p.price;
-    document.getElementById('edit-stock').value = p.stock;
-    editModal.classList.remove('hidden');
-    editModal.classList.add('flex');
-    document.getElementById('edit-title').focus();
-  }
-
-  function closeEditModal() {
-    editModal.classList.add('hidden');
-    editModal.classList.remove('flex');
-  }
-
-  document.getElementById('edit-close').addEventListener('click', closeEditModal);
-  document.getElementById('edit-cancel').addEventListener('click', closeEditModal);
-  editModal.addEventListener('click', e => { if (e.target === editModal) closeEditModal(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !editModal.classList.contains('hidden')) closeEditModal(); });
-
-  document.getElementById('edit-form').addEventListener('submit', e => {
-    e.preventDefault();
-    const id = +document.getElementById('edit-id').value;
-    const p = items.find(i => i.id === id);
-    if (!p) return;
-
-    const newTitle = document.getElementById('edit-title').value.trim();
-    const newPrice = Math.max(1, parseInt(document.getElementById('edit-price').value, 10) || p.price);
-    const newStock = Math.min(MAX, Math.max(0, parseInt(document.getElementById('edit-stock').value, 10) || 0));
-
-    if (newTitle) p.title = newTitle;
-    p.price = newPrice;
-    p.stock = newStock;
-    if (p.stock === 0) {
-      p.active = false;
-      p.auto = true;
-    } else if (p.auto) {
-      p.active = true;
-      p.auto = false;
-    }
-
-    save();
-    render();
-    closeEditModal();
-    toast(`“${p.title}” actualizado correctamente`);
-  });
-
-  document.getElementById('list').addEventListener('click', e => {
-    const btn = e.target.closest('[data-action]'); if (!btn || btn.disabled) return;
-    const p = items.find(i => i.id === +btn.closest('li').dataset.id);
-    if (!p) return;
-
-    if (btn.dataset.action === 'edit') {
-      openEditModal(p);
-      return;
-    }
-    if (btn.dataset.action === 'dec') {
-      p.stock = Math.max(0, p.stock - 1);
-      if (p.stock === 0) { p.active = false; p.auto = true; toast(`“${p.title}” se agotó y pasó a Pausado`); }
-    } else if (btn.dataset.action === 'inc') {
-      p.stock = Math.min(MAX, p.stock + 1);
-      if (p.stock === 1 && p.auto) { p.active = true; p.auto = false; toast(`“${p.title}” volvió a estar Activo`); }
-    } else if (btn.dataset.action === 'toggle') {
-      p.active = !p.active; p.auto = false;
-      toast(`“${p.title}” ${p.active ? 'activo: visible en búsquedas' : 'pausado: oculto, no se borró'}`);
-    }
-    save(); render();
-  });
-
-  render();
-</script>
+<script src="/app/assets/inventory.js"></script>
 </body>
 </html>

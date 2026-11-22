@@ -112,6 +112,7 @@ app.use('/app', express.static(publicRoot, {
 }));
 
 const modulePages = {
+  catalog: 'buyer_catalog/code.html',
   inventory: 'inventario.html',
   'seller-orders': 'udg_market_gesti_n_de_pedidos_activos_vendedor/code.html',
   'buyer-orders': 'pedidos.html_con_modal_cancelar_reserva/code.html',

@@ -1,7 +1,9 @@
 const $ = (selector) => document.querySelector(selector);
 const dashboardState = { user: null, module: null };
+const issuedOrderPasses = new Map();
 
 const modules = {
+  catalog: { title: 'Productos del campus', path: '/modulos/catalog' },
   inventory: { title: 'Mi inventario', path: '/modulos/inventory' },
   'seller-orders': { title: 'Pedidos activos', path: '/modulos/seller-orders' },
   'buyer-orders': { title: 'Mis pedidos', path: '/modulos/buyer-orders' },
@@ -36,7 +38,8 @@ function moduleForLegacyLink(url) {
     inventario: 'inventory',
     profile: 'my-profile',
     perfil: 'my-profile',
-    catalog: 'buyer-orders',
+    catalog: 'catalog',
+    explorar: 'catalog',
     orders: sellerMode() ? 'seller-orders' : 'buyer-orders',
     'buyer-orders': 'buyer-orders',
     'my-profile': 'my-profile'
@@ -264,8 +267,36 @@ function createOrderCard(doc, order, isSeller) {
   total.className = 'text-sm font-extrabold text-slate-900';
   total.textContent = `$${Number(order.total).toFixed(2)} MXN`;
   details.append(pickup, total);
-  card.append(heading, items, details);
+
+  const actions = doc.createElement('div');
+  actions.className = 'flex flex-wrap gap-2 border-t border-slate-100 pt-3';
+  if (isSeller && order.status === 'pending') {
+    actions.append(createOrderAction(doc, order, 'confirm', 'Confirmar venta', 'bg-[#FF7A59] text-[#1E293B]'));
+  } else if (isSeller && order.status === 'confirmed') {
+    actions.append(createOrderAction(doc, order, 'ready', 'Marcar listo', 'bg-slate-100 text-slate-700'));
+    actions.append(createOrderAction(doc, order, 'deliver', 'Validar QR y entregar', 'bg-emerald-600 text-white'));
+  } else if (isSeller && order.status === 'ready') {
+    actions.append(createOrderAction(doc, order, 'deliver', 'Validar QR y entregar', 'bg-emerald-600 text-white'));
+  } else if (!isSeller && ['confirmed', 'ready'].includes(order.status)) {
+    actions.append(createOrderAction(doc, order, 'pass', 'Mostrar pase QR', 'bg-[#FF7A59] text-[#1E293B]'));
+  } else if (!isSeller && order.status === 'pending') {
+    const waiting = doc.createElement('p');
+    waiting.className = 'text-xs font-semibold text-slate-500';
+    waiting.textContent = 'El pase QR estará disponible cuando el vendedor confirme.';
+    actions.append(waiting);
+  }
+  card.append(heading, items, details, actions);
   return card;
+}
+
+function createOrderAction(doc, order, action, label, colors) {
+  const button = doc.createElement('button');
+  button.type = 'button';
+  button.dataset.orderAction = action;
+  button.className = `min-h-11 flex-1 rounded-xl px-4 py-2 text-sm font-extrabold transition hover:brightness-95 disabled:cursor-wait disabled:opacity-60 ${colors}`;
+  button.textContent = label;
+  button.addEventListener('click', () => handleOrderAction(doc, order, action, button));
+  return button;
 }
 
 function createEmptyOrdersMessage(doc, message) {
@@ -273,6 +304,267 @@ function createEmptyOrdersMessage(doc, message) {
   empty.className = 'rounded-3xl border border-slate-100 bg-white px-6 py-12 text-center text-sm text-slate-500';
   empty.textContent = message;
   return empty;
+}
+
+async function openOrderPass(doc, order) {
+  const key = String(order.id);
+  let pass = issuedOrderPasses.get(key);
+  if (!pass) {
+    const result = await requestJson(`/api/wallet/orders/${encodeURIComponent(order.id)}/pass`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{}'
+    });
+    if (!result.pass || !result.pass.qrCodeDataUrl || !result.pass.qrToken) {
+      throw new Error('El servidor no pudo emitir el pase QR.');
+    }
+    pass = result.pass;
+    issuedOrderPasses.set(key, pass);
+  }
+
+  const modal = doc.createElement('div');
+  modal.className = 'fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/70 p-4';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  modal.setAttribute('aria-labelledby', 'order-pass-title');
+  const panel = doc.createElement('section');
+  panel.className = 'w-full max-w-sm rounded-3xl bg-white p-5 text-center shadow-2xl';
+  const title = doc.createElement('h2');
+  title.id = 'order-pass-title';
+  title.className = 'text-lg font-extrabold text-slate-900';
+  title.textContent = 'Pase QR de entrega';
+  const code = doc.createElement('p');
+  code.className = 'mt-1 text-sm font-bold text-slate-500';
+  code.textContent = `Pedido ${pass.orderCode}`;
+  const qr = doc.createElement('img');
+  qr.className = 'mx-auto mt-4 h-64 w-64 max-w-full rounded-xl border border-slate-200 bg-white p-2';
+  qr.src = pass.qrCodeDataUrl;
+  qr.alt = `Código QR para entregar el pedido ${pass.orderCode}`;
+  const instructions = doc.createElement('p');
+  instructions.className = 'mt-3 text-xs leading-relaxed text-slate-500';
+  instructions.textContent = 'Muestra este código al vendedor en persona. No lo compartas por chat. Si vuelves a solicitar el pase en otro dispositivo, el código anterior dejará de funcionar.';
+  const copy = doc.createElement('button');
+  copy.type = 'button';
+  copy.className = 'mt-4 min-h-11 w-full rounded-xl border border-slate-200 px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50';
+  copy.textContent = 'Copiar código de respaldo';
+  copy.addEventListener('click', async () => {
+    try {
+      await doc.defaultView.navigator.clipboard.writeText(pass.qrToken);
+      showNotice('Código de respaldo copiado. Compártelo solo en persona.');
+    } catch (error) {
+      showNotice('No se pudo copiar el código. Muestra el QR al vendedor.');
+      console.error(error);
+    }
+  });
+  const close = doc.createElement('button');
+  close.type = 'button';
+  close.className = 'mt-2 min-h-11 w-full rounded-xl bg-[#FF7A59] px-4 py-2 text-sm font-extrabold text-[#1E293B] hover:brightness-95';
+  close.textContent = 'Cerrar';
+  close.addEventListener('click', () => modal.remove());
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) modal.remove();
+  });
+  panel.append(title, code, qr, instructions, copy, close);
+  modal.append(panel);
+  doc.body.append(modal);
+  close.focus();
+}
+
+function openOrderQrScanner(doc, order) {
+  const view = doc.defaultView;
+  const modal = doc.createElement('div');
+  modal.className = 'fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/70 p-4';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  modal.setAttribute('aria-labelledby', 'qr-scanner-title');
+  const panel = doc.createElement('section');
+  panel.className = 'w-full max-w-md space-y-3 rounded-3xl bg-white p-5 shadow-2xl';
+  const title = doc.createElement('h2');
+  title.id = 'qr-scanner-title';
+  title.className = 'text-lg font-extrabold text-slate-900';
+  title.textContent = `Validar entrega · ${order.orderCode}`;
+  const video = doc.createElement('video');
+  video.className = 'hidden max-h-64 w-full rounded-2xl bg-slate-950 object-cover';
+  video.autoplay = true;
+  video.playsInline = true;
+  video.muted = true;
+  const status = doc.createElement('p');
+  status.className = 'text-sm text-slate-600';
+  status.setAttribute('role', 'status');
+  status.textContent = 'Escanea el pase QR del comprador o ingresa su código de respaldo.';
+  const camera = doc.createElement('button');
+  camera.type = 'button';
+  camera.className = 'min-h-11 w-full rounded-xl bg-slate-100 px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-200';
+  camera.textContent = 'Abrir cámara';
+  const form = doc.createElement('form');
+  form.className = 'flex gap-2';
+  const tokenInput = doc.createElement('input');
+  tokenInput.className = 'min-w-0 flex-1 rounded-xl border border-slate-200 px-3 py-2 text-sm';
+  tokenInput.type = 'text';
+  tokenInput.autocomplete = 'off';
+  tokenInput.placeholder = 'Código de respaldo QR';
+  tokenInput.required = true;
+  const validate = doc.createElement('button');
+  validate.className = 'min-h-11 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-extrabold text-white hover:bg-emerald-700 disabled:opacity-60';
+  validate.type = 'submit';
+  validate.textContent = 'Validar';
+  form.append(tokenInput, validate);
+  const close = doc.createElement('button');
+  close.className = 'min-h-11 w-full rounded-xl border border-slate-200 px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50';
+  close.type = 'button';
+  close.textContent = 'Cancelar';
+
+  let stream = null;
+  let scanTimer = null;
+  let detector = null;
+  let validating = false;
+  let closed = false;
+  const stopCamera = () => {
+    if (scanTimer !== null) view.clearTimeout(scanTimer);
+    scanTimer = null;
+    if (stream) stream.getTracks().forEach((track) => track.stop());
+    stream = null;
+    video.srcObject = null;
+    video.classList.add('hidden');
+    camera.disabled = false;
+    camera.textContent = 'Abrir cámara';
+  };
+  const closeModal = () => {
+    closed = true;
+    stopCamera();
+    modal.remove();
+  };
+  const validateToken = async (qrToken) => {
+    if (validating || !qrToken) return;
+    validating = true;
+    validate.disabled = true;
+    status.textContent = 'Verificando el pase…';
+    try {
+      const result = await requestJson('/api/wallet/passes/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ qrToken })
+      });
+      if (!result.valid || !result.pass || result.pass.orderCode !== order.orderCode) {
+        throw new Error('El QR no corresponde a este pedido.');
+      }
+      await requestJson(`/api/orders/${encodeURIComponent(order.id)}/deliver`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}'
+      });
+      issuedOrderPasses.delete(String(order.id));
+      closeModal();
+      showNotice(`QR validado. Pedido ${order.orderCode} marcado como entregado.`);
+      try {
+        await hydrateOrderModule(doc, 'seller-orders');
+      } catch (refreshError) {
+        showNotice('Entrega registrada, pero no se pudo actualizar la lista. Recarga Ventas.');
+        console.error(refreshError);
+      }
+    } catch (error) {
+      status.textContent = error.message;
+      console.error(error);
+      validating = false;
+      validate.disabled = false;
+    }
+  };
+  const scanFrame = async () => {
+    if (closed || !stream || !detector) return;
+    try {
+      if (video.readyState >= 2) {
+        const codes = await detector.detect(video);
+        if (codes.length && codes[0].rawValue) {
+          await validateToken(codes[0].rawValue);
+          if (closed || validating) return;
+        }
+      }
+    } catch (error) {
+      status.textContent = 'No se pudo leer el QR con la cámara. Puedes ingresar el código de respaldo.';
+      console.error(error);
+      stopCamera();
+      return;
+    }
+    scanTimer = view.setTimeout(scanFrame, 250);
+  };
+
+  camera.addEventListener('click', async () => {
+    if (!view.BarcodeDetector || !view.navigator.mediaDevices ||
+        !view.navigator.mediaDevices.getUserMedia) {
+      status.textContent = 'Este navegador no permite escanear QR con la cámara. Ingresa el código de respaldo del pase.';
+      return;
+    }
+    camera.disabled = true;
+    camera.textContent = 'Solicitando cámara…';
+    try {
+      detector = new view.BarcodeDetector({ formats: ['qr_code'] });
+      stream = await view.navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' },
+        audio: false
+      });
+      video.srcObject = stream;
+      video.classList.remove('hidden');
+      await video.play();
+      camera.textContent = 'Cámara activa';
+      status.textContent = 'Apunta la cámara al pase QR del comprador.';
+      scanFrame();
+    } catch (error) {
+      stopCamera();
+      status.textContent = `No se pudo abrir la cámara: ${error.message}`;
+      console.error(error);
+    }
+  });
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    validateToken(tokenInput.value.trim());
+  });
+  close.addEventListener('click', closeModal);
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) closeModal();
+  });
+  panel.append(title, video, status, camera, form, close);
+  modal.append(panel);
+  doc.body.append(modal);
+  tokenInput.focus();
+}
+
+async function handleOrderAction(doc, order, action, button) {
+  if (action === 'pass') {
+    button.disabled = true;
+    try {
+      await openOrderPass(doc, order);
+    } catch (error) {
+      showNotice(error.message);
+      console.error(error);
+    } finally {
+      button.disabled = false;
+    }
+    return;
+  }
+  if (action === 'deliver') {
+    openOrderQrScanner(doc, order);
+    return;
+  }
+
+  button.disabled = true;
+  const endpoint = action === 'confirm'
+    ? 'confirm'
+    : 'ready';
+  try {
+    await requestJson(`/api/orders/${encodeURIComponent(order.id)}/${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{}'
+    });
+    await hydrateOrderModule(doc, 'seller-orders');
+    showNotice(action === 'confirm'
+      ? `Venta ${order.orderCode} confirmada.`
+      : `Pedido ${order.orderCode} marcado como listo.`);
+  } catch (error) {
+    button.disabled = false;
+    showNotice(error.message);
+    console.error(error);
+  }
 }
 
 async function hydrateOrderModule(doc, moduleName) {
@@ -530,12 +822,17 @@ function prepareModuleLinks() {
 
     if (['my-profile', 'settings', 'inventory-stock'].includes(dashboardState.module)) {
       hydrateProfileModule(moduleDocument);
-    } else if (['buyer-orders', 'seller-orders'].includes(dashboardState.module)) {
-      hydrateOrderModule(moduleDocument, dashboardState.module).catch((error) => {
+    } else if (dashboardState.module === 'catalog') {
+      if (typeof moduleDocument.defaultView.initializeCatalog === 'function') {
+        moduleDocument.defaultView.initializeCatalog();
+      }
+    } else if (['buyer-orders', 'seller-orders', 'delivery-pass'].includes(dashboardState.module)) {
+      const orderModule = dashboardState.module === 'seller-orders' ? 'seller-orders' : 'buyer-orders';
+      hydrateOrderModule(moduleDocument, orderModule).catch((error) => {
         showNotice(error.message);
         console.error(error);
       });
-    } else if (['cancel-reservation', 'delivery-pass', 'post-delivery-review'].includes(dashboardState.module)) {
+    } else if (['cancel-reservation', 'post-delivery-review'].includes(dashboardState.module)) {
       clearUnconnectedOrderModule(moduleDocument);
     } else if (dashboardState.module === 'seller-profile') {
       hydrateSellerProfile(moduleDocument).catch((error) =>
