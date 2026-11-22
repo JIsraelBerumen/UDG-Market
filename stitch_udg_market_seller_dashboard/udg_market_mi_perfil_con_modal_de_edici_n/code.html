@@ -102,7 +102,7 @@
 </div>
 </section>
 <!-- 3. BLOQUE PRINCIPAL: SWITCH MODO VENDEDOR -->
-<section class="bg-white rounded-3xl p-5 shadow-soft border-2 border-slate-100 hover:border-terracota/30 transition-colors relative">
+<section class="bg-white rounded-3xl p-5 shadow-soft border-2 border-slate-100 hover:border-terracota/30 transition-colors relative" data-seller-only hidden>
 <div class="flex items-center justify-between gap-3">
 <div class="flex items-start gap-3.5">
 <div class="w-11 h-11 rounded-2xl bg-terracota/10 flex items-center justify-center text-terracota shrink-0 mt-0.5">
@@ -116,7 +116,7 @@
                 </span>
 </div>
 <p class="text-xs text-slate-500 leading-relaxed mt-1 pr-1">
-                Actívalo para ofrecer tus productos en el campus, gestionar pedidos y sincronizar stock.
+                Esta cuenta está registrada como vendedora. Activa o pausa la recepción de pedidos; las herramientas de venta seguirán disponibles.
               </p>
 </div>
 </div>
@@ -137,12 +137,12 @@
 </section>
 <!-- 4. CONTENEDOR CONDICIONAL (OPCIONES DE VENDEDOR) -->
 <!-- Oculto por defecto con class="hidden", animado con transition-all duration-300 -->
-<div class="hidden transition-all duration-300 ease-in-out opacity-0 translate-y-2 space-y-2.5" id="seller-menu">
+<div class="hidden transition-all duration-300 ease-in-out opacity-0 translate-y-2 space-y-2.5" id="seller-menu" data-seller-only hidden>
 <div class="flex items-center justify-between px-1">
 <span class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
 <i class="fa-solid fa-bolt text-yellowAccent"></i> Panel de Vendedor Activo
           </span>
-<span class="text-[11px] font-bold text-mint bg-mint/10 px-2 py-0.5 rounded-full">
+<span class="text-[11px] font-bold text-mint bg-mint/10 px-2 py-0.5 rounded-full" id="seller-menu-status">
             En línea
           </span>
 </div>

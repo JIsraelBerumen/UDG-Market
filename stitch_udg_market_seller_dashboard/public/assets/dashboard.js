@@ -17,6 +17,13 @@ const modules = {
   settings: { title: 'Perfil y ajustes', path: '/modulos/settings' },
   'seller-profile': { title: 'Perfil del vendedor', path: '/modulos/seller-profile' }
 };
+const sellerOnlyModules = new Set([
+  'inventory',
+  'seller-orders',
+  'edit-product',
+  'inventory-stock',
+  'inventory-stock-alt'
+]);
 
 function showNotice(message, success = false) {
   const notice = $('#global-notice');
@@ -59,6 +66,11 @@ function moduleForLegacyLink(url) {
 function showModule(moduleName, updateHash = true) {
   const module = modules[moduleName];
   if (!module) return;
+  if (sellerOnlyModules.has(moduleName) && !sellerMode()) {
+    showNotice('Esta pantalla requiere una cuenta de vendedor.');
+    showModule('buyer-orders', true);
+    return;
+  }
 
   dashboardState.module = moduleName;
   $('#screen-title').textContent = module.title;
@@ -112,6 +124,89 @@ function setAvatar(doc, imageId, initialsId, user) {
   }
 }
 
+function renderSellerAvailability(doc) {
+  const isSeller = sellerMode();
+  const acceptsOrders = dashboardState.user.acceptsOrders == null
+    ? true
+    : Boolean(dashboardState.user.acceptsOrders);
+  doc.querySelectorAll('[data-seller-only]').forEach((element) => {
+    element.hidden = !isSeller;
+  });
+  doc.querySelectorAll('a[href$="#seller-orders"], a[href$="#inventory"]').forEach((link) => {
+    link.hidden = !isSeller;
+  });
+
+  const menu = doc.getElementById('seller-menu');
+  if (menu) {
+    menu.classList.remove('hidden', 'opacity-0', 'translate-y-2');
+    menu.classList.add('opacity-100', 'translate-y-0');
+    menu.hidden = !isSeller;
+  }
+  for (const id of ['seller-mode-switch', 'store-toggle']) {
+    const toggle = doc.getElementById(id);
+    if (toggle) toggle.checked = acceptsOrders;
+  }
+
+  const badge = doc.getElementById('seller-status-badge');
+  if (badge) {
+    badge.textContent = acceptsOrders ? 'Recibiendo pedidos' : 'Pedidos pausados';
+    badge.classList.toggle('bg-slate-100', !acceptsOrders);
+    badge.classList.toggle('text-slate-500', !acceptsOrders);
+    badge.classList.toggle('bg-mint/15', acceptsOrders);
+    badge.classList.toggle('text-mint', acceptsOrders);
+  }
+  const menuStatus = doc.getElementById('seller-menu-status');
+  if (menuStatus) {
+    menuStatus.textContent = acceptsOrders ? 'Recibiendo pedidos' : 'Pedidos pausados';
+    menuStatus.classList.toggle('bg-mint/10', acceptsOrders);
+    menuStatus.classList.toggle('text-mint', acceptsOrders);
+    menuStatus.classList.toggle('bg-slate-100', !acceptsOrders);
+    menuStatus.classList.toggle('text-slate-500', !acceptsOrders);
+  }
+  const statusText = doc.getElementById('status-text');
+  if (statusText) {
+    const indicator = doc.createElement('span');
+    indicator.className = `inline-block h-2 w-2 rounded-full ${acceptsOrders ? 'bg-mint animate-ping' : 'bg-terracota'}`;
+    statusText.classList.toggle('text-mint', acceptsOrders);
+    statusText.classList.toggle('text-terracota', !acceptsOrders);
+    statusText.replaceChildren(indicator, doc.createTextNode(acceptsOrders ? 'Recibiendo' : 'En pausa'));
+  }
+  const toggleLabel = doc.querySelector('.toggle-label');
+  if (toggleLabel) toggleLabel.style.backgroundColor = acceptsOrders ? '#228276' : '#637080';
+}
+
+async function setSellerAvailability(doc, checkbox) {
+  if (!sellerMode()) {
+    checkbox.checked = false;
+    return;
+  }
+  const previous = dashboardState.user.acceptsOrders == null
+    ? true
+    : Boolean(dashboardState.user.acceptsOrders);
+  const acceptsOrders = checkbox.checked;
+  checkbox.disabled = true;
+  try {
+    const result = await requestJson('/api/profile/seller/orders', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ acceptsOrders })
+    });
+    dashboardState.user.acceptsOrders = result.acceptsOrders;
+    renderSellerAvailability(doc);
+    showNotice(result.acceptsOrders
+      ? 'Tu tienda está recibiendo pedidos.'
+      : 'Tu tienda está pausada y no recibirá nuevos pedidos.', true);
+  } catch (error) {
+    dashboardState.user.acceptsOrders = previous;
+    renderSellerAvailability(doc);
+    showNotice(error.message);
+    console.error(error);
+  } finally {
+    const switchElement = doc.getElementById(checkbox.id);
+    if (switchElement) switchElement.disabled = false;
+  }
+}
+
 function hydrateProfileModule(doc) {
   const user = dashboardState.user;
   if (!user) return;
@@ -148,29 +243,7 @@ function hydrateProfileModule(doc) {
   if (careerInput) careerInput.value = user.career || '';
   if (codeInput) codeInput.value = user.studentCode || '';
 
-  const sellerSwitch = doc.getElementById('seller-mode-switch');
-  if (sellerSwitch) {
-    const isSeller = ['seller', 'both', 'admin'].includes(user.role);
-    sellerSwitch.checked = isSeller;
-    const menu = doc.getElementById('seller-menu');
-    const hint = doc.getElementById('seller-hint');
-    const badge = doc.getElementById('seller-status-badge');
-    if (menu) {
-      menu.classList.toggle('hidden', !isSeller);
-      menu.classList.toggle('opacity-0', !isSeller);
-      menu.classList.toggle('translate-y-2', !isSeller);
-      menu.classList.toggle('opacity-100', isSeller);
-      menu.classList.toggle('translate-y-0', isSeller);
-    }
-    if (hint) hint.classList.toggle('hidden', isSeller);
-    if (badge) {
-      badge.textContent = isSeller ? 'Activo' : 'Inactivo';
-      badge.classList.toggle('bg-slate-100', !isSeller);
-      badge.classList.toggle('text-slate-500', !isSeller);
-      badge.classList.toggle('bg-mint/15', isSeller);
-      badge.classList.toggle('text-mint', isSeller);
-    }
-  }
+  renderSellerAvailability(doc);
 }
 
 function renderSellerReviews(doc, reviews) {
@@ -606,6 +679,7 @@ async function hydrateOrderModule(doc, moduleName) {
     }
     const title = doc.querySelector('h2');
     if (title) title.firstChild.textContent = 'Pedidos Activos ';
+    renderSellerAvailability(doc);
     return;
   }
 
@@ -818,6 +892,13 @@ function prepareModuleLinks() {
         }
         console.error(error);
       });
+    }, true);
+
+    moduleDocument.addEventListener('change', (event) => {
+      if (!['seller-mode-switch', 'store-toggle'].includes(event.target.id)) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      setSellerAvailability(moduleDocument, event.target);
     }, true);
 
     if (['my-profile', 'settings', 'inventory-stock'].includes(dashboardState.module)) {

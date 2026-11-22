@@ -70,6 +70,8 @@ Todas las respuestas de error usan `{ "error": "..." }`. Las escrituras reciben 
 
 Registro: `POST /api/auth/register` con `fullName`, `email`, `password`, `campusCode` (uno de los campus definidos en `database/schema.sql`), `accountType` (`buyer` o `seller`) y opcionalmente `career`, `studentCode` y `storeName`.
 
+El tipo de cuenta asignado al registrarse determina sus pantallas: compradores no ven herramientas de vendedor y vendedores conservan Ventas e Inventario. El switch del vendedor solo pausa o activa `acceptsOrders`; no cambia el rol ni oculta sus herramientas.
+
 Los módulos **Mi perfil**, **Perfil y ajustes** y **Perfil del vendedor** leen los datos de la sesión y la base de datos. El formulario de perfil guarda sus cambios mediante `PATCH /api/profile`; los datos de muestra del HTML no se asignan a cuentas reales. Las pantallas de pedidos consultan `/api/orders` y muestran un estado vacío cuando la cuenta todavía no tiene pedidos; los pedidos de ejemplo del HTML no se muestran como pedidos reales.
 
 Producto: `POST /api/products` con `name`, `price`, `stock`, y opcionalmente `description`, `ingredients`, `categoryId`, `imageUrl`, `tags` (`[{ "name": "Nuez", "type": "allergen" }]`) y `pickupLocationIds`. Si se omiten los puntos, el producto usa todos los puntos activos de la tienda.

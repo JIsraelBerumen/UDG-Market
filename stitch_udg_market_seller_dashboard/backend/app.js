@@ -126,6 +126,13 @@ const modulePages = {
   'inventory-stock': 'udg_market_inventario_y_gesti_n_de_stock_vendedor_1/code.html',
   'inventory-stock-alt': 'udg_market_inventario_y_gesti_n_de_stock_vendedor_2/code.html'
 };
+const sellerOnlyModules = new Set([
+  'inventory',
+  'seller-orders',
+  'edit-product',
+  'inventory-stock',
+  'inventory-stock-alt'
+]);
 
 app.get('/modulos/auth.js', (req, res) => {
   if (!req.session.user) return res.status(401).type('text').send('');
@@ -135,6 +142,10 @@ app.get('/modulos/auth.js', (req, res) => {
 app.get('/modulos/:module', (req, res, next) => {
   if (!req.session.user) return res.redirect('/app/login.html');
   const relativePath = modulePages[req.params.module];
+  if (sellerOnlyModules.has(req.params.module) &&
+      !['seller', 'both', 'admin'].includes(req.session.user.role)) {
+    return res.redirect('/app/dashboard.html#buyer-orders');
+  }
   if (!relativePath && ['index.html', 'producto.html'].includes(req.params.module)) {
     return res.redirect('/app/dashboard.html');
   }

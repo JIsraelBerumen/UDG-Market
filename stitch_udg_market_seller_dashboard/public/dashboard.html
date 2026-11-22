@@ -50,11 +50,10 @@
           <optgroup label="Explorar">
             <option value="catalog">Productos del campus</option>
           </optgroup>
-          <optgroup label="Ventas">
+          <optgroup label="Ventas" data-seller-only hidden>
             <option value="seller-orders">Pedidos activos (vendedor)</option>
-            <option value="cancel-reservation">Cancelar reserva</option>
           </optgroup>
-          <optgroup label="Inventario">
+          <optgroup label="Inventario" data-seller-only hidden>
             <option value="inventory">Mi inventario</option>
             <option value="inventory-stock">Inventario y stock (perfil)</option>
             <option value="inventory-stock-alt">Inventario y stock</option>
@@ -62,6 +61,7 @@
           </optgroup>
           <optgroup label="Compras">
             <option value="buyer-orders">Mis pedidos y reservas</option>
+            <option value="cancel-reservation">Cancelar reserva</option>
             <option value="delivery-pass">Pase de entrega</option>
             <option value="post-delivery-review">Valorar una compra</option>
           </optgroup>
