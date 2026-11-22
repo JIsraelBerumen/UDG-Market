@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-slate-100" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>UDG Market - Mi Perfil / Ajustes</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Google Fonts: Inter / Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- FontAwesome 6 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            sand: '#E8DFD8',
+            sandLight: '#FAF6F2',
+            navy: '#212930',
+            terracota: '#D04836',
+            'terracota-dark': '#B83B2B',
+            mint: '#228276',
+            'mint-dark': '#1A685E',
+            yellowAccent: '#E9C46A',
+          },
+          boxShadow: {
+            'soft': '0 4px 20px -2px rgba(33, 41, 48, 0.06), 0 2px 6px -1px rgba(33, 41, 48, 0.04)',
+            'card': '0 8px 30px -4px rgba(33, 41, 48, 0.08)',
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Custom scrollbar hiding for clean app feel */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Touch tap highlight */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+</head>
+<body class="h-full bg-[#EFECE8] flex justify-center text-navy font-sans antialiased selection:bg-terracota selection:text-white">
+<!-- Mobile Viewport Container (390px - 425px max phone frame) -->
+<div class="w-full max-w-[425px] min-h-screen bg-slate-50 flex flex-col relative shadow-2xl overflow-x-hidden pb-28 border-x border-slate-200/80">
+<!-- 1. HEADER FIJO / APP BAR -->
+<header class="sticky top-0 z-30 bg-slate-50/90 backdrop-blur-md px-4 py-3.5 border-b border-slate-200/70 flex items-center justify-between transition-all">
+<button aria-label="Regresar" class="w-10 h-10 rounded-full flex items-center justify-center text-navy hover:bg-slate-200/70 active:scale-95 transition-all" onclick="history.back()">
+<i class="fa-solid fa-arrow-left text-lg"></i>
+</button>
+<h1 class="text-base font-bold tracking-tight text-navy">Mi Perfil</h1>
+<button aria-label="Ajustes o Guardar" class="w-10 h-10 rounded-full flex items-center justify-center text-navy hover:bg-slate-200/70 active:scale-95 transition-all relative" id="btn-save" onclick="handleSaveNotification()">
+<i class="fa-solid fa-gear text-lg text-slate-700"></i>
+<!-- Micro badge notification -->
+<span class="absolute top-2 right-2 w-2 h-2 bg-terracota rounded-full ring-2 ring-slate-50"></span>
+</button>
+</header>
+<!-- MAIN SCROLLABLE CONTENT -->
+<main class="flex-1 px-4 py-4 space-y-4">
+<!-- 2. TARJETA DE USUARIO (INFO BÁSICA) -->
+<section class="bg-white rounded-3xl p-5 shadow-soft border border-slate-100 flex items-center gap-4 relative overflow-hidden">
+<!-- Background subtle decor pattern -->
+<div class="absolute -right-6 -bottom-6 w-24 h-24 bg-sand/30 rounded-full blur-xl pointer-events-none"></div>
+<!-- Avatar con botón editar -->
+<div class="relative shrink-0">
+<div class="w-18 h-18 w-[72px] h-[72px] rounded-full ring-4 ring-slate-100 bg-[#E8DFD8] flex items-center justify-center text-navy font-bold text-xl overflow-hidden shadow-inner">
+<!-- Initial or photo representation -->
+<img alt="Foto de perfil" class="w-full h-full object-cover" id="settings-profile-avatar" hidden>
+<span class="text-2xl font-black text-terracota" id="settings-profile-initials"></span>
+</div>
+<button class="absolute bottom-0 right-0 w-6 h-6 bg-terracota text-white rounded-full flex items-center justify-center text-[10px] shadow hover:bg-terracota-dark active:scale-90 transition-transform">
+<i class="fa-solid fa-camera"></i>
+</button>
+</div>
+<!-- Info personal y centro universitario -->
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-1.5">
+<h2 class="text-lg font-extrabold text-navy truncate tracking-tight" id="settings-profile-name"></h2>
+</div>
+<p class="text-xs font-semibold text-slate-500 truncate mt-0.5" id="settings-profile-academic">
+          </p>
+<p class="text-[11px] font-medium text-slate-400 truncate" id="settings-profile-email"></p>
+<div class="flex items-center gap-2 mt-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-sand/60 text-navy border border-sand">
+<span class="w-1.5 h-1.5 rounded-full bg-mint mr-1.5"></span> Código: <span id="settings-profile-code"></span>
+            </span>
+</div>
+</div>
+</section>
+<!-- 3. BLOQUE PRINCIPAL: SWITCH MODO VENDEDOR -->
+<section class="bg-white rounded-3xl p-5 shadow-soft border-2 border-slate-100 hover:border-terracota/30 transition-colors relative">
+<div class="flex items-center justify-between gap-3">
+<div class="flex items-start gap-3.5">
+<div class="w-11 h-11 rounded-2xl bg-terracota/10 flex items-center justify-center text-terracota shrink-0 mt-0.5">
+<i class="fa-solid fa-store text-lg"></i>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="text-base font-bold text-navy">Modo Vendedor</h3>
+<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wide bg-slate-100 text-slate-500" id="seller-status-badge">
+                  Inactivo
+                </span>
+</div>
+<p class="text-xs text-slate-500 leading-relaxed mt-1 pr-1">
+                Actívalo para ofrecer tus productos en el campus, gestionar pedidos y sincronizar stock.
+              </p>
+</div>
+</div>
+<!-- Switch estilo iOS -->
+<div class="shrink-0 flex items-center pl-1">
+<label class="relative inline-flex items-center cursor-pointer select-none">
+<input class="sr-only peer" id="seller-mode-switch" onchange="toggleSellerMode(this)" type="checkbox"/>
+<!-- Track -->
+<div class="w-14 h-8 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-6 peer-checked:after:border-white after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-[26px] after:w-[26px] after:transition-all after:shadow-sm peer-checked:bg-mint transition-colors duration-300"></div>
+</label>
+</div>
+</div>
+<!-- Tip rápido para vendedores cuando está inactivo -->
+<div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400" id="seller-hint">
+<span><i class="fa-regular fa-clock mr-1"></i> Horarios de entrega recomendados: recesos</span>
+<span class="text-terracota font-semibold" id="settings-profile-campus"></span>
+</div>
+</section>
+<!-- 4. CONTENEDOR CONDICIONAL (OPCIONES DE VENDEDOR) -->
+<!-- Oculto por defecto con class="hidden", animado con transition-all duration-300 -->
+<div class="hidden transition-all duration-300 ease-in-out opacity-0 translate-y-2 space-y-2.5" id="seller-menu">
+<div class="flex items-center justify-between px-1">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+<i class="fa-solid fa-bolt text-yellowAccent"></i> Panel de Vendedor Activo
+          </span>
+<span class="text-[11px] font-bold text-mint bg-mint/10 px-2 py-0.5 rounded-full">
+            En línea
+          </span>
+</div>
+<div class="bg-white rounded-3xl shadow-soft border border-slate-100 overflow-hidden divide-y divide-slate-100">
+<!-- Opción: Mi Inventario (Ley de Fitts: fila ancha completa) -->
+<a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group" href="#inventory">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+<i class="fa-solid fa-boxes-stacked"></i>
+</div>
+<div class="text-left">
+<p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Mi Inventario</p>
+<p class="text-xs text-slate-400">Edición rápida de stock y precios (4 productos)</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-yellowAccent" title="Stock bajo en algunos ítems"></span>
+<i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+</div>
+</a>
+<!-- Opción: Puntos de Encuentro Activos -->
+<a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-emerald-50 text-mint flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+<i class="fa-solid fa-location-dot"></i>
+</div>
+<div class="text-left">
+<p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Puntos de Encuentro Activos</p>
+<p class="text-xs text-slate-400">Módulo O, Entrada Biblioteca Central</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">2 puntos</span>
+<i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+</div>
+</a>
+<!-- Opción: Mis Ganancias / Finanzas -->
+<a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+<i class="fa-solid fa-wallet"></i>
+</div>
+<div class="text-left">
+<p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Mis Ganancias</p>
+<p class="text-xs text-slate-400">Balance del día y transferencias SPEI</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold text-mint font-mono">$245.00</span>
+<i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+</div>
+</a>
+</div>
+</div>
+<!-- 5. OPCIONES GENERALES (COMPRADOR / CUENTA) -->
+<section class="space-y-2.5">
+<span class="text-xs font-bold uppercase tracking-wider text-slate-500 px-1">
+          Mi Cuenta &amp; Compras
+        </span>
+<div class="bg-white rounded-3xl shadow-soft border border-slate-100 overflow-hidden divide-y divide-slate-100">
+<!-- Mis Compras -->
+<a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+<i class="fa-solid fa-bag-shopping"></i>
+</div>
+<div class="text-left">
+<p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Mis Compras</p>
+<p class="text-xs text-slate-400">Historial y pedidos en curso</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">3 pedidos</span>
+<i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+</div>
+</a>
+<!-- Métodos de Pago -->
+<a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+<i class="fa-regular fa-credit-card"></i>
+</div>
+<div class="text-left">
+<p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Métodos de Pago</p>
+<p class="text-xs text-slate-400">SPEI, Tarjetas y Efectivo en mano</p>
+</div>
+</div>
+<i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+</a>
+<!-- Notificaciones del Campus -->
+<a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+<i class="fa-regular fa-bell"></i>
+</div>
+<div class="text-left">
+<p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Notificaciones</p>
+<p class="text-xs text-slate-400">Alertas de pedidos y avisos de clase</p>
+</div>
+</div>
+<span class="text-xs font-bold text-white bg-terracota px-2 py-0.5 rounded-full">2 nuevas</span>
+</a>
+<!-- Soporte / Ayuda Estudiantil -->
+<a class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50/80 active:bg-slate-100 transition-colors group" href="#">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+<i class="fa-regular fa-circle-question"></i>
+</div>
+<div class="text-left">
+<p class="text-sm font-bold text-navy group-hover:text-terracota transition-colors">Soporte &amp; Preguntas Frecuentes</p>
+<p class="text-xs text-slate-400">Guía de convivencia y entregas UDG</p>
+</div>
+</div>
+<i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:translate-x-0.5 transition-transform"></i>
+</a>
+<!-- Cerrar Sesión (Color de advertencia Terracota / Rojo) -->
+<button class="w-full px-5 py-4 flex items-center justify-between hover:bg-red-50/50 active:bg-red-50 transition-colors group text-left" onclick="handleLogout()">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-2xl bg-red-50 text-terracota flex items-center justify-center text-base group-hover:scale-105 transition-transform">
+<i class="fa-solid fa-arrow-right-from-bracket"></i>
+</div>
+<div>
+<p class="text-sm font-bold text-terracota">Cerrar Sesión</p>
+<p class="text-xs text-slate-400">Desvincular cuenta en este dispositivo</p>
+</div>
+</div>
+<i class="fa-solid fa-chevron-right text-xs text-terracota/60 group-hover:translate-x-0.5 transition-transform"></i>
+</button>
+</div>
+</section>
+<!-- App version & branding footer micro-copy -->
+<div class="pt-3 pb-2 text-center text-xs text-slate-400 space-y-1">
+<p class="font-bold text-slate-500" id="settings-footer-campus">UDG Market</p>
+<p class="text-[11px]">Versión 1.4.2 PWA • Hecho por y para la comunidad</p>
+</div>
+</main>
+<!-- 6. BARRA DE NAVEGACIÓN INFERIOR (PWA PERSISTENTE) -->
+<nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[425px] bg-white/95 backdrop-blur-md border-t border-slate-200/80 py-2.5 px-6 z-40 flex items-center justify-around shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
+<!-- Pestaña Ventas -->
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-navy transition-colors group relative" href="#">
+<div class="relative">
+<i class="fa-solid fa-bag-shopping text-xl group-hover:scale-110 transition-transform"></i>
+<span class="absolute -top-1 -right-2 bg-terracota text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center ring-2 ring-white">
+            3
+          </span>
+</div>
+<span class="text-[11px] font-medium tracking-tight">Ventas</span>
+</a>
+<!-- Pestaña Explorar -->
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-navy transition-colors group" href="index.html#catalog" title="Explorar productos" aria-label="Explorar productos">
+<i class="fa-solid fa-store text-xl group-hover:scale-110 transition-transform"></i>
+<span class="text-[11px] font-medium tracking-tight">Explorar</span>
+</a>
+<!-- Pestaña Inventario -->
+<a class="flex flex-col items-center gap-1 text-slate-400 hover:text-navy transition-colors group" href="#inventory">
+<i class="fa-solid fa-boxes-stacked text-xl group-hover:scale-110 transition-transform"></i>
+<span class="text-[11px] font-medium tracking-tight">Inventario</span>
+</a>
+<!-- Pestaña Perfil (Activa en Terracota) -->
+<a class="flex flex-col items-center gap-1 text-terracota transition-colors group" href="#">
+<div class="relative">
+<i class="fa-solid fa-user-gear text-xl"></i>
+<!-- Active dot indicator -->
+<span class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-terracota rounded-full"></span>
+</div>
+<span class="text-[11px] font-bold tracking-tight text-navy">Perfil</span>
+</a>
+</nav>
+<!-- TOAST NOTIFICATION CONTAINER (FOR INTERACTIVITY FEEDBACK) -->
+<div class="fixed top-16 left-1/2 -translate-x-1/2 w-11/12 max-w-sm bg-navy text-white text-xs font-semibold px-4 py-3 rounded-2xl shadow-xl z-50 flex items-center gap-3 transition-all duration-300 opacity-0 pointer-events-none -translate-y-4" id="toast-notification">
+<div class="w-6 h-6 rounded-full bg-mint flex items-center justify-center text-white shrink-0" id="toast-icon-box">
+<i class="fa-solid fa-check text-xs" id="toast-icon"></i>
+</div>
+<p class="flex-1" id="toast-message">Modo vendedor actualizado</p>
+</div>
+</div>
+<!-- JAVASCRIPT PURO -->
+<script>
+    /**
+     * Alterna la visibilidad y transición del menú de vendedor
+     * según el estado del switch estilo iOS.
+     * @param {HTMLInputElement} checkbox - Elemento switch
+     */
+    function toggleSellerMode(checkbox) {
+      const sellerMenu = document.getElementById('seller-menu');
+      const statusBadge = document.getElementById('seller-status-badge');
+      const sellerHint = document.getElementById('seller-hint');
+
+      if (!sellerMenu) return;
+
+      if (checkbox.checked) {
+        // 1. Mostrar contenedor quitando hidden
+        sellerMenu.classList.remove('hidden');
+
+        // 2. Transición suave con requestAnimationFrame
+        requestAnimationFrame(() => {
+          sellerMenu.classList.remove('opacity-0', 'translate-y-2');
+          sellerMenu.classList.add('opacity-100', 'translate-y-0');
+        });
+
+        // 3. Actualizar badges y estados visuales
+        if (statusBadge) {
+          statusBadge.textContent = 'Activo';
+          statusBadge.classList.remove('bg-slate-100', 'text-slate-500');
+          statusBadge.classList.add('bg-mint/15', 'text-mint');
+        }
+
+        if (sellerHint) {
+          sellerHint.classList.add('hidden');
+        }
+
+        showToast('Modo Vendedor Activado: Opciones disponibles', 'mint', 'fa-store');
+      } else {
+        // 1. Iniciar desvanecimiento
+        sellerMenu.classList.remove('opacity-100', 'translate-y-0');
+        sellerMenu.classList.add('opacity-0', 'translate-y-2');
+
+        // 2. Esperar fin de la transición (300ms) para colocar 'hidden'
+        setTimeout(() => {
+          if (!checkbox.checked) {
+            sellerMenu.classList.add('hidden');
+          }
+        }, 300);
+
+        // 3. Restaurar badge
+        if (statusBadge) {
+          statusBadge.textContent = 'Inactivo';
+          statusBadge.classList.remove('bg-mint/15', 'text-mint');
+          statusBadge.classList.add('bg-slate-100', 'text-slate-500');
+        }
+
+        if (sellerHint) {
+          sellerHint.classList.remove('hidden');
+        }
+
+        showToast('Modo Vendedor Pausado: Catálogo en modo comprador', 'navy', 'fa-eye-slash');
+      }
+    }
+
+    /**
+     * Muestra un toast interactivo ergonómico
+     */
+    let toastTimeout = null;
+    function showToast(message, colorType = 'mint', iconClass = 'fa-check') {
+      const toast = document.getElementById('toast-notification');
+      const msg = document.getElementById('toast-message');
+      const iconBox = document.getElementById('toast-icon-box');
+      const icon = document.getElementById('toast-icon');
+
+      if (!toast || !msg) return;
+
+      msg.textContent = message;
+      icon.className = `fa-solid ${iconClass} text-xs`;
+
+      if (colorType === 'mint') {
+        iconBox.className = 'w-6 h-6 rounded-full bg-mint flex items-center justify-center text-white shrink-0';
+      } else if (colorType === 'terracota') {
+        iconBox.className = 'w-6 h-6 rounded-full bg-terracota flex items-center justify-center text-white shrink-0';
+      } else {
+        iconBox.className = 'w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-white shrink-0';
+      }
+
+      toast.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
+      }, 2600);
+    }
+
+    function handleSaveNotification() {
+      showToast('Configuraciones generales sincronizadas con tu cuenta UDG', 'mint', 'fa-gear');
+    }
+
+    async function handleLogout() {
+      if (!confirm('¿Deseas cerrar tu sesión de estudiante en UDG Market?')) return;
+      try {
+        if (window.parent !== window && typeof window.parent.logoutFromDashboard === 'function') {
+          await window.parent.logoutFromDashboard();
+          return;
+        }
+        const response = await fetch('/api/auth/logout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: '{}',
+          credentials: 'same-origin'
+        });
+        if (!response.ok) throw new Error('No se pudo cerrar sesión. Inténtalo otra vez.');
+        window.location.replace('/app/login.html');
+      } catch (error) {
+        showToast(error.message, 'terracota', 'fa-triangle-exclamation');
+        console.error(error);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>UDG Market - Gestión de Pedidos Activos</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Plus Jakarta Sans / Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            arena: '#E8DFD8',
+            'arena-light': '#F6F3F0',
+            navy: {
+              DEFAULT: '#212930',
+              light: '#313C47',
+              muted: '#637080'
+            },
+            terracota: {
+              DEFAULT: '#D04836',
+              dark: '#B83B2B',
+              light: '#FDF0ED'
+            },
+            mint: {
+              DEFAULT: '#228276',
+              dark: '#1B6A60',
+              light: '#E6F4F1'
+            },
+            yellowAlert: {
+              DEFAULT: '#E9C46A',
+              light: '#FEF9EC',
+              dark: '#B08821'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif']
+          },
+          boxShadow: {
+            'card': '0 8px 24px -4px rgba(33, 41, 48, 0.07), 0 2px 6px -1px rgba(33, 41, 48, 0.04)',
+            'nav': '0 -4px 20px rgba(33, 41, 48, 0.06)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    /* Estilos para el switch iOS personalizado */
+    .toggle-checkbox:checked {
+      right: 2px;
+      border-color: #228276;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+      background-color: #228276;
+    }
+  </style>
+</head>
+<body class="bg-arena min-h-screen text-navy antialiased flex justify-center pb-24 selection:bg-terracota selection:text-white">
+
+  <!-- Mobile Wrapper PWA (390px - 430px max viewport) -->
+  <div class="w-full max-w-md min-h-screen bg-arena flex flex-col relative shadow-2xl">
+
+    <!-- 1. HEADER FIJO -->
+    <header class="sticky top-0 z-30 bg-arena/95 backdrop-blur-md px-5 pt-5 pb-3 border-b border-[#D8CDC4]/60">
+      <div class="flex items-center justify-between mb-2">
+        <!-- Logo / Marca UDG Market -->
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-terracota flex items-center justify-center text-white shadow-sm font-black text-sm tracking-tighter">
+            UDG
+          </div>
+          <span class="text-xs font-bold tracking-wider uppercase text-navy/70">Panel Vendedor</span>
+        </div>
+
+        <!-- Indicador de alerta de clase / Campana rápida -->
+        <div class="flex items-center gap-2.5">
+          <button class="relative w-8 h-8 rounded-full bg-white/70 border border-[#D8CDC4] flex items-center justify-center text-navy hover:bg-white transition-all">
+            <i class="fa-regular fa-bell text-xs"></i>
+            <span class="absolute top-1 right-1 w-2 h-2 bg-terracota rounded-full animate-pulse"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Título & Switch de Estado -->
+      <div class="flex items-end justify-between">
+        <div>
+          <h1 class="text-2xl font-black tracking-tight text-navy leading-tight">
+            Mis Entregas Hoy
+          </h1>
+          <p class="text-xs font-medium text-navy/60" id="seller-orders-campus-date"></p>
+        </div>
+
+        <!-- Switch tipo iOS: Estado Tienda Activa -->
+        <div class="flex flex-col items-end gap-1">
+          <label for="store-toggle" class="cursor-pointer flex items-center gap-2 bg-white/80 py-1.5 px-3 rounded-full border border-[#D5C7BD] shadow-sm">
+            <span id="status-text" class="text-[11px] font-bold text-mint tracking-tight flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-mint animate-ping inline-block"></span>
+              Recibiendo
+            </span>
+            <div class="relative inline-block w-9 align-middle select-none transition duration-200 ease-in">
+              <input type="checkbox" name="toggle" id="store-toggle" checked class="toggle-checkbox absolute block w-5 h-4 top-[2px] right-4 rounded-full bg-white border-2 border-transparent appearance-none cursor-pointer transition-all duration-300 shadow-sm" onchange="toggleStoreStatus(this)" />
+              <label for="store-toggle" class="toggle-label block overflow-hidden h-5 rounded-full bg-mint cursor-pointer transition-colors duration-300"></label>
+            </div>
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <!-- BANNER DE CONTEXTO RÁPIDO (PRÓXIMA CLASE) -->
+    <div class="px-5 pt-3">
+      <div class="bg-navy rounded-xl p-3 text-white flex items-center justify-between text-xs shadow-md">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-yellowAlert/20 text-yellowAlert flex items-center justify-center font-bold">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div>
+            <span class="text-white/60 block text-[10px] uppercase font-bold tracking-wider">Tu próxima clase</span>
+            <p class="font-bold text-white text-xs leading-none mt-0.5">Física II (Edificio Beta) • <span class="text-yellowAlert">1:50 PM</span></p>
+          </div>
+        </div>
+        <span class="bg-white/10 px-2 py-1 rounded text-[10px] font-semibold text-white/80">en 38 min</span>
+      </div>
+    </div>
+
+    <!-- 2. RESUMEN RÁPIDO -->
+    <section class="px-5 pt-3 pb-2">
+      <div class="grid grid-cols-2 gap-3">
+        <!-- Card 1: Total entregas -->
+        <div class="bg-white rounded-2xl p-3.5 border border-[#E0D5CD] shadow-sm flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-terracota-light text-terracota flex items-center justify-center text-lg font-bold">
+            <i class="fa-solid fa-box-open"></i>
+          </div>
+          <div>
+            <span class="text-[11px] font-semibold text-navy/60 block uppercase tracking-wider">Por Entregar</span>
+            <div class="flex items-baseline gap-1 mt-0.5">
+              <span class="text-xl font-extrabold text-navy" id="seller-orders-item-count">0</span>
+              <span class="text-[11px] text-navy/50 font-bold">artículos</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Ganancia esperada -->
+        <div class="bg-white rounded-2xl p-3.5 border border-[#E0D5CD] shadow-sm flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-mint-light text-mint flex items-center justify-center text-lg font-bold">
+            <i class="fa-solid fa-circle-dollar-to-slot"></i>
+          </div>
+          <div>
+            <span class="text-[11px] font-semibold text-navy/60 block uppercase tracking-wider">Valor de pedidos</span>
+            <div class="flex items-baseline gap-1 mt-0.5">
+              <span class="text-xl font-extrabold text-navy" id="seller-orders-total">$0.00</span>
+              <span class="text-[11px] text-mint font-bold font-mono">MXN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN FILTRO / TÍTULO DE LISTA -->
+    <div class="px-5 pt-3 pb-1 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <h2 class="text-sm font-extrabold uppercase tracking-wider text-navy">
+          Pedidos Activos <span class="bg-terracota text-white text-[10px] px-1.5 py-0.5 rounded-full ml-1 font-black" id="seller-orders-badge">0</span>
+        </h2>
+      </div>
+      <span class="text-[11px] text-navy/60 font-semibold flex items-center gap-1">
+        <i class="fa-solid fa-arrow-down-short-wide text-[10px]"></i> Ordenados por hora
+      </span>
+    </div>
+
+    <!-- 3. LISTA DE PEDIDOS ACTIVOS (EL NÚCLEO) -->
+    <main class="px-5 py-2 space-y-3.5 flex-1">
+
+      <!-- TARJETA 1: PEDIDO URGENTE (Próxima entrega) -->
+      <article class="bg-white rounded-2xl p-4 border-2 border-yellowAlert/60 shadow-card relative overflow-hidden transition-all duration-200">
+        <!-- Indicador de urgencia en borde -->
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellowAlert via-terracota to-yellowAlert"></div>
+
+        <!-- Fila 1: Quién y Estado -->
+        <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-[#E8DFD8] border border-navy/10 flex items-center justify-center text-xs font-black text-navy">
+              MG
+            </div>
+            <div>
+              <p class="font-extrabold text-navy text-sm leading-tight flex items-center gap-1.5">
+                Mateo González
+                <span class="text-[10px] bg-gray-100 text-navy/70 px-1.5 py-0.2 rounded font-medium">Ing. Computación</span>
+              </p>
+              <span class="text-[10px] text-navy/50 font-medium">Pedido #UDG-1048 • Pagado con SPEI</span>
+            </div>
+          </div>
+          <!-- Badge Estado (Yellow) -->
+          <span class="inline-flex items-center gap-1 bg-yellowAlert/20 text-yellowAlert-dark border border-yellowAlert/40 px-2.5 py-1 rounded-full text-xs font-black tracking-tight">
+            <span class="w-1.5 h-1.5 rounded-full bg-yellowAlert-dark animate-ping"></span>
+            Por Entregar
+          </span>
+        </div>
+
+        <!-- Fila 2: El Pedido - QUÉ (Hick: Gran jerarquía y negrita) -->
+        <div class="py-3.5 flex items-start gap-3 bg-arena-light/70 rounded-xl p-3 my-2 border border-[#EBE3DC]">
+          <!-- Cantidad destacada -->
+          <div class="bg-navy text-white text-base font-black px-2.5 py-1.5 rounded-lg flex items-center justify-center shadow-sm shrink-0">
+            2x
+          </div>
+          <!-- Detalle de Producto -->
+          <div class="flex-1">
+            <h3 class="text-base font-black text-navy leading-snug tracking-tight">
+              Rebanada Pastel Chocolate Matildas
+            </h3>
+            <p class="text-xs text-navy/70 font-semibold mt-0.5">
+              Extra betún y chispas • <span class="text-terracota font-bold">$90.00</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Fila 3: Logística - CUÁNDO y DÓNDE (Hick: Alto contraste visual) -->
+        <div class="grid grid-cols-2 gap-2 my-2.5">
+          <!-- CUÁNDO (Hora exacta con icono FA) -->
+          <div class="flex items-center gap-2.5 bg-yellowAlert/10 p-2.5 rounded-xl border border-yellowAlert/30">
+            <div class="w-7 h-7 rounded-lg bg-yellowAlert text-navy flex items-center justify-center text-xs shadow-sm font-bold">
+              <i class="fa-regular fa-clock"></i>
+            </div>
+            <div>
+              <span class="text-[10px] uppercase font-bold text-navy/60 block">Hora de Entrega</span>
+              <p class="text-sm font-black text-navy leading-tight">1:00 PM</p>
+            </div>
+          </div>
+
+          <!-- DÓNDE (Punto de encuentro con icono FA) -->
+          <div class="flex items-center gap-2.5 bg-gray-50 p-2.5 rounded-xl border border-gray-200">
+            <div class="w-7 h-7 rounded-lg bg-navy text-white flex items-center justify-center text-xs shadow-sm font-bold">
+              <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <div class="truncate">
+              <span class="text-[10px] uppercase font-bold text-navy/60 block">Punto Encuentro</span>
+              <p class="text-sm font-black text-navy leading-tight truncate">Módulo O (Bancas)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila 4: Acciones (Ley de Fitts + Prevención de Errores) -->
+        <div class="pt-2 flex items-center gap-2">
+          <!-- Botón de Contacto por WhatsApp (Acción secundaria/emergencia) -->
+          <a href="https://wa.me/523312345678" target="_blank" class="w-12 h-11 rounded-xl bg-terracota text-white flex items-center justify-center text-lg shadow-sm hover:bg-terracota-dark active:scale-95 transition-all" title="Contactar por WhatsApp">
+            <i class="fa-brands fa-whatsapp text-xl"></i>
+          </a>
+
+          <!-- Botón Principal: Marcar Entregado (Color Mint, prominente y seguro) -->
+          <button onclick="markDelivered(this, 'Mateo González')" class="flex-1 h-11 rounded-xl bg-mint text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-sm hover:bg-mint-dark active:scale-[0.98] transition-all border border-mint/20">
+            <i class="fa-solid fa-circle-check text-base"></i>
+            <span>Marcar Entregado</span>
+          </button>
+        </div>
+      </article>
+
+
+      <!-- TARJETA 2: SEGUNDO PEDIDO (A las 1:20 PM) -->
+      <article class="bg-white rounded-2xl p-4 border border-[#DDD3CB] shadow-card relative overflow-hidden transition-all duration-200">
+        <!-- Fila 1: Quién y Estado -->
+        <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-[#E8DFD8] border border-navy/10 flex items-center justify-center text-xs font-black text-navy">
+              SP
+            </div>
+            <div>
+              <p class="font-extrabold text-navy text-sm leading-tight flex items-center gap-1.5">
+                Sofía Paredes
+                <span class="text-[10px] bg-gray-100 text-navy/70 px-1.5 py-0.2 rounded font-medium">Lic. Química</span>
+              </p>
+              <span class="text-[10px] text-navy/50 font-medium">Pedido #UDG-1049 • Pago en Efectivo</span>
+            </div>
+          </div>
+          <!-- Badge Estado (Yellow) -->
+          <span class="inline-flex items-center gap-1 bg-yellowAlert/20 text-yellowAlert-dark border border-yellowAlert/40 px-2.5 py-1 rounded-full text-xs font-black tracking-tight">
+            <span class="w-1.5 h-1.5 rounded-full bg-yellowAlert-dark"></span>
+            Por Entregar
+          </span>
+        </div>
+
+        <!-- Fila 2: El Pedido - QUÉ -->
+        <div class="py-3.5 flex items-start gap-3 bg-arena-light/70 rounded-xl p-3 my-2 border border-[#EBE3DC]">
+          <div class="bg-navy text-white text-base font-black px-2.5 py-1.5 rounded-lg flex items-center justify-center shadow-sm shrink-0">
+            1x
+          </div>
+          <div class="flex-1">
+            <h3 class="text-base font-black text-navy leading-snug tracking-tight">
+              Brownie Clásico Nuez
+            </h3>
+            <p class="text-xs text-navy/70 font-semibold mt-0.5">
+              Empaque individual térmico • <span class="text-terracota font-bold">$35.00</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Fila 3: Logística - CUÁNDO y DÓNDE -->
+        <div class="grid grid-cols-2 gap-2 my-2.5">
+          <!-- CUÁNDO -->
+          <div class="flex items-center gap-2.5 bg-yellowAlert/10 p-2.5 rounded-xl border border-yellowAlert/30">
+            <div class="w-7 h-7 rounded-lg bg-yellowAlert text-navy flex items-center justify-center text-xs shadow-sm font-bold">
+              <i class="fa-regular fa-clock"></i>
+            </div>
+            <div>
+              <span class="text-[10px] uppercase font-bold text-navy/60 block">Hora de Entrega</span>
+              <p class="text-sm font-black text-navy leading-tight">1:20 PM</p>
+            </div>
+          </div>
+
+          <!-- DÓNDE -->
+          <div class="flex items-center gap-2.5 bg-gray-50 p-2.5 rounded-xl border border-gray-200">
+            <div class="w-7 h-7 rounded-lg bg-navy text-white flex items-center justify-center text-xs shadow-sm font-bold">
+              <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <div class="truncate">
+              <span class="text-[10px] uppercase font-bold text-navy/60 block">Punto Encuentro</span>
+              <p class="text-sm font-black text-navy leading-tight truncate">Entrada Biblioteca Central</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila 4: Acciones -->
+        <div class="pt-2 flex items-center gap-2">
+          <!-- Contacto WhatsApp -->
+          <a href="https://wa.me/523312345678" target="_blank" class="w-12 h-11 rounded-xl bg-terracota text-white flex items-center justify-center text-lg shadow-sm hover:bg-terracota-dark active:scale-95 transition-all" title="Contactar">
+            <i class="fa-brands fa-whatsapp text-xl"></i>
+          </a>
+
+          <!-- Botón Marcar Entregado -->
+          <button onclick="markDelivered(this, 'Sofía Paredes')" class="flex-1 h-11 rounded-xl bg-mint text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-sm hover:bg-mint-dark active:scale-[0.98] transition-all border border-mint/20">
+            <i class="fa-solid fa-circle-check text-base"></i>
+            <span>Marcar Entregado</span>
+          </button>
+        </div>
+      </article>
+
+
+      <!-- TARJETA 3: TERCER PEDIDO (A las 1:40 PM) -->
+      <article class="bg-white rounded-2xl p-4 border border-[#DDD3CB] shadow-card relative overflow-hidden transition-all duration-200">
+        <!-- Fila 1: Quién y Estado -->
+        <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-full bg-[#E8DFD8] border border-navy/10 flex items-center justify-center text-xs font-black text-navy">
+              CR
+            </div>
+            <div>
+              <p class="font-extrabold text-navy text-sm leading-tight flex items-center gap-1.5">
+                Carlos Ramírez
+                <span class="text-[10px] bg-gray-100 text-navy/70 px-1.5 py-0.2 rounded font-medium">Ing. Civil</span>
+              </p>
+              <span class="text-[10px] text-navy/50 font-medium">Pedido #UDG-1050 • Transferencia</span>
+            </div>
+          </div>
+          <!-- Badge Estado (Yellow) -->
+          <span class="inline-flex items-center gap-1 bg-yellowAlert/20 text-yellowAlert-dark border border-yellowAlert/40 px-2.5 py-1 rounded-full text-xs font-black tracking-tight">
+            <span class="w-1.5 h-1.5 rounded-full bg-yellowAlert-dark"></span>
+            Por Entregar
+          </span>
+        </div>
+
+        <!-- Fila 2: El Pedido - QUÉ -->
+        <div class="py-3.5 flex items-start gap-3 bg-arena-light/70 rounded-xl p-3 my-2 border border-[#EBE3DC]">
+          <div class="bg-navy text-white text-base font-black px-2.5 py-1.5 rounded-lg flex items-center justify-center shadow-sm shrink-0">
+            2x
+          </div>
+          <div class="flex-1">
+            <h3 class="text-base font-black text-navy leading-snug tracking-tight">
+              Galletas Red Velvet Rellenas
+            </h3>
+            <p class="text-xs text-navy/70 font-semibold mt-0.5">
+              Relleno de queso crema artesanal • <span class="text-terracota font-bold">$120.00</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Fila 3: Logística - CUÁNDO y DÓNDE -->
+        <div class="grid grid-cols-2 gap-2 my-2.5">
+          <!-- CUÁNDO -->
+          <div class="flex items-center gap-2.5 bg-yellowAlert/10 p-2.5 rounded-xl border border-yellowAlert/30">
+            <div class="w-7 h-7 rounded-lg bg-yellowAlert text-navy flex items-center justify-center text-xs shadow-sm font-bold">
+              <i class="fa-regular fa-clock"></i>
+            </div>
+            <div>
+              <span class="text-[10px] uppercase font-bold text-navy/60 block">Hora de Entrega</span>
+              <p class="text-sm font-black text-navy leading-tight">1:40 PM</p>
+            </div>
+          </div>
+
+          <!-- DÓNDE -->
+          <div class="flex items-center gap-2.5 bg-gray-50 p-2.5 rounded-xl border border-gray-200">
+            <div class="w-7 h-7 rounded-lg bg-navy text-white flex items-center justify-center text-xs shadow-sm font-bold">
+              <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <div class="truncate">
+              <span class="text-[10px] uppercase font-bold text-navy/60 block">Punto Encuentro</span>
+              <p class="text-sm font-black text-navy leading-tight truncate">Laboratorio L2 (Planta Baja)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fila 4: Acciones -->
+        <div class="pt-2 flex items-center gap-2">
+          <!-- Contacto WhatsApp -->
+          <a href="https://wa.me/523312345678" target="_blank" class="w-12 h-11 rounded-xl bg-terracota text-white flex items-center justify-center text-lg shadow-sm hover:bg-terracota-dark active:scale-95 transition-all" title="Contactar">
+            <i class="fa-brands fa-whatsapp text-xl"></i>
+          </a>
+
+          <!-- Botón Marcar Entregado -->
+          <button onclick="markDelivered(this, 'Carlos Ramírez')" class="flex-1 h-11 rounded-xl bg-mint text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-sm hover:bg-mint-dark active:scale-[0.98] transition-all border border-mint/20">
+            <i class="fa-solid fa-circle-check text-base"></i>
+            <span>Marcar Entregado</span>
+          </button>
+        </div>
+      </article>
+
+    </main>
+
+    <!-- TOAST DE CONFIRMACIÓN MODAL (Prevención de errores y Feedback de Nielsen) -->
+    <div id="toast" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 bg-navy text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 transition-all duration-300 opacity-0 pointer-events-none translate-y-[-20px] max-w-[90%]">
+      <div class="w-8 h-8 rounded-full bg-mint text-white flex items-center justify-center shrink-0">
+        <i class="fa-solid fa-check text-sm"></i>
+      </div>
+      <div>
+        <p class="text-xs font-bold" id="toast-title">¡Entrega Registrada!</p>
+        <p class="text-[11px] text-gray-300" id="toast-desc">Pedido completado exitosamente.</p>
+      </div>
+    </div>
+
+    <!-- 4. NAVEGACIÓN INFERIOR (Vendedor) -->
+    <nav class="fixed bottom-0 w-full max-w-md bg-white border-t border-[#D9CEC5] shadow-nav z-40 px-6 py-2">
+      <div class="flex items-center justify-around">
+        
+        <!-- Tab 1: Ventas / Pedidos (Activo en Terracota) -->
+        <a href="/app/dashboard.html#orders" class="flex flex-col items-center justify-center py-1 text-terracota group relative" aria-label="Ventas">
+          <div class="relative">
+            <i class="fa-solid fa-bag-shopping text-xl transition-transform group-hover:scale-110"></i>
+            <span class="absolute -top-1 -right-2 bg-terracota text-white text-[9px] font-black rounded-full h-4 w-4 flex items-center justify-center border-2 border-white" id="seller-orders-nav-badge">0</span>
+          </div>
+          <span class="text-[11px] font-black tracking-tight mt-1">Ventas</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-terracota mt-0.5"></span>
+        </a>
+
+        <!-- Tab 2: Explorar productos -->
+        <a href="/app/dashboard.html#catalog" class="flex flex-col items-center justify-center py-1 text-navy/50 hover:text-navy transition-colors group" aria-label="Explorar productos">
+          <i class="fa-solid fa-store text-xl transition-transform group-hover:scale-110"></i>
+          <span class="text-[11px] font-bold tracking-tight mt-1">Explorar</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
+        </a>
+
+        <!-- Tab 3: Inventario -->
+        <a href="/app/dashboard.html#inventory" class="flex flex-col items-center justify-center py-1 text-navy/50 hover:text-navy transition-colors group" aria-label="Inventario">
+          <i class="fa-solid fa-boxes-stacked text-xl transition-transform group-hover:scale-110"></i>
+          <span class="text-[11px] font-bold tracking-tight mt-1">Inventario</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
+        </a>
+
+        <!-- Tab 3: Perfil -->
+        <a href="/app/dashboard.html#profile" class="flex flex-col items-center justify-center py-1 text-navy/50 hover:text-navy transition-colors group" aria-label="Perfil">
+          <i class="fa-solid fa-user-gear text-xl transition-transform group-hover:scale-110"></i>
+          <span class="text-[11px] font-bold tracking-tight mt-1">Perfil</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-transparent mt-0.5"></span>
+        </a>
+
+      </div>
+    </nav>
+
+  </div>
+
+  <!-- INTERACTIVIDAD LIGERA (Cambio de estado y Marcar Entrega) -->
+  <script>
+    // Alternar estado de la tienda (Recibiendo pedidos vs En Clase/Pausado)
+    function toggleStoreStatus(checkbox) {
+      const statusText = document.getElementById('status-text');
+      const toggleLabel = document.querySelector('.toggle-label');
+      
+      if (checkbox.checked) {
+        statusText.innerHTML = `
+          <span class="w-2 h-2 rounded-full bg-mint animate-ping inline-block"></span>
+          Recibiendo
+        `;
+        statusText.className = "text-[11px] font-bold text-mint tracking-tight flex items-center gap-1.5";
+        toggleLabel.style.backgroundColor = '#228276';
+        showToast('Modo Activo', 'Tu tienda está recibiendo nuevos pedidos.');
+      } else {
+        statusText.innerHTML = `
+          <span class="w-2 h-2 rounded-full bg-terracota inline-block"></span>
+          En Clase
+        `;
+        statusText.className = "text-[11px] font-bold text-terracota tracking-tight flex items-center gap-1.5";
+        toggleLabel.style.backgroundColor = '#637080';
+        showToast('Modo Pausado', 'No recibirás nuevos pedidos mientras estás en clase.');
+      }
+    }
+
+    // Heurística de Nielsen: Feedback inmediato al marcar entregado
+    function markDelivered(button, clientName) {
+      const card = button.closest('article');
+      
+      // Animación suave de confirmación
+      button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+      button.disabled = true;
+
+      setTimeout(() => {
+        card.style.transition = 'all 0.4s ease';
+        card.style.opacity = '0.4';
+        card.style.transform = 'scale(0.96)';
+        card.classList.add('pointer-events-none');
+        
+        button.innerHTML = '<i class="fa-solid fa-check-double"></i> ¡Entregado!';
+        button.className = "flex-1 h-11 rounded-xl bg-gray-400 text-white font-extrabold text-sm flex items-center justify-center gap-2";
+
+        showToast('¡Entrega Confirmada!', `Pedido de ${clientName} marcado como entregado.`);
+      }, 500);
+    }
+
+    // Función para mostrar toast de feedback accesible
+    function showToast(title, desc) {
+      const toast = document.getElementById('toast');
+      const toastTitle = document.getElementById('toast-title');
+      const toastDesc = document.getElementById('toast-desc');
+
+      toastTitle.textContent = title;
+      toastDesc.textContent = desc;
+
+      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-20px]');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-20px]');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
